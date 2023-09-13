@@ -39,6 +39,11 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Copied all the aullauth templates recursively into my templates/allauth directory, and removed any that I would not be using
 - Added my own base.html template as a starting point and as a base, used the starter template boiler plate code from Bootstrap
 - Updated the title for the base template, and added in the template tags which I believe will be required at a later stage
+- Created an app for the general templates like home & contact us
+- Added a templates directory to the home directory with a home directory in the templates directory to follow standards and created my index.html file
+- Created a basic view to just return the rendered template, and added in a urls.py file to the home app, using the same layout from the project levels urls.py file as a shell
+- Created a url for the index.html template as home and included the home app urls in the project level urls
+- In the project level settings file, I updated the directories in the templates dictionary, as well as added the home app to the list of installed apps
 
 ### Future Developments
 
@@ -64,7 +69,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Test | Expected Result | Pass/Fail |
 | ----------- | ----------- | ----------- |
 | Favicon | Appears in tab along with title name | |
-
+| Home Page | The index.html template renders & displays correctly | |
 
 ### Resolved Bugs
 
@@ -111,11 +116,12 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 }
 ```
 
-- Setup for Allauth
+- Setup for Allauth & Home app urls
 
 ```python
 {
     path('accounts/', include('allauth.urls')),
+    path('', include('home.urls')),
 }
 ```
 
@@ -159,6 +165,25 @@ LOGIN_REDIRECT_URL = '/'
     {% if messages %}
     <div class="message-container"></div>
     {% endif %}
+}
+```
+
+- Setup template directories in settings
+
+```python
+{
+    'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
+        ],
+}
+```
+
+- Wire up the url for the index.html template
+
+```python
+{
+    path('', views.index, name='home'),
 }
 ```
 
