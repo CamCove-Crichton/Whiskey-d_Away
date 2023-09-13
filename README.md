@@ -44,6 +44,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a basic view to just return the rendered template, and added in a urls.py file to the home app, using the same layout from the project levels urls.py file as a shell
 - Created a url for the index.html template as home and included the home app urls in the project level urls
 - In the project level settings file, I updated the directories in the templates dictionary, as well as added the home app to the list of installed apps
+- Added the basic setup/layout for the index.html page as the home template
 
 ### Future Developments
 
@@ -184,6 +185,38 @@ LOGIN_REDIRECT_URL = '/'
 ```python
 {
     path('', views.index, name='home'),
+}
+```
+
+- Basic setup/layout for index.html
+
+```html
+{
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col-7 col-md-6 my-auto">
+            <h1 class="display-4">
+                <a href="#" class="btn btn-lg rounded-0 text-uppercase py-3">
+                    Let us whisk(ey) your tastebuds away
+                </a>
+            </h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
 }
 ```
 
