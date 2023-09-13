@@ -38,6 +38,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created my templates directory in my base directory alonf with a sub directory for the allauth templates
 - Copied all the aullauth templates recursively into my templates/allauth directory, and removed any that I would not be using
 - Added my own base.html template as a starting point and as a base, used the starter template boiler plate code from Bootstrap
+- Updated the title for the base template, and added in the template tags which I believe will be required at a later stage
 
 ### Future Developments
 
@@ -144,6 +145,20 @@ LOGIN_REDIRECT_URL = '/'
 ```html
 {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+}
+```
+
+- Basic setup of base.html
+
+```html
+{
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    <header class="container-fluid fixed-top"></header>
+
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    {% if messages %}
+    <div class="message-container"></div>
+    {% endif %}
 }
 ```
 
