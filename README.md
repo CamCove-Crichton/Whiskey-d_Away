@@ -45,6 +45,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a url for the index.html template as home and included the home app urls in the project level urls
 - In the project level settings file, I updated the directories in the templates dictionary, as well as added the home app to the list of installed apps
 - Added the basic setup/layout for the index.html page as the home template
+- Continued working on the structure of the base.html template by adding some styling and structure to the header utilising Bootstrap
 
 ### Future Developments
 
@@ -70,6 +71,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Test | Expected Result | Pass/Fail |
 | ----------- | ----------- | ----------- |
 | Favicon | Appears in tab along with title name | |
+| Base Template Content | The content within the base template renders correctly on every template that extends from base.html | |
 | Home Page | The index.html template renders & displays correctly | |
 
 ### Resolved Bugs
@@ -155,17 +157,123 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
-- Basic setup of base.html
+- Setup of base.html
 
 ```html
 {
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    <header class="container-fluid fixed-top"></header>
+ {% load static %}
+<!-- Base template boilerplate code from Bootstrap Starter Template -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <!-- Asstistance from CI - Boutique Ado walkthrough -->
+    <!-- Main meta tags -->
+    {% block meta %}
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% endblock %}
 
     <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    {% if messages %}
-    <div class="message-container"></div>
-    {% endif %}
+    <!-- Extra Meta tags -->
+    {% block extra_meta %}
+    {% endblock %}
+
+    <!-- Bootstrap CSS -->
+    {% block corecss %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    <!-- Extra CSS -->
+    {% block extra_css %}
+    {% endblock %}
+
+    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    {% block corejs %}
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+    {% endblock %}
+    
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    <!-- Extra JavaScript -->
+    {% block extra_js %}
+    {% endblock %}
+
+    <title>Whiskey'd Away {% block extra_title %}{% endblock %}</title>
+</head>
+
+<body>
+    <!-- Assistance from CI - Boutique Ado Walkthrough -->
+    <header class="container-fluid fixed-top">
+        <div class="row">
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+                <a href="{% url 'home' %}" class="nav-link main-logo-link">
+                    <h2 class="my-0">Whiskey'd Away</h2>
+                </a>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+                <form action="" method="get">
+                    <div class="input-group w-100">
+                        <input class="form-control border border-black rounded-0" type="text" name="q" placeholder="Search for Expeirences">
+                        <div class="input-group-append">
+                            <button class="form-control btn btn-black border border-black rounded-0" type="submit">
+                                <span class="icon">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+                <ul class="list-inline list-unstyled text-center text-lg-right my-0">
+                    <li class="list-inline-item dropdown">
+                        <a href="#" class="nav-link" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fa-solid fa-circle-user fa-lg"></i></div>
+                                <p class="my-0">Account</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu border-0" aria-labelledby="user-options">
+                            {% if request.user.is_authenticated %}
+                                {% if request.user.is_superuser %}
+                                <a href="#" class="dropdown-item">Manage Experiences</a>
+                                {% endif %}
+                                <a href="#" class="dropdown-item">Profile</a>
+                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                            {% else %}
+                                <a href="{% url 'account-signup' %}" class="dropdown-item">Signup</a>
+                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="nav-link">
+                            <div class="text-center">
+                                <div><i class="fa-solid fa-basket-shopping fa-lg"></i></div>
+                                <p class="my-0">
+                                    {% if grand_total %}
+                                    £{{ grand_total|floatformat:2 }}
+                                    {% else %}
+                                    £0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
 }
 ```
 
