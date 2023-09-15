@@ -46,6 +46,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - In the project level settings file, I updated the directories in the templates dictionary, as well as added the home app to the list of installed apps
 - Added the basic setup/layout for the index.html page as the home template
 - Continued working on the structure of the base.html template by adding some styling and structure to the header utilising Bootstrap
+- Styled the main header and add the favicon and main images as well as added a bit of styling to the bits of content on the index template
 
 ### Future Developments
 
@@ -72,7 +73,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | ----------- | ----------- | ----------- |
 | Favicon | Appears in tab along with title name | |
 | Base Template Content | The content within the base template renders correctly on every template that extends from base.html | |
-| Home Page | The index.html template renders & displays correctly | |
+| Home Page | The index.html template renders & displays correctly and is responsive | |
+| Main Page Header | The main page header displays correctly on every page and is responsive | |
 
 ### Resolved Bugs
 
@@ -123,8 +125,11 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 ```python
 {
-    path('accounts/', include('allauth.urls')),
-    path('', include('home.urls')),
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('accounts/', include('allauth.urls')),
+        path('', include('home.urls')),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 }
 ```
 
@@ -328,6 +333,50 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- CSS styling
+
+```css
+{
+    html {
+        height: 100%;
+    }
+
+    body {
+        background: url('/media/whiskey\ glass\ and\ bottle.jpg') no-repeat center center fixed;
+        background-size: cover;
+        height: calc(100vh - 164px);
+        font-family: "Amiri", Verdana, sans-serif;
+    }
+
+    .main-logo-link {
+        width: fit-content;
+    }
+
+    /* Slightly larger container on xl screens */
+    @media (min-width: 1200px) {
+    .container {
+        max-width: 80%;
+    }
+    }
+
+    /* fixed top navbar only on medium and up */
+    @media (min-width: 992px) {
+        .fixed-top-desktop-only {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        .header-container {
+            padding-top: 164px;
+        }
+    }
+    
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -375,8 +424,32 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+[Bulma](https://bulma.io/) - CSS styling
+
+- Styling the fontawesome icons to be centered and proportionately sized
+
+```css
+{
+    .icon {
+        align-items: center;
+        display: inline-flex;
+        justify-content: center;
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}
+```
+
 ### Other Credits
+
+[Favicon.io](https://favicon.io/favicon-converter/) - Favicon converter for my favicon image
+
+[Font Awesome](https://fontawesome.com/) - Site icons
+
+[Google Fonts](https://fonts.google.com/) - Main site fonts
 
 [Pexels](https://www.pexels.com/) - Site images from favicon, to tours and general site images
 
 [Isabella Mendes](https://www.instagram.com/imendesfoto_/) - Favicon images
+
+[Pixabay](https://pixabay.com/) - Background image for main pages

@@ -1,0 +1,96 @@
+/* Assistance from CI - Boutique Ado walkthrough */
+
+/* ----------------------------- General Styling */
+html {
+    height: 100%;
+}
+
+body {
+    background: url('/media/whiskey\ glass\ and\ bottle.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: calc(100vh - 164px);
+    font-family: "Amiri", Verdana, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Diplomata SC", Verdana, sans-serif;
+}
+
+/* ----------------------------- Colours */
+.bg-black {
+    background-color: black;
+}
+
+.border-black {
+    border: 1px solid black;
+}
+
+.bg-yellow,
+.btn-yellow {
+    background-color: yellow;
+}
+
+.btn-yellow:hover {
+    background-color: gold;
+}
+
+.text-yellow {
+    color: yellow;
+}
+
+.text-yellow:hover {
+    color: gold;
+}
+
+.dropdown-item:hover {
+    background-color: black;
+    color: yellow;
+}
+
+/* ----------------------------- Icons */
+/* Assistance from CI - Boutique Ado walkthrough */
+
+/* from Bulma */
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+/* ----------------------------- Logo */
+
+/* Assistance from CI - Boutique Ado walkthrough */
+.main-logo-link {
+    width: fit-content;
+}
+
+/* ----------------------------- Media Queries */
+
+/* Slightly larger container on xl screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 80%;
+    }
+}
+
+/* fixed top navbar only on medium and up */
+@media (min-width: 992px) {
+    .fixed-top-desktop-only {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
+    .header-container {
+        padding-top: 164px;
+    }
+}
