@@ -47,6 +47,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added the basic setup/layout for the index.html page as the home template
 - Continued working on the structure of the base.html template by adding some styling and structure to the header utilising Bootstrap
 - Styled the main header and add the favicon and main images as well as added a bit of styling to the bits of content on the index template
+- Added in the basic setup for the footer to the base template
 
 ### Future Developments
 

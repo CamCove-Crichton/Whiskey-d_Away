@@ -106,7 +106,7 @@
                                 <a href="#" class="dropdown-item">Profile</a>
                                 <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
                             {% else %}
-                                <a href="{% url 'account-signup' %}" class="dropdown-item">Signup</a>
+                                <a href="{% url 'account_signup' %}" class="dropdown-item">Signup</a>
                                 <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
                             {% endif %}
                         </div>
@@ -140,6 +140,26 @@
 
     {% block content %}
     {% endblock %}
+
+    <footer class="container-fluid">
+        <div class="row bg-black pt-lg-2 d-none d-lg-flex">
+            <div class="col-12 col-md-3 text-center">
+                <i class="fa-brands fa-facebook fa-lg text-yellow"></i>
+                <p class="text-yellow">Facebook</p>
+            </div>
+            <div class="col-12 col-md-3 text-yellow text-center">
+                <i class="fa-brands fa-instagram fa-lg text-yellow"></i>
+                <p class="text-yellow">Instagram</p>
+            </div>
+            <div class="col-12 col-md-3 text-yellow text-center">
+                <i class="fa-brands fa-twitter fa-lg text-yellow"></i>
+                <p class="text-yellow">Twitter</p>
+            </div>
+            <div class="col-12 col-md-3 text-yellow text-center">
+                <!-- Mailchimp newsletter signup here -->
+            </div>
+        </div>
+    </footer>
 
     {% block postloadjs %}
     {% endblock %}
