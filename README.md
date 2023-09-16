@@ -48,6 +48,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Continued working on the structure of the base.html template by adding some styling and structure to the header utilising Bootstrap
 - Styled the main header and add the favicon and main images as well as added a bit of styling to the bits of content on the index template
 - Added in the basic setup for the footer to the base template
+- Then began adding in the sub-munu for the page site navigation using Bootstrap as a base starting point and manipulating it, as well as then adding in an icon to use as a display marker for which page is currently active by utilising jQuery
 
 ### Future Developments
 
@@ -76,6 +77,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Base Template Content | The content within the base template renders correctly on every template that extends from base.html | |
 | Home Page | The index.html template renders & displays correctly and is responsive | |
 | Main Page Header | The main page header displays correctly on every page and is responsive | |
+| Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
 
 ### Resolved Bugs
 
@@ -425,6 +427,48 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Boilerplate for sub-nav
+
+```html
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+}
+```
+
 [Bulma](https://bulma.io/) - CSS styling
 
 - Styling the fontawesome icons to be centered and proportionately sized
@@ -438,6 +482,40 @@ LOGIN_REDIRECT_URL = '/'
         height: 1.5rem;
         width: 1.5rem;
     }
+}
+```
+
+[ChatGPT](https://chat.openai.com/) - General questions when stuck & troubleshooting
+
+- Manipulating the active icon
+
+```javascript
+{
+    $(document).ready(function() {
+    // Move the icon to the home page by default
+    $("#activeIcon").appendTo($("#home"));
+
+    // Show the icon
+    $("#activeIcon").show();
+
+    // Event delegation to handle clicks on <a> elements within the nav
+    $("nav ul").on("click", "li a", function(e) {
+        e.preventDefault(); // Prevent the default link behavior
+
+        // Remove the icon from any previously active link
+        $(".active-link").removeClass("active-link");
+
+        // Add the active class to the clicked link
+        $(this).addClass("active-link");
+
+        // Move the icon to the clicked link
+        $("#activeIcon").appendTo($(this).parent());
+
+        // Show the icon
+        $("#activeIcon").show();
+    });
+});
+
 }
 ```
 
