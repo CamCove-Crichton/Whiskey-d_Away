@@ -56,6 +56,11 @@ h6 {
     color: yellow;
 }
 
+.navbar-light .navbar-toggler {
+    color: rgba(0, 0, 0, .5);
+    border-color: rgba(0, 0, 0, 1);
+}
+
 /* ----------------------------- Icons */
 /* Assistance from CI - Boutique Ado walkthrough */
 
@@ -96,5 +101,25 @@ h6 {
 
     .header-container {
         padding-top: 164px;
+    }
+}
+
+/* main-nav for screens 992px and down */
+@media (max-width: 991px) {
+    .main-nav-bg-black {
+        background-color: black;
+        text-align: center;
+    }
+
+    .main-nav-bg-black:hover {
+        background-color: yellow;
+    }
+
+    .main-nav-bg-black>li {
+        color: yellow;
+    }
+
+    .main-nav-bg-black>li:hover {
+        color: black;
     }
 }

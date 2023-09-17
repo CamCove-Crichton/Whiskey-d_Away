@@ -140,35 +140,8 @@
                     aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="main-nav">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a id="home" class="nav-link" href="#">Home</a>
-                        </li>
-                        
-                        <!-- Whiskey Experiences nav-item -->
-                        <li class="nav-item dropdown">
-                            <a id="experiences" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                                Whiskey Experiences
-                            </a>
-                            <div class="dropdown-menu bg-yellow border-black">
-                                <a class="dropdown-item" href="#">Scotland Experiences</a>
-                                <a class="dropdown-item" href="#">Ireland Experiences</a>
-                                <a class="dropdown-item" href="#">Wales Experiences</a>
-                                <a class="dropdown-item" href="#">England Experiences</a>
-                                <div class="dropdown-divider border-black"></div>
-                                <a class="dropdown-item" href="#">Recently Added Experiences</a>
-                                <a class="dropdown-item" href="#">Experiences on Offer</a>
-                            </div>
-                        </li>
-
-                        <!-- Contact Us nav-item -->
-                        <li class="nav-item">
-                            <a id="contact" class="nav-link" href="#">Contact Us</a>
-                        </li>
-                </div>
-                <!-- Active nav page icon -->
-                <i id="activeIcon" class="fa-solid fa-whiskey-glass fa-sm pr-1"></i>
+                {% include 'includes/mobile-top-header.html' %}
+                {% include 'includes/main-nav.html' %}
             </nav>
         </div>
     </header>

@@ -49,6 +49,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Styled the main header and add the favicon and main images as well as added a bit of styling to the bits of content on the index template
 - Added in the basic setup for the footer to the base template
 - Then began adding in the sub-munu for the page site navigation using Bootstrap as a base starting point and manipulating it, as well as then adding in an icon to use as a display marker for which page is currently active by utilising jQuery
+- Created a main-nav and mobile-top-header page and placed in a directory called "includes". Idea came from CI's Boutique Ado walkthrough
 
 ### Future Developments
 
@@ -377,6 +378,77 @@ LOGIN_REDIRECT_URL = '/'
         }
     }
     
+}
+```
+
+- Idea for the mobile-top header
+
+```html
+{
+    <!-- Search element -->
+<li class="list-inline-item">
+    <a class="text-black nav-link d-block d-lg-none" href="#" id="mobile-search" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <div class="text-center">
+            <div><i class="fa-solid fa-magnifying-glass"></i></div>
+            <p class="my-0">Search</p>
+        </div>
+    </a>
+    <div class="dropdown-menu border-0 w-100 p-3 rounded-0 bg-black my-0" aria-labelledby="mobile-search">
+        <form class="form" method="GET" action="">
+            <div class="input-group w-100">
+                <input class="form-control border-black rounded-2" type="text" name="q"
+                    placeholder="Search for your Whiskey Experience">
+                <div class="input-group-append">
+                    <button class="form-control form-control btn btn-yellow border-black rounded-2" type="submit">
+                        <span class="icon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>
+
+<!-- User element -->
+<li class="list-inline-item dropdown">
+    <a class="text-black nav-link d-block d-lg-none" href="#" id="user-options" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <div class="text-center">
+            <div><i class="fa-solid fa-circle-user fa-lg text-black"></i></div>
+            <p class="my-0 text-black">Account</p>
+        </div>
+    </a>
+    <div class="dropdown-menu border-black bg-yellow" aria-labelledby="user-options">
+        {% if request.user.is_authenticated %}
+        {% if request.user.is_superuser %}
+        <a href="#" class="dropdown-item">Manage Experiences</a>
+        {% endif %}
+        <a href="#" class="dropdown-item">Profile</a>
+        <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+        {% else %}
+        <a href="{% url 'account_signup' %}" class="dropdown-item">Signup</a>
+        <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+        {% endif %}
+    </div>
+</li>
+<!-- Basket element -->
+<li class="list-inline-item">
+    <a class="nav-link d-block d-lg-none"
+        href="#">
+        <div class="text-center">
+            <div><i class="fa-solid fa-basket-shopping fa-lg text-black"></i></div>
+            <p class="my-0 text-black">
+                {% if grand_total %}
+                £{{ grand_total|floatformat:2 }}
+                {% else %}
+                £0.00
+                {% endif %}
+            </p>
+        </div>
+    </a>
+</li>
 }
 ```
 
