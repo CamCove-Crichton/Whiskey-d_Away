@@ -19,16 +19,32 @@ $(document).ready(function() {
             e.preventDefault();
 
             // Remove any icon from any previously active link
-            $(".active-link").removeClass(".active-link");
+            $(".active-link").removeClass("active-link");
 
             // Add the active class to the clicked link
-            $(this).addClass(".active-link");
+            $(this).addClass("active-link");
 
             // Move the icon to the clicked link
             $("#activeIcon").prependTo($(this));
         })
 
     };
+
+    /**
+     * A function to handle the change of colour to the font
+     * When the Whiskey Experiences nav is clicked the css font colour will
+     * change from yellow to black
+     */
+    // function fontColourChange() {
+    //     $("nav ul").on("click", "#experiences-link", function() {
+    //         let link = $(this);
+    //         if (link.hasClass("show")) {
+    //             link.css("color", "black");
+    //         } else {
+    //             link.css("color", "yellow");
+    //         }
+    //     });
+    // };
 
     handleActiveIcon();
 });

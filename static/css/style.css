@@ -122,4 +122,17 @@ h6 {
     .main-nav-bg-black>li:hover {
         color: black;
     }
+
+    #home,
+    #experiences,
+    #contact {
+        color: yellow;
+    }
+
+    #home:hover,
+    #experiences:hover,
+    #contact:hover {
+        color: black;
+        border: 1px solid black;
+    }
 }
