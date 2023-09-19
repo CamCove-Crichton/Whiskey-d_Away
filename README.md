@@ -50,6 +50,11 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added in the basic setup for the footer to the base template
 - Then began adding in the sub-munu for the page site navigation using Bootstrap as a base starting point and manipulating it, as well as then adding in an icon to use as a display marker for which page is currently active by utilising jQuery
 - Created a main-nav and mobile-top-header page and placed in a directory called "includes". Idea came from CI's Boutique Ado walkthrough
+- Worked on the styling for the main-nav and mobile-top-header, but requires some more thought with maybe using a js function to manipulate the font colour
+- Started the tours app to store data for the tour experiences available
+- Created the categories model and the tours model to be able to store the tours and have them have a category as the foreign key
+- Added in the tour experience offerings to the database through the admin panel with the help from ChatGPT for the content
+- Added some custom validations by adding a validators file to have the validation functions for my tour model separate from the model itself to keep it cleaner and more maintable
 
 ### Future Developments
 
@@ -63,6 +68,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 - Django 3.2
 - Django Allauth
+- Pillow
 
 ### Finished Site Screen Grabs
 
@@ -79,6 +85,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Home Page | The index.html template renders & displays correctly and is responsive | |
 | Main Page Header | The main page header displays correctly on every page and is responsive | |
 | Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
+| Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
 
 ### Resolved Bugs
 
@@ -92,7 +99,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 ### Unresolved Bugs
 
-*unresolved bugs goes here*
+- Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
 
 ## Credits
 
@@ -452,6 +459,31 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Category Model & Tours Model
+
+```python
+{
+    class Category(models.Model):
+    name = models.CharField(max_length=254)
+    friendly_name = models.CharField(max_length=254, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_friendly_name(self):
+        return self.friendly_name
+    
+
+    # Tours model foreign key
+    tour_category = models.ForeignKey(
+        Category, null=True, blank=True, on_delete=models.SET_NULL)
+    
+    # Tours model rating field
+    tour_rating = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True)
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -591,6 +623,35 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Tours model
+
+```python
+{
+    tour_description = models.TextField(
+        default="No description available",
+        verbose_name="Tour Experience Description",
+        validators=[MaxLengthValidator(
+            limit_value=500, message="Description is too long.")])
+}
+```
+
+- Custom validator
+
+```python
+{
+    # validators.py
+
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+def validate_country(value):
+    allowed_countries = ['England', 'Ireland', 'Scotland', 'Wales']
+    if value not in allowed_countries:
+        raise ValidationError(_('Invalid country. Please enter one of the following countries: England, Ireland, Scotland, Wales.'))
+
+}
+```
+
 ### Other Credits
 
 [Favicon.io](https://favicon.io/favicon-converter/) - Favicon converter for my favicon image
@@ -604,3 +665,7 @@ LOGIN_REDIRECT_URL = '/'
 [Isabella Mendes](https://www.instagram.com/imendesfoto_/) - Favicon images
 
 [Pixabay](https://pixabay.com/) - Background image for main pages
+
+[Prem Pal Singh Tanwar](https://www.instagram.com/prempalsinghtanwar/) - Default tour image
+
+[ChatGPT](https://chat.openai.com/) - Site & database creative content
