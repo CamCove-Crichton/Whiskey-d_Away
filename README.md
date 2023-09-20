@@ -53,7 +53,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Worked on the styling for the main-nav and mobile-top-header, but requires some more thought with maybe using a js function to manipulate the font colour
 - Started the tours app to store data for the tour experiences available
 - Created the categories model and the tours model to be able to store the tours and have them have a category as the foreign key
-- Added in the tour experience offerings to the database through the admin panel with the help from ChatGPT for the content
+- Added in the tour experience offerings to the database through the admin panel with the help from ChatGPT for the content & uploaded images for all the tour offerings
 - Added some custom validations by adding a validators file to have the validation functions for my tour model separate from the model itself to keep it cleaner and more maintable
 
 ### Future Developments
@@ -464,14 +464,16 @@ LOGIN_REDIRECT_URL = '/'
 ```python
 {
     class Category(models.Model):
-    name = models.CharField(max_length=254)
-    friendly_name = models.CharField(max_length=254, null=True, blank=True)
+        class Meta:
+        verbose_name_plural = 'Categories'
+        name = models.CharField(max_length=254)
+        friendly_name = models.CharField(max_length=254, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
+        def __str__(self):
+            return self.name
 
-    def get_friendly_name(self):
-        return self.friendly_name
+        def get_friendly_name(self):
+            return self.friendly_name
     
 
     # Tours model foreign key
@@ -664,8 +666,48 @@ def validate_country(value):
 
 [Isabella Mendes](https://www.instagram.com/imendesfoto_/) - Favicon images
 
-[Pixabay](https://pixabay.com/) - Background image for main pages
+[Pixabay](https://pixabay.com/) - Background image for main pages, Isle of Skye tour image
 
 [Prem Pal Singh Tanwar](https://www.instagram.com/prempalsinghtanwar/) - Default tour image
+
+[Miro Alt](http://www.mirophotography.wordpress.com/) - Cairngorms tour image
+
+[Arthur Brognoli](https://www.instagram.com/arthurbrognoli/) - Rums hidden whiskey treasure image
+
+[Wendy Wei](https://www.instagram.com/wendyhwei/) - Aberdeen whiskey tour image
+
+[Miquel Rosselló Calafell](https://miquelrossellocalafell.wordpress.com/) - Dundee's whiskey discovery image
+
+[Captain Teflon](https://www.pexels.com/@captain-teflon-400571953/) - Loch ness whiskey quest image
+
+[Thomas Ortega](https://www.pexels.com/@thomas-ortega-3007191/) - Edinburgh whiskey tour image
+
+[Kelly](https://www.instagram.com/kellymlacy/) - Belmullet whiskey experience image
+
+[Steven Hylands](https://shylands.com/) - Belfast tour image
+
+[Los Muertos Crew](https://crsrojas.com/) - Glengarriff whiskey tour image
+
+[Jay's Photography](https://www.facebook.com/Irishlens) - Wexford coastal tour image
+
+[Luciann Photography](https://www.instagram.com/luciann.photography/) - Dublin whiskey tour image
+
+[MARIANNE RIXHON](https://www.pexels.com/@marianne-rixhon-10955129/) - Ardboe whiskey tour image
+
+[Welshot Imaging](https://www.pexels.com/@welshot-imaging-540232167/) - Llandudno whiskey tour image
+
+[Marcelo Verfe](https://www.instagram.com/marcelo_verfe/) - Wrexham whiskey heritage tour image
+
+[Gustavo Fring](https://www.pexels.com/@gustavo-fring/) - Barmouth coastal whiskey retreat image
+
+[Artyom Malyukov](https://www.instagram.com/onlyphotoandnothingelse/) - Cardigan whiskey tour image
+
+[TruShotz](https://www.pexels.com/@trushotz-2012836/) - Peak district whiskey tour image
+
+[Graham Walker](https://www.instagram.com/dancing_ghost_acrylic_ice/) - Devon whiskey tour image
+
+[Leo Woessner](https://www.pexels.com/@leo-woessner-2278256/) - Yorkshire whiskey tour image
+
+[Jakub Janik](https://www.pexels.com/@jakub-janik-2919955/) - Lake district whiskey tour image
 
 [ChatGPT](https://chat.openai.com/) - Site & database creative content

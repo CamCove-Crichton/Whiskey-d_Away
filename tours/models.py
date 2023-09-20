@@ -9,6 +9,9 @@ from .validators import (
 
 # Assistance from CI - Boutique Ado walkthrough
 class Category(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Categories'
     name = models.CharField(max_length=100)
     friendly_name = models.CharField(max_length=100, null=True, blank=True)
 
@@ -21,6 +24,8 @@ class Category(models.Model):
 
 class Tours(models.Model):
     # Assistance from CI - Boutique Ado walkthrough
+    class Meta:
+        verbose_name_plural = 'Tours'
     tour_category = models.ForeignKey(
         Category, null=True, blank=True, on_delete=models.SET_NULL,
         related_name='tours')
