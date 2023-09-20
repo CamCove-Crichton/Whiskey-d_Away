@@ -55,6 +55,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created the categories model and the tours model to be able to store the tours and have them have a category as the foreign key
 - Added in the tour experience offerings to the database through the admin panel with the help from ChatGPT for the content & uploaded images for all the tour offerings
 - Added some custom validations by adding a validators file to have the validation functions for my tour model separate from the model itself to keep it cleaner and more maintable
+- Created a all_tours view to query the database for all the objects in the tours model and assign it to a variable, and added it to the context for the returned render
+- Added a urls.py file for the tours app, and wired it up to the main project urls
 
 ### Future Developments
 
@@ -86,6 +88,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Main Page Header | The main page header displays correctly on every page and is responsive | |
 | Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
 | Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
+| Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -483,6 +486,16 @@ LOGIN_REDIRECT_URL = '/'
     # Tours model rating field
     tour_rating = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True)
+}
+```
+
+- all_tours urls.py
+
+```python
+{
+    urlpatterns = [
+    path('', views.all_tours, name='tours'),
+    ]
 }
 ```
 

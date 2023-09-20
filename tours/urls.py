@@ -4,5 +4,5 @@ from . import views
 
 # Assistance from CI - Boutique Ado Walkthrough
 urlpatterns = [
-    path('', views.index, name='home'),
+    path('', views.all_tours, name='tours'),
 ]

@@ -9,6 +9,10 @@ from .validators import (
 
 # Assistance from CI - Boutique Ado walkthrough
 class Category(models.Model):
+    """
+    A model to store tours into categories should they be need to be
+    categorized
+    """
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -23,6 +27,10 @@ class Category(models.Model):
 
 
 class Tours(models.Model):
+    """
+    A model to capture and store all information pertaining to the tour
+    experiences on offer
+    """
     # Assistance from CI - Boutique Ado walkthrough
     class Meta:
         verbose_name_plural = 'Tours'
