@@ -105,6 +105,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 - Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
 - Issue with getting the cards to sisplay in the manner in which I require, so have put a hold on it and will return to it at a later stage
+- Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
 
 ## Credits
 

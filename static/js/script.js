@@ -15,7 +15,7 @@ $(document).ready(function() {
 
         // Event delegation to handle click events on <a> elements in nav
         $("nav ul").on("click", "li a", function(e) {
-            // Prevent default link behaviour
+            // Prevent default link behaviour immediately
             e.preventDefault();
 
             // Remove any icon from any previously active link
@@ -26,6 +26,12 @@ $(document).ready(function() {
 
             // Move the icon to the clicked link
             $("#activeIcon").prependTo($(this));
+
+            // Allow a delay on the default behaviour
+            setTimeout(function() {
+                // Navigate to the link after 100ms delay
+                window.location.href = e.target.href;
+            }, 100);
         })
 
     };
