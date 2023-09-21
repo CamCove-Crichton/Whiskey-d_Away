@@ -57,6 +57,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added some custom validations by adding a validators file to have the validation functions for my tour model separate from the model itself to keep it cleaner and more maintable
 - Created a all_tours view to query the database for all the objects in the tours model and assign it to a variable, and added it to the context for the returned render
 - Added a urls.py file for the tours app, and wired it up to the main project urls
+- Then went and created a template to render the content to, and used templating tags to loop through the items in the tours template variable, while utilising bootstrap to display it all nice and neatly in the template and added some custome css classes to add to the cards, which will still need work later on
 
 ### Future Developments
 
@@ -103,6 +104,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 ### Unresolved Bugs
 
 - Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
+- Issue with getting the cards to sisplay in the manner in which I require, so have put a hold on it and will return to it at a later stage
 
 ## Credits
 
@@ -585,6 +587,20 @@ LOGIN_REDIRECT_URL = '/'
     </form>
   </div>
 </nav>
+}
+```
+
+- Card display for tours.html template
+
+```html
+{
+    <div class="card mb-3 bg-yellow" style="width: 24rem;">
+        <img src="{{ tour.tour_image.url }}" class="card-img-top" alt="{{ tour.tour_image.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ tour.tour_name }}</h5>
+            <p class="card-text">{{ tour.tour_description }}</p>
+        </div>
+    </div>
 }
 ```
 
