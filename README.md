@@ -58,6 +58,9 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a all_tours view to query the database for all the objects in the tours model and assign it to a variable, and added it to the context for the returned render
 - Added a urls.py file for the tours app, and wired it up to the main project urls
 - Then went and created a template to render the content to, and used templating tags to loop through the items in the tours template variable, while utilising bootstrap to display it all nice and neatly in the template and added some custome css classes to add to the cards, which will still need work later on
+- Added a tour_detail view that returns all the detailed information regarding the tour experience, by using the get_object_or_404 method and getting the selected object by its id
+- Created a url for the view to be able to render the view and return it to a template
+- Then added the template for the url to return the content to, and added the basic layout for thetemplate, and will return to it for more additions and customisation
 
 ### Future Developments
 
@@ -90,6 +93,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
 | Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
 | Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
+| Tour detail template | Thetour_detail template works and looks as expected and is responsive | |
 
 ### Resolved Bugs
 

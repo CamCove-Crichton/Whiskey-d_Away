@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% load static %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block page_header %}
+<div class="container header-container">
+  <div class="row">
+    <div class="col"></div>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h3 class="text-yellow">{{ tour.tour_name }}</h3>
+    </div>
+    <div class="card mb-3 bg-yellow">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img src="{{ tour.tour_image.url }}" alt="{{ tour.tour_image.name }}" />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <!-- Tour description -->
+            <p class="card-text">
+              <strong>Description:</strong></p>
+            <p class="card-text">{{ tour.tour_description }}</p>
+
+            <!-- Tour price per person & tour rating -->
+            <p class="card-text">
+              <strong>Price per person:</strong> £{{ tour.tour_price }}
+              <span class="text-right"
+                ><strong>Rating:</strong> {{ tour.tour_rating }}</span
+              >
+            </p>
+
+            <!-- Tour Category -->
+            {% if tour.category %}
+                <p class="card-text"><strong>Category:</strong></p>
+                <p class="card-text">{{ tour.tour_category }}</p>
+            {% endif %}
+
+            <!-- Tour Address -->
+            <p class="card-text"><strong>Address:</strong></p>
+            <p class="card-text">{{ tour.street_address1 }}</p>
+            {% if tour.street_address2 %}
+                <p class="card-text">{{ tour.street_address2 }}</p>
+            {% endif %}
+            {% if tour.town_or_city %}
+                <p class="card-text">{{ tour.town_or_city }}</p>
+            {% endif %}
+            {% if tour.county %}
+                <p class="card-text">{{ tour.county }}</p>
+            {% endif %}
+            <p class="card-text">{{ tour.post_code }}</p>
+            <p class="card-text">{{ tour.country }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
