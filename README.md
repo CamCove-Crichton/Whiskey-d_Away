@@ -68,6 +68,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Multiple images for each tour experience in the tour detail template
 - Ability to click on the image in the tour detail template and for it to open up in a modal, with left and right arrows on either side to click through the images for the tour experience
 - Add higher quality images to the site for larger viewings of images
+- Add a background hover border to tour experiences to make it more prominent to the user when hovering over an tour, that it is clickable
 
 ### Wireframes & Database Designs
 

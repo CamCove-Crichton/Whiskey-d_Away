@@ -1,4 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+# Assistance from CI - Boutique Ado walkthrough
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.contrib import messages
+from django.db.models import Q
 from .models import Tours
 from django.http import Http404
 
@@ -10,9 +13,25 @@ def all_tours(request):
     including search queries
     """
     tours = Tours.objects.all()
+    query = None
+
+    if request.GET:
+        if 'q' in request.GET:
+            query = request.GET['q']
+            if not query:
+                messages.error(request, "No search criteria was entered!")
+                return redirect(reverse('tours'))
+
+            queries = Q(tour_name__icontains=query) | Q(
+                    tour_description__icontains=query) | Q(
+                        county__icontains=query) | Q(
+                            post_code__icontains=query) | Q(
+                            country__icontains=query)
+            tours = tours.filter(queries)
 
     context = {
-        'tours': tours
+        'tours': tours,
+        'search_term': query
     }
 
     template = 'tours/tours.html'
