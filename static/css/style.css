@@ -99,6 +99,12 @@ h6 {
     object-fit: cover;
 }
 
+/* .container-image img {
+    width: 380px;
+    height: 100%;
+    object-fit: contain;
+} */
+
 /* ----------------------------- Effects */
 
 .text-decoration-none {
