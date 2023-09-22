@@ -65,7 +65,9 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 ### Future Developments
 
-*future developments goes here*
+- Multiple images for each tour experience in the tour detail template
+- Ability to click on the image in the tour detail template and for it to open up in a modal, with left and right arrows on either side to click through the images for the tour experience
+- Add higher quality images to the site for larger viewings of images
 
 ### Wireframes & Database Designs
 
@@ -395,6 +397,17 @@ LOGIN_REDIRECT_URL = '/'
             padding-top: 164px;
         }
     }
+
+    /* pad the top a bit when navbar is collapsed on mobile */
+    @media (max-width: 991px) {
+    .header-container {
+        padding-top: 120px;
+    }
+
+    body {
+        height: calc(100vh - 120px);
+    }
+}
     
 }
 ```

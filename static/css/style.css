@@ -135,6 +135,18 @@ h6 {
     }
 }
 
+/* From CI - Boutique Ado walkthrough */
+/* pad the top a bit when navbar is collapsed on mobile */
+@media (max-width: 991px) {
+    .header-container {
+        padding-top: 120px;
+    }
+
+    body {
+        height: calc(100vh - 120px);
+    }
+}
+
 /* main-nav for screens 992px and down */
 @media (max-width: 991px) {
     .main-nav-bg-black {
