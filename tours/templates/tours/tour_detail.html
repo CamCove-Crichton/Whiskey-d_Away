@@ -46,7 +46,8 @@
             <p class="card-text"><strong>Categories:</strong> 
                 <!-- Assistance from ChatGPT -->
                 {% for category in tour.tour_category.all %}
-                    {{ category.friendly_name }}
+                    <!-- Idea from CI - Boutique Ado walkthrough -->
+                    <a class="text-decoration-none text-black" href="{% url 'tours' %}?category={{ category.name }}">{{ category.friendly_name }}</a>
                     {% if not forloop.last%}, {% endif %}
                 {% endfor %}
             </p>
@@ -67,6 +68,8 @@
               {{ tour.post_code }},<br>
               {{ tour.country }}
             </p>
+
+            <!-- Book now & Add to Basket buttons -->
             <a href="#" class="btn bg-black text-yellow">Book Now</a>
             <a href="#" class="btn bg-black text-yellow">Add to basket</a>
           </div>

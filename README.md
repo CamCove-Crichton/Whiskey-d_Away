@@ -64,6 +64,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added a bit more styling to the tour_detail template and a couple anchor tags that look like buttons to either pay for a tour or to add a tour to the basket
 - Updated the tours model so I could have my tour_catergory field as a many to many field, so I could have more that one category per tour to be able to enable me to have tours assigned to country categories, to easily assign the filter by country for the tour experiences
 - Then added in a sort by price and rating elements in the template as well as add the functionality for them in the view for a better user experience to be able to quickly sort the tour experiences by price from cheapest to most expensive, or by rating from highest to lowest
+- Added an anchor element tag to the categories displayed in the tour_detail template, so users can easily link back to specific categories if required
+- For a better UI and UX, I added in a badge-pill from bootstrap to display the current selected category, and then added an anchor tag to the page heading, for the user to easily navigate back to all the whiskey experiences, instead of having to go back into the dropdown menu, and give it a bit of a background for a better contrast
 
 ### Future Developments
 
@@ -71,7 +73,6 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Ability to click on the image in the tour detail template and for it to open up in a modal, with left and right arrows on either side to click through the images for the tour experience
 - Add higher quality images to the site for larger viewings of images
 - Add a background hover border to tour experiences to make it more prominent to the user when hovering over an tour, that it is clickable
-- Add a background to the "Whiskey Experience" heading, and change it to an anchor tag for an easy return to all experiences for a better user experience
 - Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
 
 ### Wireframes & Database Designs
@@ -102,6 +103,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
 | Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
 | Tour detail template | The tour_detail template works and looks as expected with all the correct content displaying and is responsive | |
+| Category links | The category url links work correctly as expected within the tour_detail template view | |
 | Search functionality | The search input box returns searches as expected | |
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 
@@ -570,6 +572,25 @@ LOGIN_REDIRECT_URL = '/'
                             post_code__icontains=query) | Q(
                             country__icontains=query)
             tours = tours.filter(queries)
+}
+```
+
+- Idea for adding a link to the categories in the tour_detail template
+
+```html
+{
+    <a class="text-decoration-none text-black" href="{% url 'tours' %}?category={{ category.name }}">{{ category.friendly_name }}</a>
+}
+```
+
+- Iterating through the current_categories variable to display selected category
+
+```html
+{
+    {% for c in current_categories %}
+        <!-- Bootstrap badge to dissplay selected category -->
+        <span class="badge badge-pill text-black bg-yellow">{{ c.friendly_name }}</span>
+    {% endfor %}
 }
 ```
 

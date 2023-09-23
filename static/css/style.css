@@ -66,6 +66,14 @@ h6 {
     border-color: rgba(0, 0, 0, 1);
 }
 
+.heading-background-black {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 5px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 /* ----------------------------- Icons */
 /* Assistance from CI - Boutique Ado walkthrough */
 
