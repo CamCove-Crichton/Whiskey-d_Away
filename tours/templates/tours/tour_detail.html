@@ -42,9 +42,14 @@
             {% endif %}
 
             <!-- Tour Category -->
-            {% if tour.category %}
-            <p class="card-text"><strong>Category:</strong></p>
-            <p class="card-text">{{ tour.tour_category }}</p>
+            {% if tour.tour_category %}
+            <p class="card-text"><strong>Categories:</strong> 
+                <!-- Assistance from ChatGPT -->
+                {% for category in tour.tour_category.all %}
+                    {{ category.friendly_name }}
+                    {% if not forloop.last%}, {% endif %}
+                {% endfor %}
+            </p>
             {% endif %}
 
             <!-- Tour Address -->

@@ -101,13 +101,13 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
 | Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
 | Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
-| Tour detail template | The tour_detail template works and looks as expected and is responsive | |
+| Tour detail template | The tour_detail template works and looks as expected with all the correct content displaying and is responsive | |
 | Search functionality | The search input box returns searches as expected | |
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 
 ### Resolved Bugs
 
-*resolved bugs goes here*
+- After updating my tours model, I found the category was not displaying in my tour_detail template, and realsised it was because it now was a many to many field, which meant it has the potential for more than one value, and so had to loop through the tour.tour_category field to display each category the tour has been assigned to
 
 ### Validator Testing
 
@@ -768,6 +768,17 @@ def validate_country(value):
             [category.name for category in obj.tour_category.all()])
 
     display_categories.short_description = 'Categories'
+}
+```
+
+- Displaying the list of categories in the tour details template
+
+```html
+{
+    {% for category in tour.tour_category.all %}
+        {{ category.friendly_name }}
+        {% if not forloop.last%}, {% endif %}
+    {% endfor %}
 }
 ```
 
