@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
-from .models import Tours
+from .models import Tours, Category
 from django.http import Http404
 
 
@@ -14,8 +14,15 @@ def all_tours(request):
     """
     tours = Tours.objects.all()
     query = None
+    category = None
+    categories = []
 
     if request.GET:
+        if 'category' in request.GET:
+            categories = request.GET['category'].split(',')
+            tours = tours.filter(tour_category__name__in=categories)
+            categories = Category.objects.filter(name__in=categories)
+
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
@@ -31,7 +38,8 @@ def all_tours(request):
 
     context = {
         'tours': tours,
-        'search_term': query
+        'search_term': query,
+        'current_categories': categories,
     }
 
     template = 'tours/tours.html'

@@ -62,6 +62,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a url for the view to be able to render the view and return it to a template
 - Then added the template for the url to return the content to, and added the basic layout for the template, and will return to it for more additions and customisation
 - Added a bit more styling to the tour_detail template and a couple anchor tags that look like buttons to either pay for a tour or to add a tour to the basket
+- Updated the tours model so I could have my tour_catergory field as a many to many field, so I could have more that one category per tour to be able to enable me to have tours assigned to country categories, to easily assign the filter by country for the tour experiences
 
 ### Future Developments
 
@@ -98,6 +99,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
 | Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
 | Tour detail template | The tour_detail template works and looks as expected and is responsive | |
+| Search functionality | The search input box returns searches as expected | |
+| Category Filter | The category filter buttons all return tour experiences as expected | |
 
 ### Resolved Bugs
 
@@ -521,6 +524,39 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Category Filters
+
+```html
+{
+    href="{% url 'tours' %}?category=recently_added"
+}
+```
+
+- Category and Query search
+
+```python
+{
+    if request.GET:
+        if 'category' in request.GET:
+            categories = request.GET['category'].split(',')
+            tours = tours.filter(tour_category__name__in=categories)
+            categories = Category.objects.filter(name__in=categories)
+
+        if 'q' in request.GET:
+            query = request.GET['q']
+            if not query:
+                messages.error(request, "No search criteria was entered!")
+                return redirect(reverse('tours'))
+
+            queries = Q(tour_name__icontains=query) | Q(
+                    tour_description__icontains=query) | Q(
+                        county__icontains=query) | Q(
+                            post_code__icontains=query) | Q(
+                            country__icontains=query)
+            tours = tours.filter(queries)
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -700,6 +736,22 @@ def validate_country(value):
     if value not in allowed_countries:
         raise ValidationError(_('Invalid country. Please enter one of the following countries: England, Ireland, Scotland, Wales.'))
 
+}
+```
+
+- Displaying the categories in my admin view
+
+```python
+{
+    def display_categories(self, obj):
+        """
+        A method to retrieve all the related categories, and join them
+        using a comma separated string
+        """
+        return ", ".join(
+            [category.name for category in obj.tour_category.all()])
+
+    display_categories.short_description = 'Categories'
 }
 ```
 

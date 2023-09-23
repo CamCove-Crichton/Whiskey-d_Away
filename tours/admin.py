@@ -8,12 +8,22 @@ class ToursAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'tour_name',
-        'tour_category',
+        'display_categories',
         'tour_price',
         'tour_rating',
         'country',
         'tour_image',
     )
+
+    def display_categories(self, obj):
+        """
+        A method to retrieve all the related categories, and join them
+        using a comma separated string
+        """
+        return ", ".join(
+            [category.name for category in obj.tour_category.all()])
+
+    display_categories.short_description = 'Categories'
 
     ordering = ('id',)
 
@@ -24,6 +34,7 @@ class CategoryAdmin(admin.ModelAdmin):
         'friendly_name',
         'name',
     )
+
 
 # Assistance from CI - Boutique Ado walkthrough
 admin.site.register(Tours, ToursAdmin)

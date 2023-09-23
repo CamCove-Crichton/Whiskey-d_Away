@@ -34,9 +34,8 @@ class Tours(models.Model):
     # Assistance from CI - Boutique Ado walkthrough
     class Meta:
         verbose_name_plural = 'Tours'
-    tour_category = models.ForeignKey(
-        Category, null=True, blank=True, on_delete=models.SET_NULL,
-        related_name='tours')
+    tour_category = models.ManyToManyField(
+        Category, blank=True, related_name='tours')
     tour_name = models.CharField(max_length=100)
     # Assistance from ChatGPT
     tour_description = models.TextField(
