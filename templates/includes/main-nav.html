@@ -21,6 +21,8 @@
                 <div class="dropdown-divider border-black"></div>
                 <a class="dropdown-item" href="{% url 'tours' %}?category=recently_added">Recently Added Experiences</a>
                 <a class="dropdown-item" href="{% url 'tours' %}?category=on_offer">Experiences on Offer</a>
+                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_price&direction=asc">Experiences by Price</a>
+                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_rating&direction=desc">Experiences by Rating</a>
             </div>
         </li>
 

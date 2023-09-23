@@ -63,6 +63,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then added the template for the url to return the content to, and added the basic layout for the template, and will return to it for more additions and customisation
 - Added a bit more styling to the tour_detail template and a couple anchor tags that look like buttons to either pay for a tour or to add a tour to the basket
 - Updated the tours model so I could have my tour_catergory field as a many to many field, so I could have more that one category per tour to be able to enable me to have tours assigned to country categories, to easily assign the filter by country for the tour experiences
+- Then added in a sort by price and rating elements in the template as well as add the functionality for them in the view for a better user experience to be able to quickly sort the tour experiences by price from cheapest to most expensive, or by rating from highest to lowest
 
 ### Future Developments
 
@@ -70,6 +71,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Ability to click on the image in the tour detail template and for it to open up in a modal, with left and right arrows on either side to click through the images for the tour experience
 - Add higher quality images to the site for larger viewings of images
 - Add a background hover border to tour experiences to make it more prominent to the user when hovering over an tour, that it is clickable
+- Add a background to the "Whiskey Experience" heading, and change it to an anchor tag for an easy return to all experiences for a better user experience
+- Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
 
 ### Wireframes & Database Designs
 
@@ -100,7 +103,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
 | Tour detail template | The tour_detail template works and looks as expected and is responsive | |
 | Search functionality | The search input box returns searches as expected | |
-| Category Filter | The category filter buttons all return tour experiences as expected | |
+| Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 
 ### Resolved Bugs
 
@@ -532,11 +535,24 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
-- Category and Query search
+- Category, Sort and Query search
 
 ```python
 {
     if request.GET:
+        if 'sort' in request.GET:
+            sortkey = request.GET['sort']
+            sort = sortkey
+            if sortkey == 'name':
+                sortkey = 'lower_name'
+                tours = tours.annotate(lower_name=Lower('name'))
+
+            if 'direction' in request.GET:
+                direction = request.GET['direction']
+                if direction == 'desc':
+                    sortkey = f'-{sortkey}'
+            tours = tours.order_by(sortkey)
+        
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             tours = tours.filter(tour_category__name__in=categories)

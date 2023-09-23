@@ -29,6 +29,14 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ tour.tour_name }}</h5>
                         <p class="card-text">{{ tour.tour_description }}</p>
+                        <div class="container">
+                            <span class="card-text">
+                                <small>£{{ tour.tour_price }}pp</small>
+                            </span>
+                            <span class="card-text">
+                                <small>{{ tour.tour_rating|floatformat:0 }}<i class="fa-sharp fa-solid fa-star"></i></small>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </a>

@@ -10,14 +10,28 @@ from django.http import Http404
 def all_tours(request):
     """
     A view to render all the tour experiences the company has to offer
-    including search queries
+    including category, sort and search queries
     """
     tours = Tours.objects.all()
     query = None
-    category = None
-    categories = []
+    categories = None
+    sort = None
+    direction = None
 
     if request.GET:
+        if 'sort' in request.GET:
+            sortkey = request.GET['sort']
+            sort = sortkey
+            if sortkey == 'name':
+                sortkey = 'lower_name'
+                tours = tours.annotate(lower_name=Lower('name'))
+
+            if 'direction' in request.GET:
+                direction = request.GET['direction']
+                if direction == 'desc':
+                    sortkey = f'-{sortkey}'
+            tours = tours.order_by(sortkey)
+
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             tours = tours.filter(tour_category__name__in=categories)
@@ -36,10 +50,13 @@ def all_tours(request):
                             country__icontains=query)
             tours = tours.filter(queries)
 
+    current_sorting = f'{sort}_{direction}'
+
     context = {
         'tours': tours,
         'search_term': query,
         'current_categories': categories,
+        'current_sorting': current_sorting,
     }
 
     template = 'tours/tours.html'
