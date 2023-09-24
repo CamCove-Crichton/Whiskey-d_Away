@@ -66,6 +66,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then added in a sort by price and rating elements in the template as well as add the functionality for them in the view for a better user experience to be able to quickly sort the tour experiences by price from cheapest to most expensive, or by rating from highest to lowest
 - Added an anchor element tag to the categories displayed in the tour_detail template, so users can easily link back to specific categories if required
 - For a better UI and UX, I added in a badge-pill from bootstrap to display the current selected category, and then added an anchor tag to the page heading, for the user to easily navigate back to all the whiskey experiences, instead of having to go back into the dropdown menu, and give it a bit of a background for a better contrast
+- Decided to also add in the sort by selector on the tour experience template to allow users to have more flexibility to sort the experiences by price, rating and alphabetical order, as well as when on the tour experiences template, it shows the total number of results for experiences found, and works with the filters
 
 ### Future Developments
 
@@ -106,6 +107,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Category links | The category url links work correctly as expected within the tour_detail template view | |
 | Search functionality | The search input box returns searches as expected | |
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
+| Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
 
 ### Resolved Bugs
 
@@ -120,8 +122,10 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 ### Unresolved Bugs
 
 - Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
-- Issue with getting the cards to sisplay in the manner in which I require, so have put a hold on it and will return to it at a later stage
+- Issue with getting the cards to display in the manner in which I require, so have put a hold on it and will return to it at a later stage
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
+- Spacing issues with the cards as you go between small to larger displays, needs to be looked at
+- Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
 
 ## Credits
 
@@ -591,6 +595,36 @@ LOGIN_REDIRECT_URL = '/'
         <!-- Bootstrap badge to dissplay selected category -->
         <span class="badge badge-pill text-black bg-yellow">{{ c.friendly_name }}</span>
     {% endfor %}
+}
+```
+
+- Sort by selector
+
+```html
+{
+    <div class="row mt-3">
+        <div class="col-12 col-md-6 my-auto order-md-last d-flex justify-content-center justify-content-md-end">
+            <div class="sort-select-wrapper w-50">
+                <select id="sort-selector" class="custom-select custom-select-sm rounded-2 border border-{% if current_sorting != 'None_None' %}warning{% else %}black{% endif %}">
+                    <option value="reset" {% if current_sorting == 'None_None' %}selected{% endif %}>Sort by...</option>
+                    <option value="tour_price_asc" {% if current_sorting == 'tour_price_asc' %}selected{% endif %}>Price (low to high)</option>
+                    <option value="tour_price_desc" {% if current_sorting == 'tour_price_desc' %}selected{% endif %}>Price (high to low)</option>
+                    <option value="tour_rating_asc" {% if current_sorting == 'tour_rating_asc' %}selected{% endif %}>Rating (low to high)</option>
+                    <option value="tour_rating_desc" {% if current_sorting == 'tour_rating_desc' %}selected{% endif %}>Rating (high to low)</option>
+                    <option value="name_asc" {% if current_sorting == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
+                    <option value="name_desc" {% if current_sorting == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 order-md-first">
+            <p class="mt-3 text-center text-md-left text-yellow">
+                {% if search_term or current_categories or current_sorting != 'None_None' %}
+                    <span class="small"><a class="text-yellow" href="{% url 'tours' %}">All Experiences</a> | </span>
+                {% endif %}
+                {{ tours|length }} Experiences{% if search_term %} found for <strong>"{{ search_term }}"</strong>{% endif %}
+            </p>
+        </div>
+    </div>
 }
 ```
 
