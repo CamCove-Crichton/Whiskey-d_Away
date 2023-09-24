@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
+from django.db.models.functions import Lower
 from .models import Tours, Category
 from django.http import Http404
 
@@ -24,7 +25,7 @@ def all_tours(request):
             sort = sortkey
             if sortkey == 'name':
                 sortkey = 'lower_name'
-                tours = tours.annotate(lower_name=Lower('name'))
+                tours = tours.annotate(lower_name=Lower('tour_name'))
             if sortkey == 'category':
                 sortkey = 'category__name'
 

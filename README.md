@@ -67,6 +67,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added an anchor element tag to the categories displayed in the tour_detail template, so users can easily link back to specific categories if required
 - For a better UI and UX, I added in a badge-pill from bootstrap to display the current selected category, and then added an anchor tag to the page heading, for the user to easily navigate back to all the whiskey experiences, instead of having to go back into the dropdown menu, and give it a bit of a background for a better contrast
 - Decided to also add in the sort by selector on the tour experience template to allow users to have more flexibility to sort the experiences by price, rating and alphabetical order, as well as when on the tour experiences template, it shows the total number of results for experiences found, and works with the filters
+- Using some javascript to handle the selectors for the drop down enables the user to click the option they want to sort by
 
 ### Future Developments
 
@@ -112,6 +113,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 ### Resolved Bugs
 
 - After updating my tours model, I found the category was not displaying in my tour_detail template, and realsised it was because it now was a many to many field, which meant it has the potential for more than one value, and so had to loop through the tour.tour_category field to display each category the tour has been assigned to
+- Had an issue with trying to get the sort selector working with the javascript, but it kept throwing an error, and I realised that because I was splitting the name where there was an underscore, it was actually splitting the name for the field name from the model so it could not recognise it, so after splitting the anems, I joined the filed name part into the variable for sort, and it fixed the issue
 
 ### Validator Testing
 
@@ -625,6 +627,41 @@ LOGIN_REDIRECT_URL = '/'
             </p>
         </div>
     </div>
+}
+```
+
+- JavaScript for sort selector
+
+```javascript
+{
+    {% block postloadjs %}
+{{ block.super }}
+<script type="text/javascript">
+    $("#sort-selector").change(function () {
+            let selector = $(this);
+            let currentUrl = new URL(window.location);
+
+            let selectedVal = selector.val();
+            if (selectedVal !== "reset") {
+                let sort1 = selectedVal.split("_")[0];
+                let sort2 = selectedVal.split("_")[1];
+                let sort = [sort1, sort2].join("_");
+                let direction = selectedVal.split("_")[2];
+
+                currentUrl.searchParams.set("sort", sort);
+                currentUrl.searchParams.set("direction", direction);
+
+                window.location.replace(currentUrl);
+            } else {
+                currentUrl.searchParams.delete("sort");
+                currentUrl.searchParams.delete("direction");
+
+                window.location.replace(currentUrl);
+            }
+        });
+</script>
+
+{% endblock %}
 }
 ```
 

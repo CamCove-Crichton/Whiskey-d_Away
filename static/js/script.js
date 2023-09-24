@@ -34,7 +34,7 @@ $(document).ready(function() {
             }, 100);
         })
 
-    };
+    };  
 
     /**
      * A function to handle the change of colour to the font
