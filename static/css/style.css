@@ -113,6 +113,25 @@ h6 {
     text-decoration: none;
 }
 
+/* Assistance from ChatGPT */
+.btn-back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+}
+
+/* Assistance from ChatGPT */
+.btn-clear-default {
+    border: none;
+    border-radius: 50%;
+    background: black;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
 /* ----------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

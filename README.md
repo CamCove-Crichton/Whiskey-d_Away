@@ -68,6 +68,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - For a better UI and UX, I added in a badge-pill from bootstrap to display the current selected category, and then added an anchor tag to the page heading, for the user to easily navigate back to all the whiskey experiences, instead of having to go back into the dropdown menu, and give it a bit of a background for a better contrast
 - Decided to also add in the sort by selector on the tour experience template to allow users to have more flexibility to sort the experiences by price, rating and alphabetical order, as well as when on the tour experiences template, it shows the total number of results for experiences found, and works with the filters
 - Using some javascript to handle the selectors for the drop down enables the user to click the option they want to sort by
+- Created a button to display when the user scrolls down the page, to make it easy for the user to get back to the top of the page when required
 
 ### Future Developments
 
@@ -109,6 +110,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Search functionality | The search input box returns searches as expected | |
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
+| Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
 
 ### Resolved Bugs
 
@@ -871,6 +873,51 @@ def validate_country(value):
         {{ category.friendly_name }}
         {% if not forloop.last%}, {% endif %}
     {% endfor %}
+}
+```
+
+- BAck top top button Javascript and CSS
+
+```css
+{
+    .btn-back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    }
+
+
+    .btn-clear-default {
+        border: none;
+        border-radius: 50%;
+        background: black;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+}
+```
+
+```javascript
+{
+    function scrollToTop() {
+        $(window).scroll(function () {
+            // Show or hide the button based on the scroll position
+            if ($(this).scrollTop() > 100) {
+                $("#backToTop").fadeIn();
+            } else {
+                $("#backToTop").fadeOut();
+            }
+        });
+
+        // Scroll to the top when the button is clicked
+        $("#backToTop").click(function () {
+            $("html, body").animate({ scrollTop: 0 }, 'slow');
+            return false;
+        });
+    }
 }
 ```
 
