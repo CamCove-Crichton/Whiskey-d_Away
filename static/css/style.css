@@ -132,6 +132,15 @@ h6 {
     cursor: pointer;
 }
 
+.discount-banner {
+    display: none;
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    z-index: 99;
+    cursor: none;
+}
+
 /* ----------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

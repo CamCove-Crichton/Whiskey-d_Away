@@ -70,6 +70,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Using some javascript to handle the selectors for the drop down enables the user to click the option they want to sort by
 - Created a button to display when the user scrolls down the page, to make it easy for the user to get back to the top of the page when required
 - Began working on the basket app, to allow users to add tour experiences to their basket by creating the app, including it in my installed apps in the main project settings.py file, then creating a view, template and url and adding the url to the main project level urls file
+- Add in a fade in banner to display a message to the user that if they spend £200 or more they will receive a 10% discount
+- Then started working on a context.py file for the contexts processor to all the contents of the basket to be abailable across all apps, but adding it to the template context processors in the project level settings.py file
 
 ### Future Developments
 
@@ -113,6 +115,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
 | Basket tempate | The basket template renders and displays as expected and is responsive | |
+| Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 
 ### Resolved Bugs
 
@@ -710,6 +713,50 @@ LOGIN_REDIRECT_URL = '/'
         <p class="text-center text-yellow">Your basket is currently empty</p>
         <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">Back to Whiskey Experiences</a>
     {% endif %}
+}
+```
+
+- Conetext processor setup
+
+```python
+{
+    'basket.contexts.basket_contents',
+
+    DISCOUNT_SPEND_THRESHOLD = 200
+    STANDARD_DISCOUNT_PERCENTAGE = 10
+}
+```
+
+```python
+{
+    def basket_contents(request):
+    """
+    A function to return a dictionary of basket items
+    """
+    basket_items = []
+    total = 0
+    experience_count = 0
+
+    if total >= settings.DISCOUNT_SPEND_THRESHOLD:
+        discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)
+        discount_delta = settings.DISCOUNT_SPEND_THRESHOLD - total
+    else:
+        discount = 0
+        discount_delta = 0
+
+    grand_total = total - discount
+
+    context = {
+        'basket_items': basket_items,
+        'total': total,
+        'experience_count': experience_count,
+        'discount': discount,
+        'discount_delta': discount_delta,
+        'discount_delivery_threshold': settings.DISCOUNT_SPEND_THRESHOLD,
+        'grand_total': grand_total,
+    }
+
+    return context
 }
 ```
 

@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     handleActiveIcon();
     scrollToTop();
+    delayFadeIn("discountBanner", 1500);
 });
 
 // Assistance from ChatGPT
@@ -61,6 +62,13 @@ function handleActiveIcon() {
     });
 
 };
+
+/**
+ * A function for to fade in an item after a period of time
+ */
+function delayFadeIn(elementId, delayTime) {
+    $('#' + elementId).delay(delayTime).fadeIn();
+}
 
 /**
      * A function to handle the change of colour to the font
