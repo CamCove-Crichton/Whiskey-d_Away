@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+    <div class="container">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-yellow heading-background-black">Basket</h3>
+            </div>
+        </div>
+
+        <!-- Basket Items -->
+        <div class="row">
+            <div class="col-12">
+                {% if basket_items %}
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center text-yellow">Your basket is currently empty</p>
+                    <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">Back to Whiskey Experiences</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -69,6 +69,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Decided to also add in the sort by selector on the tour experience template to allow users to have more flexibility to sort the experiences by price, rating and alphabetical order, as well as when on the tour experiences template, it shows the total number of results for experiences found, and works with the filters
 - Using some javascript to handle the selectors for the drop down enables the user to click the option they want to sort by
 - Created a button to display when the user scrolls down the page, to make it easy for the user to get back to the top of the page when required
+- Began working on the basket app, to allow users to add tour experiences to their basket by creating the app, including it in my installed apps in the main project settings.py file, then creating a view, template and url and adding the url to the main project level urls file
 
 ### Future Developments
 
@@ -111,6 +112,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
+| Basket tempate | The basket template renders and displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -130,6 +132,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
+- Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
 
 ## Credits
 
@@ -664,6 +667,49 @@ LOGIN_REDIRECT_URL = '/'
 </script>
 
 {% endblock %}
+}
+```
+
+- Idea for determining it the basket has items in or not
+
+```html
+{
+    {% if basket_items %}
+        <!-- Table from Bootstrap -->
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center text-yellow">Your basket is currently empty</p>
+        <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">Back to Whiskey Experiences</a>
+    {% endif %}
 }
 ```
 
