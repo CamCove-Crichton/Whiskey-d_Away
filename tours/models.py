@@ -61,6 +61,9 @@ class Tours(models.Model):
     max_attendees = models.PositiveIntegerField(default=4, choices=[
         (2, '2'), (4, '4'), (6, '6'), (8, '8'),],
         help_text="Maximum number of attendees per group")
+    max_capacity = models.PositiveIntegerField(
+        default=12, choices=[(8, '8'), (12, '12'), (16, '16'), (20, '20'),],
+        help_text="Maximum capacity per experience")
 
     def __str__(self):
         return self.tour_name

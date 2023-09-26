@@ -72,7 +72,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Began working on the basket app, to allow users to add tour experiences to their basket by creating the app, including it in my installed apps in the main project settings.py file, then creating a view, template and url and adding the url to the main project level urls file
 - Add in a fade in banner to display a message to the user that if they spend £200 or more they will receive a 10% discount
 - Then started working on a context.py file for the contexts processor to all the contents of the basket to be abailable across all apps, but adding it to the template context processors in the project level settings.py file
-- Added a maximum number of attendees field to my tours model to allow for a better UX, so each tour can have a max number of people per group, and the max number is displayed below the input, and the input max attribute will change to fit the max number allowed per group
+- Added a maximum number of attendees field to my tours model to allow for a better UX, so each tour can have a max number of people per group, and the max number is displayed below the input, and the input max attribute will change to fit the max number allowed per group, and then also added a max capacity field, so I can implement some functionality down the line for checking if the time slot is fully booked, for an improved UX
 - Added the input field for the maximum number of attendees per group and a continue browsing button to the tour_detail template
 
 ### Future Developments
