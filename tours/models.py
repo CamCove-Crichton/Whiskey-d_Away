@@ -57,6 +57,10 @@ class Tours(models.Model):
     county = models.CharField(max_length=50, null=True, blank=True)
     post_code = models.CharField(max_length=10)
     country = models.CharField(max_length=10, validators=[validate_country])
+    # Assitance from ChatGPT
+    max_attendees = models.PositiveIntegerField(default=4, choices=[
+        (2, '2'), (4, '4'), (6, '6'), (8, '8'),],
+        help_text="Maximum number of attendees per group")
 
     def __str__(self):
         return self.tour_name
