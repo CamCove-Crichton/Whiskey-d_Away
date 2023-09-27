@@ -74,6 +74,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then started working on a context.py file for the contexts processor to all the contents of the basket to be abailable across all apps, but adding it to the template context processors in the project level settings.py file
 - Added a maximum number of attendees field to my tours model to allow for a better UX, so each tour can have a max number of people per group, and the max number is displayed below the input, and the input max attribute will change to fit the max number allowed per group, and then also added a max capacity field, so I can implement some functionality down the line for checking if the time slot is fully booked, for an improved UX
 - Added the input field for the maximum number of attendees per group and a continue browsing button to the tour_detail template
+- Added a for loop to the context processor to iterate through the basket items and append them to the basket_items list, but as dictionary items
+- Added detail to the basket template by iterating through items in the basket items variable to display them in a table format to display nicely to the user for a good looking and easy to ready UI
 
 ### Future Developments
 
@@ -116,7 +118,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
-| Basket tempate | The basket template renders and displays as expected and is responsive | |
+| Basket tempate | The basket template renders and displays as expected with correct values and is responsive | |
+| Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
 
@@ -739,6 +742,17 @@ LOGIN_REDIRECT_URL = '/'
     basket_items = []
     total = 0
     experience_count = 0
+    basket = request.session.get('basket', {})
+
+    for item_id, quantity in basket.items():
+        experience = get_object_or_404(Tours, pk=item_id)
+        total = quantity * experience.tour_price
+        experience_count += quantity
+        basket_items.append({
+            'item_id': item_id,
+            'quantity': quantity,
+            'experience': experience,
+        })
 
     if total >= settings.DISCOUNT_SPEND_THRESHOLD:
         discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)
