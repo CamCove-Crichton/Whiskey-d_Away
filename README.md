@@ -76,6 +76,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added the input field for the maximum number of attendees per group and a continue browsing button to the tour_detail template
 - Added a for loop to the context processor to iterate through the basket items and append them to the basket_items list, but as dictionary items
 - Added detail to the basket template by iterating through items in the basket items variable to display them in a table format to display nicely to the user for a good looking and easy to ready UI
+- Decided to create the booking app, to be able to store booking data in the database, and to be able to utilise within the projects tours items down the line by having another model for booking item, which will be added shortly
+- I then added the Booking model and BookingItem model, with the booking item model having a foreign key to the booking model, so each booking can have multiple experiences as part of their booking
 
 ### Future Developments
 
@@ -1038,6 +1040,93 @@ def validate_country(value):
     max_attendees = models.PositiveIntegerField(default=4, choices=[
         (2, '2'), (4, '4'), (6, '6'), (8, '8'),],
         help_text="Maximum number of attendees per group")
+}
+```
+
+- Assistance with generating a unique booking number
+
+```python
+{
+    # Assistance from ChatGPT
+import uuid
+
+
+# Assistance from ChatGPT
+def generate_unique_booking_number():
+    """
+    A function to generate a unique booking number, and check if it exists
+    in the database or not
+    """
+    from .models import Booking
+    while True:
+        booking_number = str(uuid.uuid4().hex)[:10]
+        # We then check if the booking number exists in the Booking objects
+        if not Booking.objects.filter(booking_number=booking_number).exists():
+            return booking_number
+}
+```
+
+```python
+{
+    def save(self, *args, **kwargs):
+        """
+        A method to overide the save method and assign the unique booking
+        number to the booking number field in the model from the imported
+        function for generating booking numbers
+        """
+        if not self.booking_number:
+            self.booking_number = generate_unique_booking_number()
+        super().save(*args, **kwargs)
+}
+```
+
+- Booking model
+
+```python
+{
+    class Booking(models.Model):
+    """
+    A model to catpute all the bookings made by users
+    """
+    booking_number = models.CharField(
+        max_length=10, unique=True, editable=False)
+    date_of_booking = models.DateField(auto_now_add=True)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.booking_number
+
+    def save(self, *args, **kwargs):
+        """
+        A method to overide the save method and assign the unique booking
+        number to the booking number field in the model from the imported
+        function for generating booking numbers
+        """
+        if not self.booking_number:
+            self.booking_number = generate_unique_booking_number()
+        super().save(*args, **kwargs)
+}
+```
+
+- BookingItem model
+
+```python
+{
+    class BookingItem(models.Model):
+    """
+    A model to capture line items of individual experiences for each booking
+    """
+    tour = models.ForeignKey(
+        Tours, on_delete=models.SET_NULL,
+        null=True, related_name='booking_items')
+    number_of_attendees = models.IntegerField(
+        validators=[validate_number_of_attendees], default=1)
+    booking_date = models.DateField()
+    booking_time_slot = models.CharField(
+        max_length=11, choices=settings.TIME_SLOT_CHOICES)
+
+    def __str__(self):
+        return str(self.booking_date)
 }
 ```
 
