@@ -41,9 +41,9 @@
                             {% for item in basket_items %}
                             <tr>
                                 <td>{{ item.experience.tour_name }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ item.number_of_attendees }}</td>
+                                <td>{{ item.booking_date }}</td>
+                                <td>{{ item.booking_time_slot }}</td>
                                 <td>£{{ item.experience.tour_price }}</td>
                                 <td>£{{ item.experience.tour_price }}</td>
                             </tr>

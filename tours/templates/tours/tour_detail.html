@@ -75,11 +75,21 @@
                 <div class="form-row">
                     <div class="col-12">
                         <div class="form-group w-50">
-                            <p class="mt-3"><strong>Number of attendees:</strong></p>
-                            <div class="input-group w-50">
-                                <input type="number" name="quantity" value="1" min="1" {% if tour.max_attendees == 2 %}max="2"{% elif tour.max_attendees == 4 %}max="4"{% elif tour.max_attendees == 6 %}max="6"{% else %}max="8"{% endif %} data-item_id="{{ tour.id }}" id="id_qty_{{ tour.id }}" class="form-control qty-input">
-                            </div>
+                            <label for="{{ booking_form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
+                            {{ booking_form.number_of_attendees }}
                             <p><small>Max number per group: {{ tour.max_attendees }}</small></p>
+                        </div>
+                        <div class="form-group w-50">
+                            <div class="form-group w-50">
+                                <label for="{{ booking_form.booking_date.id_for_label }}">Booking Date:</label>
+                                {{ booking_form.booking_date }}
+                            </div>
+                        </div>
+                        <div class="form-group w-50">
+                            <div class="form-group w-50">
+                                <label for="{{ booking_form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
+                                {{ booking_form.booking_time_slot }}
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">

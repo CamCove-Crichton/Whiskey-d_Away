@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Tours, Category
+from booking.forms import BookingItemForm
 from django.http import Http404
 
 
@@ -76,8 +77,11 @@ def tour_detail(request, id):
     except Tours.DoesNotExist:
         raise Http404("Tour does not exist")
 
+    booking_form = BookingItemForm()
+
     context = {
-        'tour': tour
+        'tour': tour,
+        'booking_form': booking_form,
     }
 
     template = 'tours/tour_detail.html'

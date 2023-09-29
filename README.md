@@ -79,6 +79,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Decided to create the booking app, to be able to store booking data in the database, and to be able to utilise within the projects tours items down the line by having another model for booking item, which will be added shortly
 - I then added the Booking model and BookingItem model, with the booking item model having a foreign key to the booking model, so each booking can have multiple experiences as part of their booking
 - Thought of being able to bring in the data inputs to the tour_detail template, but in order to do that, I first needed to create a form, with some custom validation in case my css/javascript ideas for a better UX fail, there will be some human readable validation error messages to handle any incorrect data
+- Then moved onto adding the form fields to my contexts processor as I wanted to be able to use it in multiple views, from the tour detail view to the basket view
+- I created a form instance in my tour detail view so the input fields could display in the view
 
 ### Future Developments
 
@@ -129,7 +131,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 ### Resolved Bugs
 
 - After updating my tours model, I found the category was not displaying in my tour_detail template, and realsised it was because it now was a many to many field, which meant it has the potential for more than one value, and so had to loop through the tour.tour_category field to display each category the tour has been assigned to
-- Had an issue with trying to get the sort selector working with the javascript, but it kept throwing an error, and I realised that because I was splitting the name where there was an underscore, it was actually splitting the name for the field name from the model so it could not recognise it, so after splitting the anems, I joined the filed name part into the variable for sort, and it fixed the issue
+- Had an issue with trying to get the sort selector working with the javascript, but it kept throwing an error, and I realised that because I was splitting the name where there was an underscore, it was actually splitting the name for the field name from the model so it could not recognise it, so after splitting the names, I joined the filed name part into the variable for sort, and it fixed the issue
+- I was struggling to get the form fields to display in my template, and after trying to think what could be wrong in my context or template files, I then realised the booking form instance had not been created in the tour_detail view, and add to the context, so once I did this, the form fields displayed in the template
 
 ### Validator Testing
 
@@ -1194,6 +1197,14 @@ def generate_unique_booking_number():
                 raise ValidationError('This time slot is no longer available')
 
             return booking_time_slot
+}
+```
+
+- Assistance with displaying form fields from the context processor
+
+```python
+{
+    
 }
 ```
 
