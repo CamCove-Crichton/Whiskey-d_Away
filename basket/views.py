@@ -12,7 +12,7 @@ def view_basket(request):
 # Assistance from CI - Boutique Ado walkthrough
 def add_to_basket(request, item_id):
     """
-    A view to add the number of attendees selected for 
+    A view to add the number of attendees selected for
     an experience id to the basket
     """
 

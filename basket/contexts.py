@@ -37,6 +37,8 @@ def basket_contents(request):
             'total': total,
         })
 
+        print(basket_items)
+
     if total >= settings.DISCOUNT_SPEND_THRESHOLD:
         discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)
         discount_delta = settings.DISCOUNT_SPEND_THRESHOLD - total

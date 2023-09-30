@@ -19,7 +19,7 @@
     {% block extra_meta %}
     {% endblock %}
 
-    <!-- Bootstrap CSS -->
+    <!-- Core CSS -->
     {% block corecss %}
     <!-- Favicon -->
     <link rel="icon" href="/media/whiskey glass icon.ico" type="image/x-icon">
@@ -27,6 +27,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="{% static 'node_modules/flatpickr/dist/flatpickr.min.css' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,6 +59,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
+
+    <!-- Flatpickr -->
+    <script src="{% static 'node_modules/flatpickr/dist/flatpickr.min.js' %}"></script>
     
     <!-- Custom JavaScript -->
     <script src="{% static 'js/script.js' %}"></script>

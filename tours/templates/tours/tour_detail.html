@@ -107,3 +107,19 @@
   </div>
 </div>
 {% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
+                minDate: "today",
+            })
+        })
+        console.log($("#{{ booking_form.booking_date.id_for_label }}"));
+
+    </script>
+
+{% endblock %}

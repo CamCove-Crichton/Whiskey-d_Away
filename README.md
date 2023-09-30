@@ -81,6 +81,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Thought of being able to bring in the data inputs to the tour_detail template, but in order to do that, I first needed to create a form, with some custom validation in case my css/javascript ideas for a better UX fail, there will be some human readable validation error messages to handle any incorrect data
 - Then moved onto adding the form fields to my contexts processor as I wanted to be able to use it in multiple views, from the tour detail view to the basket view
 - I created a form instance in my tour detail view so the input fields could display in the view
+- Decided to use flatpickr for the form input field for selecting the date for a better UX
 
 ### Future Developments
 
@@ -99,6 +100,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Django 3.2
 - Django Allauth
 - Pillow
+- Flatpickr
 
 ### Finished Site Screen Grabs
 
