@@ -82,6 +82,9 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then moved onto adding the form fields to my contexts processor as I wanted to be able to use it in multiple views, from the tour detail view to the basket view
 - I created a form instance in my tour detail view so the input fields could display in the view
 - Decided to use flatpickr for the form input field for selecting the date for a better UX
+- In order for my logic to work, I had to restructure both my add_to_basket view to check for a booking with a date in the baset, and if it existed, then to check for a time slot, and if it existed then to increase the number of attendees, otherwise, add another line item for the same tour with a new time slot, and if the date did not exist then to add the line item for the tour experience with the specified date and time slot
+- I then had to adjust my context processor to loop through the date and time slots in the item data dictionary, and to append them to the basket items dictionary, so the date and time slot data could be passed to the basket view when adding tours to the basket
+- By doing the above, it allows users to be able to select the same tour for the same day but different time slots if required, or to book the same tour for different dates, it that is also required and then still be able to have it as part of one booking when checking out or paying
 
 ### Future Developments
 
@@ -129,12 +132,14 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
+| Add to basket | The add to basket feature works as expected and passes all required data to the basket template as expected | |
 
 ### Resolved Bugs
 
 - After updating my tours model, I found the category was not displaying in my tour_detail template, and realsised it was because it now was a many to many field, which meant it has the potential for more than one value, and so had to loop through the tour.tour_category field to display each category the tour has been assigned to
 - Had an issue with trying to get the sort selector working with the javascript, but it kept throwing an error, and I realised that because I was splitting the name where there was an underscore, it was actually splitting the name for the field name from the model so it could not recognise it, so after splitting the names, I joined the filed name part into the variable for sort, and it fixed the issue
 - I was struggling to get the form fields to display in my template, and after trying to think what could be wrong in my context or template files, I then realised the booking form instance had not been created in the tour_detail view, and add to the context, so once I did this, the form fields displayed in the template
+- Had an issue with the basket view trying ti iterate over an integer, as it kept thinking the item_data dictionary was an integer, so after querying the error with ChatGPT, I found that I had to get it to check if the item_data instance was a dictionary before trying to iterate over it, which had to be done in both the context processor and the add to basket view
 
 ### Validator Testing
 
@@ -994,7 +999,7 @@ def validate_country(value):
 }
 ```
 
-- BAck top top button Javascript and CSS
+- Back top top button Javascript and CSS
 
 ```css
 {
@@ -1206,7 +1211,72 @@ def generate_unique_booking_number():
 
 ```python
 {
-    
+    booking_form = BookingItemForm()
+
+    context = {
+        'tour': tour,
+        'booking_form': booking_form,
+    }
+}
+```
+
+- Assistance with updating logic for add_to_basket view
+
+```python
+{
+    if (isinstance(basket.get(item_id), dict) and
+            'items_by_date_and_time' in basket[item_id]):
+        if booking_date in basket[item_id]['items_by_date_and_time']:
+            # The tour for the same day exists in the basket
+            if (booking_time_slot in basket[item_id]
+                    ['items_by_date_and_time'][booking_date]):
+                # The tour for the same date and time slot already in basket
+                (basket[item_id]['items_by_date_and_time']
+                    [booking_date][booking_time_slot]) += number_of_attendees
+            else:
+                # Tour with same date exists but with differnt time slot
+                (basket[item_id]['items_by_date_and_time']
+                    [booking_date][booking_time_slot]) = number_of_attendees
+        else:
+            # The tour for a different date needs to be added
+            basket[item_id]['items_by_date_and_time'][booking_date] = {
+                booking_time_slot: number_of_attendees
+            }
+    else:
+        # Tour is not in the basket so add it with specified date and time
+        basket[item_id] = {
+            'items_by_date_and_time': {
+                booking_date: {
+                    booking_time_slot: number_of_attendees
+                }
+            }
+        }
+}
+```
+
+- Assistance with updating my iteration for my context processors
+
+```python
+{
+    for item_id, item_data in basket.items():
+        if isinstance(item_data, dict) and (isinstance(
+                item_data.get('items_by_date_and_time'), dict)):
+            if 'items_by_date_and_time' in item_data:
+                for (date,
+                        time_slots) in (item_data[
+                            'items_by_date_and_time'].items()):
+                    for time_slot, number_of_attendees in time_slots.items():
+                        experience = get_object_or_404(Tours, pk=item_id)
+                        total += number_of_attendees * experience.tour_price
+                        experience_count += number_of_attendees
+                        basket_items.append({
+                            'item_id': item_id,
+                            'number_of_attendees': number_of_attendees,
+                            'booking_date': date,
+                            'booking_time_slot': time_slot,
+                            'experience': experience,
+                            'total': total,
+                        })
 }
 ```
 

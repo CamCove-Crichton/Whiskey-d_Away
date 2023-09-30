@@ -14,30 +14,26 @@ def basket_contents(request):
     total = 0
     experience_count = 0
     basket = request.session.get('basket', {})
-    booking_form = BookingItemForm(request.POST)
-    booking_date = None
-    booking_time_slot = None
 
-    for item_id, number_of_attendees in basket.items():
-        if booking_form.is_valid():
-            number_of_attendees = booking_form.cleaned_data.get(
-                'number_of_attendees')
-            booking_date = booking_form.cleaned_data.get('booking_date')
-            booking_time_slot = booking_form.cleaned_data.get(
-                'booking_time_slot')
-        experience = get_object_or_404(Tours, pk=item_id)
-        total += number_of_attendees * experience.tour_price
-        experience_count += number_of_attendees
-        basket_items.append({
-            'item_id': item_id,
-            'number_of_attendees': number_of_attendees,
-            'booking_date': booking_date,
-            'booking_time_slot': booking_time_slot,
-            'experience': experience,
-            'total': total,
-        })
-
-        print(basket_items)
+    for item_id, item_data in basket.items():
+        if isinstance(item_data, dict) and (isinstance(
+                item_data.get('items_by_date_and_time'), dict)):
+            if 'items_by_date_and_time' in item_data:
+                for (date,
+                        time_slots) in (item_data[
+                            'items_by_date_and_time'].items()):
+                    for time_slot, number_of_attendees in time_slots.items():
+                        experience = get_object_or_404(Tours, pk=item_id)
+                        total += number_of_attendees * experience.tour_price
+                        experience_count += number_of_attendees
+                        basket_items.append({
+                            'item_id': item_id,
+                            'number_of_attendees': number_of_attendees,
+                            'booking_date': date,
+                            'booking_time_slot': time_slot,
+                            'experience': experience,
+                            'total': total,
+                        })
 
     if total >= settings.DISCOUNT_SPEND_THRESHOLD:
         discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)

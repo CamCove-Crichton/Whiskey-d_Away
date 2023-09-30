@@ -114,8 +114,9 @@
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
                 enableTime: false,
-                dateFormat: "Y-m-d",
+                dateFormat: "d-m-Y",
                 minDate: "today",
+                maxDate: new Date().fp_incr(365),
             })
         })
         console.log($("#{{ booking_form.booking_date.id_for_label }}"));
