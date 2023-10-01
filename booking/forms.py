@@ -10,6 +10,9 @@ class BookingItemForm(forms.ModelForm):
     """
     A form for to capture the user input for the selected whiskey experience
     """
+    number_of_attendees = forms.ChoiceField(
+        choices=settings.NUM_ATTENDEES_CHOICES, label='Number of Attendees')
+
     class Meta:
         model = BookingItem
         fields = ['number_of_attendees', 'booking_date', 'booking_time_slot']
@@ -28,14 +31,20 @@ class BookingItemForm(forms.ModelForm):
         A validtion to check the time slot selected is in the future, and if
         not then will raise a validation error
         """
+        try:
+            booking_date = self.cleaned_data['booking_date']
+        except KeyError:
+            print("Booking date not found in cleaned_data")
+            return
+
         booking_time_slot = self.cleaned_data['booking_time_slot']
-        booking_date = self.cleaned_data['booking_date']
+        # booking_date = self.cleaned_data['booking_date']
         current_datetime = timezone.now()
 
         # Check if selected time slot is in TIME_SLOT_CHOICES
         if booking_time_slot not in [
             choice[0] for choice in settings.TIME_SLOT_CHOICES
-                ]:
+        ]:
             raise ValidationError('Invalid time slot')
 
         # Loop through TIME_SLOT_CHOICES to find start time for selected slot

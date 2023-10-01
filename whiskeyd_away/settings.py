@@ -173,8 +173,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DISCOUNT_SPEND_THRESHOLD = 200
 STANDARD_DISCOUNT_PERCENTAGE = 10
 
+# Time slot and number of attendee constants
 TIME_SLOT_CHOICES = [
     ('11:00-13:00', '11:00 AM - 1:00 PM'),
     ('13:00-15:00', '1:00 PM - 3:00 PM'),
     ('15:00-17:00', '3:00 PM - 5:00 PM'),
 ]
+# Asstiance from ChatGPT
+NUM_ATTENDEES_CHOICES = [(i, str(i)) for i in range(1, 9)]

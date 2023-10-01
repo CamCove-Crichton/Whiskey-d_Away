@@ -48,10 +48,10 @@ def all_tours(request):
                 return redirect(reverse('tours'))
 
             queries = Q(tour_name__icontains=query) | Q(
-                    tour_description__icontains=query) | Q(
-                        county__icontains=query) | Q(
-                            post_code__icontains=query) | Q(
-                            country__icontains=query)
+                tour_description__icontains=query) | Q(
+                county__icontains=query) | Q(
+                post_code__icontains=query) | Q(
+                country__icontains=query)
             tours = tours.filter(queries)
 
     current_sorting = f'{sort}_{direction}'
