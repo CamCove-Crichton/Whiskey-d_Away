@@ -18,31 +18,41 @@ def add_to_basket(request, item_id):
     A view to add the number of attendees selected for
     an experience id to the basket
     """
-    if request.method == 'POST':
-        tour = get_object_or_404(Tours, id=item_id)
-        booking_form = BookingItemForm(request.POST)
-        redirect_url = request.POST.get('redirect_url')
-        print(request.POST)
-        print(booking_form.errors)
-        print(booking_form)
 
     number_of_attendees = int(request.POST.get('number_of_attendees'))
+    booking_date = request.POST.get('booking_date')
+    booking_time_slot = request.POST.get('booking_time_slot')
     redirect_url = request.POST.get('redirect_url')
     basket = request.session.get('basket', {})
 
-    if item_id in list(basket.keys()):
-        basket[item_id] += number_of_attendees
-    else:
-        basket[item_id] = number_of_attendees
-
-                request.session['basket'] = basket
-                return redirect(redirect_url)
+    # Check if basket[item_id] is a dictionary
+    if (isinstance(basket.get(item_id), dict) and
+            'items_by_date_and_time' in basket[item_id]):
+        if booking_date in basket[item_id]['items_by_date_and_time']:
+            # The tour for the same day exists in the basket
+            if (booking_time_slot in basket[item_id]
+                    ['items_by_date_and_time'][booking_date]):
+                # The tour for the same date and time slot already in basket
+                (basket[item_id]['items_by_date_and_time']
+                    [booking_date][booking_time_slot]) += number_of_attendees
             else:
-                context = {
-                    'booking_form': booking_form,
-                    'tour': tour,
+                # Tour with the same date exists but with a different time slot
+                (basket[item_id]['items_by_date_and_time']
+                    [booking_date][booking_time_slot]) = number_of_attendees
+        else:
+            # The tour for a different date needs to be added
+            basket[item_id]['items_by_date_and_time'][booking_date] = {
+                booking_time_slot: number_of_attendees
+            }
+    else:
+        # Initialize a new entry for the item in the basket
+        basket[item_id] = {
+            'items_by_date_and_time': {
+                booking_date: {
+                    booking_time_slot: number_of_attendees
                 }
+            }
+        }
 
-                template = 'tours/tour_detail.html'
-
-                return render(request, template, context)
+    request.session['basket'] = basket
+    return redirect(redirect_url)

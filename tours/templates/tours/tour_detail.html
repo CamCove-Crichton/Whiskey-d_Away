@@ -72,25 +72,21 @@
             <!-- Book now & Add to Basket buttons -->
             <form action="{% url 'add_to_basket' tour.id %}" method="post">
                 {% csrf_token %}
-                {{ booking_form.non_field_errors }}
                 <div class="form-row">
                     <div class="col-12">
                         <div class="form-group w-50">
-                            {{ booking_form.number_of_attendees.errors }}
                             <label for="{{ booking_form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
                             {{ booking_form.number_of_attendees }}
                             <p><small>Max number per group: {{ tour.max_attendees }}</small></p>
                         </div>
                         <div class="form-group w-50">
                             <div class="form-group w-50">
-                                {{ booking_form.booking_date.errors }}
                                 <label for="{{ booking_form.booking_date.id_for_label }}">Booking Date:</label>
                                 {{ booking_form.booking_date }}
                             </div>
                         </div>
                         <div class="form-group w-50">
                             <div class="form-group w-50">
-                                {{ booking_form.booking_time_slot.errors }}
                                 <label for="{{ booking_form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
                                 {{ booking_form.booking_time_slot }}
                             </div>

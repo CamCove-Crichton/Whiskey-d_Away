@@ -994,7 +994,7 @@ def validate_country(value):
 }
 ```
 
-- BAck top top button Javascript and CSS
+- Back top top button Javascript and CSS
 
 ```css
 {
@@ -1206,7 +1206,12 @@ def generate_unique_booking_number():
 
 ```python
 {
-    
+    <div class="form-group w-50">
+        <div class="form-group w-50">
+            <label for="{{ booking_form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
+            {{ booking_form.booking_time_slot }}
+        </div>
+    </div> 
 }
 ```
 
