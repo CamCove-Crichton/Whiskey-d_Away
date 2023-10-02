@@ -118,18 +118,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
                 enableTime: false,
-                dateFormat: "d-m-Y",
+                dateFormat: "Y-m-d",
                 minDate: "today",
-                maxDate: new Date().fp_incr(365),
-            });
-
-            flatpickr("#{{ booking_form.booking_time_slot.id_for_label }}", {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",  // Adjust the format as needed
-                // Additional options for time picker...
-            });
-        });
+            })
+        })
         console.log($("#{{ booking_form.booking_date.id_for_label }}"));
 
     </script>
