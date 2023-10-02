@@ -1210,14 +1210,6 @@ def generate_unique_booking_number():
 }
 ```
 
-- Assistance with choice implementation for number of attendees
-
-```python
-{
-    NUM_ATTENDEES_CHOICES = [(i, str(i)) for i in range(1, 9)]
-}
-```
-
 ### Other Credits
 
 [Favicon.io](https://favicon.io/favicon-converter/) - Favicon converter for my favicon image
