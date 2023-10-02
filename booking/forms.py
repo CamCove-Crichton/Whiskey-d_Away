@@ -13,6 +13,13 @@ class BookingItemForm(forms.ModelForm):
     class Meta:
         model = BookingItem
         fields = ['number_of_attendees', 'booking_date', 'booking_time_slot']
+        # Assistance from ChatGPT
+        # Add class attributes to specific model fields
+        widgets = {
+            'number_of_attendees': forms.NumberInput(
+                attrs={'class': 'qty-input'}
+            ),
+        }
 
     def clean_booking_date(self):
         """

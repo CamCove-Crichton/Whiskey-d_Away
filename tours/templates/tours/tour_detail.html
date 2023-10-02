@@ -74,24 +74,50 @@
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col-12">
-                        <div class="form-group w-50">
+                        <!-- Number of Attendees input group -->
+                        <div class="form-group w-75">
                             <label for="{{ booking_form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
-                            {{ booking_form.number_of_attendees }}
+                            <div class="input-group">
+                                {{ booking_form.number_of_attendees }}
+                                <div class="input-group-append">
+                                    <!-- Reduce quantity button -->
+                                    <button class="decrement-qty btn text-black" type="button" data-item-id="{{ booking_form.number_of_attendees.id_for_label }}" id="decrement-qty_{{ booking_form.number_of_attendees.id_for_label }}">
+                                        <span class="icon">
+                                            <i class="fa-regular fa-circle-down fa-lg"></i>
+                                        </span>
+                                    </button>
+
+                                    <!-- Increase quantity button -->
+                                    <button class="increment-qty btn text-black" type="button" data-item-id="{{ booking_form.number_of_attendees.id_for_label }}" id="increment-qty_{{ booking_form.number_of_attendees.id_for_label }}">
+                                        <span class="icon">
+                                            <i class="fa-regular fa-circle-up fa-lg"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
                             <p><small>Max number per group: {{ tour.max_attendees }}</small></p>
                         </div>
-                        <div class="form-group w-50">
-                            <div class="form-group w-50">
-                                <label for="{{ booking_form.booking_date.id_for_label }}">Booking Date:</label>
-                                {{ booking_form.booking_date }}
+
+                        <!-- Booking Date input group -->
+                        <div class="input-group">
+                            <div class="form-group w-75">
+                                <div class="form-group w-50">
+                                    <label for="{{ booking_form.booking_date.id_for_label }}">Booking Date:</label>
+                                    {{ booking_form.booking_date }}
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group w-50">
+
+                        <!-- Booking time slot input -->
+                        <div class="input-group">
                             <div class="form-group w-50">
                                 <label for="{{ booking_form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
                                 {{ booking_form.booking_time_slot }}
                             </div>
                         </div>
                     </div>
+
+                    <!-- Continue shopping, Book Now and Add to Basket buttons -->
                     <div class="col-12">
                         <a href="{% url 'tours' %}" class="btn bg-black text-yellow mb-2">Continue Browsing Experiences</a>
                         <input type="submit" class="btn bg-black text-yellow mb-2" value="Book Now">
@@ -110,6 +136,9 @@
 
 {% block postloadjs %}
 {{ block.super }}
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% include 'tours/includes/quantity_input_script.html' %}
+
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.booking_date.id_for_label }}", {

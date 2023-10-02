@@ -82,6 +82,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then moved onto adding the form fields to my contexts processor as I wanted to be able to use it in multiple views, from the tour detail view to the basket view
 - I created a form instance in my tour detail view so the input fields could display in the view
 - Decided to use flatpickr for the form input field for selecting the date for a better UX
+- I then moved onto getting the add_to_basket view to be able to get the data for the number of attendees, booking date and booking time slot from the form to be able to display the information in the basket view
+- Moved onto adding in some increment and decrement buttons for the number of attendees input field for a better UX, especially on mobile devices
 
 ### Future Developments
 
@@ -129,6 +131,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
+| Increment and Decrement buttons | The increment and decrement buttons for the number of attendees input works as expected | |
 
 ### Resolved Bugs
 
@@ -150,6 +153,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
 - Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
+- The default arrows for the input field in the form for the number of attendees still appear, and so will need to remove this using some css
 
 ## Credits
 
@@ -785,6 +789,35 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Assistance with implementing javascript for increment and decrement buttons for number of attendees
+
+```html
+{
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+{% include 'tours/includes/quantity_input_script.html' %}
+}
+```
+
+```javascript
+{
+    // Increase quantity value
+    $('.increment-qty').click(function(e) {
+        e.preventDefault();
+        let closestInput = $(this).closest('.input-group').find('.qty-input')[0];
+        let currentValue = parseInt($(closestInput).val());
+        $(closestInput).val(currentValue + 1);
+    });
+
+    // Decrease quantity value
+    $('.decrement-qty').click(function(e) {
+        e.preventDefault();
+        let closestInput = $(this).closest('.input-group').find('.qty-input')[0];
+        let currentValue = parseInt($(closestInput).val());
+        $(closestInput).val(currentValue - 1);
+    });
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -1212,6 +1245,18 @@ def generate_unique_booking_number():
             {{ booking_form.booking_time_slot }}
         </div>
     </div> 
+}
+```
+
+- Adding a class attribute to a django form field
+
+```python
+{
+    widgets = {
+            'number_of_attendees': forms.NumberInput(
+                attrs={'class': 'qty-input'}
+            ),
+        }
 }
 ```
 
