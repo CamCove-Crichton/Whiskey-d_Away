@@ -85,6 +85,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - I then moved onto getting the add_to_basket view to be able to get the data for the number of attendees, booking date and booking time slot from the form to be able to display the information in the basket view
 - Moved onto having the number of attendees input as a drop down input for a better UX
 - I then shuffled around the form inputs in the template and added some javascript to disable the input fields until the previous input field has a value for a better guided UX
+- The next step was to then implement the drop down for the number of attendees per group, to only display the maximum number of people allowed per group booking per tour experience
 
 ### Future Developments
 
@@ -154,7 +155,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
 - Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
-- The default arrows for the input field in the form for the number of attendees still appear, and so will need to remove this using some css
+- Although having a guided UX for limiting the number of people per group booking, there is a bug, that you are allowed to add a booking, and then add another booking for the same date, time slot and max_number of attendees which when viewed in the basket, takes the user over the maximum number of people allowed to book per group. Will need to return to this when I get to validations for maximum number of people allowed on any time slot and date
 
 ## Credits
 
@@ -1261,14 +1262,6 @@ def generate_unique_booking_number():
 }
 ```
 
-- Assistance with choice implementation for number of attendees
-
-```python
-{
-    NUM_ATTENDEES_CHOICES = [(i, str(i)) for i in range(1, 9)]
-}
-```
-
 - Assistance with the jQuery implementation for disabling input fields
 
 ```javascript
@@ -1289,6 +1282,54 @@ def generate_unique_booking_number():
     $('#{{ booking_form.booking_time_slot.id_for_label }}').change(function() {
         // Enable the number of attendees field when the time slot is selected
         $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', false);
+    });
+}
+```
+
+- Assistance with implementing a dynamic max number of attendees drop down inthe tour detail
+
+```python
+{
+    def __init__(self, max_attendees, *args, **kwargs):
+        """
+        A method to instantiate a dynamic choice for the number of attendees
+        based on the max_attendees per tour
+        """
+        super().__init__(*args, **kwargs)
+        self.fields['number_of_attendees'].choices = [
+            (i, str(i)) for i in range(1, max_attendees + 1)
+        ]
+}
+```
+
+```javascript
+{
+    function updateAttendeesChoices(maxAttendees) {
+        let numberField = $('#{{ booking_form.number_of_attendees.id_for_label }}');
+        // Update choices based on retrieved max_attendees
+        numberField.empty();
+        for (let i = 1; i <= maxAttendees; i++) {
+            numberField.append($('<option>', {value: i, text: i}));
+        }
+    };
+
+    // Initial update based on max_attendees
+    updateAttendeesChoices({{ tour.max_attendees }});
+
+    // Event listener for tour drop down change
+    $('#id_tour').change(function() {
+        let selectedTourId = $(this).val();
+        $.ajax({
+            url: '/get_max_attendees/' + selectedTourId + '/',
+            method: 'GET',
+            success: function(data) {
+                // Update choices for number of attendees based on the retrieved max_attendees
+                updateAttendeesChoices(data.max_attendees);
+            },
+            error: function(error) {
+                console.error('Error fetching max_attendees:', error);
+            }
+        });
     });
 }
 ```

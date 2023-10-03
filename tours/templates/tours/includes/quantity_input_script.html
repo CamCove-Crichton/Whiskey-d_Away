@@ -17,4 +17,35 @@
         // Enable the number of attendees field when the time slot is selected
         $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', false);
     });
+
+    /**
+     * A function to update the nuber of attendees choices
+     */
+    function updateAttendeesChoices(maxAttendees) {
+        let numberField = $('#{{ booking_form.number_of_attendees.id_for_label }}');
+        // Update choices based on retrieved max_attendees
+        numberField.empty();
+        for (let i = 1; i <= maxAttendees; i++) {
+            numberField.append($('<option>', {value: i, text: i}));
+        }
+    };
+
+    // Initial update based on max_attendees
+    updateAttendeesChoices({{ tour.max_attendees }});
+
+    // Event listener for tour drop down change
+    $('#id_tour').change(function() {
+        let selectedTourId = $(this).val();
+        $.ajax({
+            url: '/get_max_attendees/' + selectedTourId + '/',
+            method: 'GET',
+            success: function(data) {
+                // Update choices for number of attendees based on the retrieved max_attendees
+                updateAttendeesChoices(data.max_attendees);
+            },
+            error: function(error) {
+                console.error('Error fetching max_attendees:', error);
+            }
+        });
+    });
 </script>

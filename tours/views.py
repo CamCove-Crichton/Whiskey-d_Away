@@ -77,7 +77,9 @@ def tour_detail(request, id):
     except Tours.DoesNotExist:
         raise Http404("Tour does not exist")
 
-    booking_form = BookingItemForm()
+    # Assistance from ChatGPT
+    # Pass max_attendees to the booking form
+    booking_form = BookingItemForm(max_attendees=tour.max_attendees)
 
     context = {
         'tour': tour,

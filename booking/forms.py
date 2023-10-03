@@ -2,6 +2,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import BookingItem
+from tours.models import Tours
 from django.utils import timezone
 from django.conf import settings
 from django.forms.widgets import NumberInput
@@ -11,8 +12,18 @@ class BookingItemForm(forms.ModelForm):
     """
     A form for to capture the user input for the selected whiskey experience
     """
-    number_of_attendees = forms.ChoiceField(
-        choices=settings.NUM_ATTENDEES_CHOICES, label='Number of Attendees')
+    number_of_attendees = forms.ChoiceField(label='Number of Attendees')
+
+    # Assistance from ChatGPT
+    def __init__(self, max_attendees, *args, **kwargs):
+        """
+        A method to instantiate a dynamic choice for the number of attendees
+        based on the max_attendees per tour
+        """
+        super().__init__(*args, **kwargs)
+        self.fields['number_of_attendees'].choices = [
+            (i, str(i)) for i in range(1, max_attendees + 1)
+        ]
 
     class Meta:
         model = BookingItem
