@@ -4,12 +4,16 @@ from django.core.exceptions import ValidationError
 from .models import BookingItem
 from django.utils import timezone
 from django.conf import settings
+from django.forms.widgets import NumberInput
 
 
 class BookingItemForm(forms.ModelForm):
     """
     A form for to capture the user input for the selected whiskey experience
     """
+    number_of_attendees = forms.ChoiceField(
+        choices=settings.NUM_ATTENDEES_CHOICES, label='Number of Attendees')
+
     class Meta:
         model = BookingItem
         fields = ['number_of_attendees', 'booking_date', 'booking_time_slot']
@@ -17,7 +21,9 @@ class BookingItemForm(forms.ModelForm):
         # Add class attributes to specific model fields
         widgets = {
             'number_of_attendees': forms.NumberInput(
-                attrs={'class': 'qty-input'}
+                attrs={
+                    'class': 'qty-input',
+                }
             ),
         }
 

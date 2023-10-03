@@ -179,3 +179,6 @@ TIME_SLOT_CHOICES = [
     ('13:00-15:00', '1:00 PM - 3:00 PM'),
     ('15:00-17:00', '3:00 PM - 5:00 PM'),
 ]
+
+# Assistance from ChatGPT
+NUM_ATTENDEES_CHOICES = [(i, str(i)) for i in range(1, 9)]

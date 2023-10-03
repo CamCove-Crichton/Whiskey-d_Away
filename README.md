@@ -83,7 +83,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - I created a form instance in my tour detail view so the input fields could display in the view
 - Decided to use flatpickr for the form input field for selecting the date for a better UX
 - I then moved onto getting the add_to_basket view to be able to get the data for the number of attendees, booking date and booking time slot from the form to be able to display the information in the basket view
-- Moved onto adding in some increment and decrement buttons for the number of attendees input field for a better UX, especially on mobile devices
+- Moved onto having the number of attendees input as a drop down input for a better UX
+- I then shuffled around the form inputs in the template and added some javascript to disable the input fields until the previous input field has a value for a better guided UX
 
 ### Future Developments
 
@@ -131,7 +132,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
-| Increment and Decrement buttons | The increment and decrement buttons for the number of attendees input works as expected | |
+| Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | |
 
 ### Resolved Bugs
 
@@ -1257,6 +1258,38 @@ def generate_unique_booking_number():
                 attrs={'class': 'qty-input'}
             ),
         }
+}
+```
+
+- Assistance with choice implementation for number of attendees
+
+```python
+{
+    NUM_ATTENDEES_CHOICES = [(i, str(i)) for i in range(1, 9)]
+}
+```
+
+- Assistance with the jQuery implementation for disabling input fields
+
+```javascript
+{
+    // Disable the initial form fields
+    $('#{{ booking_form.booking_time_slot.id_for_label }}').prop('disabled', true);
+    $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', true);
+
+    // Add an event listener for the booking date field
+    $('#{{ booking_form.booking_date.id_for_label }}').change(function() {
+        // Enable the booking time slot when the date is selected
+        $('#{{ booking_form.booking_time_slot.id_for_label }}').prop('disabled', false);
+        // Disable the number of attendees field until a time slot is selected
+        $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', true);
+    });
+
+    // Add an event listener for the time slot field
+    $('#{{ booking_form.booking_time_slot.id_for_label }}').change(function() {
+        // Enable the number of attendees field when the time slot is selected
+        $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', false);
+    });
 }
 ```
 

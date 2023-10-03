@@ -1,18 +1,20 @@
-<!-- Assistance from CI - Boutique Ado walkthrough -->
+<!-- Assistance from CI - Boutique Ado walkthrough & ChatGPT -->
 <script type="text/javascript">
-    // Increase quantity value
-    $('.increment-qty').click(function(e) {
-        e.preventDefault();
-        let closestInput = $(this).closest('.input-group').find('.qty-input')[0];
-        let currentValue = parseInt($(closestInput).val());
-        $(closestInput).val(currentValue + 1);
+    // Disable the initial form fields
+    $('#{{ booking_form.booking_time_slot.id_for_label }}').prop('disabled', true);
+    $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', true);
+
+    // Add an event listener for the booking date field
+    $('#{{ booking_form.booking_date.id_for_label }}').change(function() {
+        // Enable the booking time slot when the date is selected
+        $('#{{ booking_form.booking_time_slot.id_for_label }}').prop('disabled', false);
+        // Disable the number of attendees field until a time slot is selected
+        $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', true);
     });
 
-    // Decrease quantity value
-    $('.decrement-qty').click(function(e) {
-        e.preventDefault();
-        let closestInput = $(this).closest('.input-group').find('.qty-input')[0];
-        let currentValue = parseInt($(closestInput).val());
-        $(closestInput).val(currentValue - 1);
+    // Add an event listener for the time slot field
+    $('#{{ booking_form.booking_time_slot.id_for_label }}').change(function() {
+        // Enable the number of attendees field when the time slot is selected
+        $('#{{ booking_form.number_of_attendees.id_for_label }}').prop('disabled', false);
     });
 </script>
