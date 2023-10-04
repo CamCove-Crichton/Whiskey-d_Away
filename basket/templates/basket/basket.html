@@ -30,9 +30,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">Whiskey Experience</th>
+                                <th scope="col">Booking Date</th>
+                                <th scope="col">Booking Time Slot</th>
                                 <th scope="col">No. of Attendees</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time</th>
                                 <th scope="col">Price pp</th>
                                 <th scope="col">Line item total</th>
                             </tr>
@@ -40,14 +40,50 @@
                         <tbody>
                             {% for item in basket_items %}
                             <tr>
+                                <!-- Booking Name -->
                                 <td>{{ item.experience.tour_name }}</td>
-                                <td>{{ item.number_of_attendees }}</td>
-                                <td>{{ item.booking_date }}</td>
-                                <td>{{ item.booking_time_slot }}</td>
+
+                                <!-- Booking Date -->
+                                <td>
+                                    <form class="form update-form" method="post" action="">
+                                        {% csrf_token %}
+                                        <div class="form-group visually-hidden">
+                                            <label for="{{ item.form.booking_date.id_for_label }}">Number of Attendees:</label>
+                                            {{ item.form.booking_date }}
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- Booking Time Slot -->
+                                <td>
+                                    <form class="form update-form" method="post" action="">
+                                        {% csrf_token %}
+                                        <div class="form-group visually-hidden">
+                                            <label for="{{ item.form.booking_time_slot.id_for_label }}">Number of Attendees:</label>
+                                            {{ item.form.booking_time_slot }}
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- Number of Attendees -->
+                                <td>
+                                    <form class="form update-form" method="post" action="">
+                                        {% csrf_token %}
+                                        <div class="form-group visually-hidden">
+                                            <label for="{{ item.form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
+                                            {{ item.form.number_of_attendees }}
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- Experience price per person -->
                                 <td>£{{ item.experience.tour_price }}</td>
+
+                                <!-- Experience line item total -->
                                 <td>£{{ item.experience.tour_price }}</td>
                             </tr>
                             {% endfor %}
+                            
                             {% if discount %}
                             <tr>
                                 <td colspan="6" class="pt-3 text-right pr-4">

@@ -86,6 +86,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Moved onto having the number of attendees input as a drop down input for a better UX
 - I then shuffled around the form inputs in the template and added some javascript to disable the input fields until the previous input field has a value for a better guided UX
 - The next step was to then implement the drop down for the number of attendees per group, to only display the maximum number of people allowed per group booking per tour experience
+- Moved onto the basket view being able to not only display data for items added to the basket, but having the ability to edit the data for each item in the basket, and will need to come back to it down the line with validations to prevent users from selecting dates/time slots that are fully booked or do not have the capacity to take the selected number of attendees
 
 ### Future Developments
 
@@ -130,6 +131,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
 | Basket tempate | The basket template renders and displays as expected with correct values and is responsive | |
+| Edit basket items | Items in the basket allow data to be edited with expected functionality | |
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
@@ -1331,6 +1333,57 @@ def generate_unique_booking_number():
             }
         });
     });
+}
+```
+
+- Assistance with carrying forward data from existing basket items to basket view
+
+```python
+{
+    def view_basket(request):
+    """
+    A view to render the contents of the basket with existing data from the
+    submitted form, and allow inputs to be edited from the basket
+    """
+    # Assign existing basket context to basket items
+    basket_context = basket_contents(request)
+    basket_items = basket_context['basket_items']
+
+    # Create empty forms list to append to
+    forms = []
+
+    # Iterate through basket items
+    for item in basket_items:
+        # Get existing data for the current item
+        existing_data = {
+            'number_of_attendees': item['number_of_attendees'],
+            'booking_date': item['booking_date'],
+            'booking_time_slot': item['booking_time_slot'],
+        }
+
+        # Create a form instance with the existing data
+        form = BookingItemForm(
+            max_attendees=item['experience'].max_attendees,
+            initial=existing_data
+        )
+
+        # Append to forms
+        forms.append({'experience': item['experience'], 'form': form})
+
+    context = {
+        'basket_items': forms,
+        'total': basket_context['total'],
+        'experience_count': basket_context['experience_count'],
+        'discount': basket_context['discount'],
+        'discount_delta': basket_context['discount_delta'],
+        'discount_delivery_threshold': (
+            basket_context['discount_delivery_threshold']),
+        'grand_total': basket_context['grand_total'],
+    }
+
+    template = 'basket/basket.html'
+
+    return render(request, template, context)
 }
 ```
 
