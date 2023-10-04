@@ -36,6 +36,11 @@ class BookingItemForm(forms.ModelForm):
                     'class': 'qty-input',
                 }
             ),
+            'booking_date': forms.DateInput(
+                attrs={
+                    'class': 'flatpickr-date-input',
+                }
+            ),
         }
 
     def clean_booking_date(self):

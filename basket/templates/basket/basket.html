@@ -112,3 +112,20 @@
         </div>
     </div>
 {% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add the flatpickr-date-input as a class to the booking date input
+            $(".flatpickr-date-input").flatpickr({
+                enableTime: false,
+                dateFormat: "Y-m-d",
+                minDate: "today",
+            });
+        });
+
+    </script>
+
+{% endblock %}
