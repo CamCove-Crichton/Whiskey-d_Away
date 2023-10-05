@@ -88,6 +88,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - The next step was to then implement the drop down for the number of attendees per group, to only display the maximum number of people allowed per group booking per tour experience
 - Moved onto the basket view being able to not only display data for items added to the basket, but having the ability to edit the data for each item in the basket, and will need to come back to it down the line with validations to prevent users from selecting dates/time slots that are fully booked or do not have the capacity to take the selected number of attendees
 - Implemented the flatpickr for date editing in the basket view, for a better UX
+- Then added in an update and remove button to each line item in the basket, to allow the user to update or remove a line item that is in their basket
 
 ### Future Developments
 
@@ -96,6 +97,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Add higher quality images to the site for larger viewings of images
 - Add a background hover border to tour experiences to make it more prominent to the user when hovering over an tour, that it is clickable
 - Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
+- I would like to be able to have the basket automatically update after any input change per line item to be able to provide a better UX, so the user has instant feedback on any change
 
 ### Wireframes & Database Designs
 
@@ -133,6 +135,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
 | Basket tempate | The basket template renders and displays as expected with correct values and is responsive | |
 | Edit basket items | Items in the basket allow data to be edited with expected functionality | |
+| Update & Remove items | The update and remove buttons work as expected | |
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
@@ -821,6 +824,36 @@ LOGIN_REDIRECT_URL = '/'
         let currentValue = parseInt($(closestInput).val());
         $(closestInput).val(currentValue - 1);
     });
+}
+```
+
+- Assistance with the update and remove buttons javascript
+
+```javascript
+{
+    // Update quantity on click
+            $(".update-link").click(function(e) {
+                let form = $(this).prev('.update-form');
+                form.submit();
+            })
+
+            // Remove item and reload on click
+            $(".remove-item").click(function(e) {
+                let csrfToken = "{{ csrf_token }}";
+                let itemId = $(this).attr("id").split("remove_")[1];
+                let date = $(this).data("{{ item.form.booking_date.id_for_label }}");
+                let timeSlot = $(this).data("{{ item.form.booking_time_slot.id_for_label }}");
+                let url = `/basket/remove/${itemId}`;
+                let data = {
+                    'csrfmiddlewaretoken': csrfToken,
+                    'date': date,
+                    'timeSlot': timeSlot,
+                };
+
+                $.post(url, data).done(function() {
+                    location.reload();
+                })
+            });
 }
 ```
 

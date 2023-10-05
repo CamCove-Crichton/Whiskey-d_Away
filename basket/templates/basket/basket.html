@@ -81,6 +81,27 @@
 
                                 <!-- Experience line item total -->
                                 <td>£{{ item.experience.tour_price }}</td>
+                                <td>
+                                    <a class="text-danger float-right update-link"
+                                       id="remove_{{ item.item_id }}"
+                                       data-date="{{ item.form.booking_date.id_for_label }}"
+                                       data-time="{{ item.form.booking_time_slot.id_for_label }}"
+                                       data-attendees="{{ item.form.number_of_attendees.id_for_label }}"
+                                       title="Update"
+                                       href="">
+                                        <span class="icon text-yellow"><i class="fa-solid fa-rotate-right fa-xs"></i></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="remove-item text-danger float-right"
+                                       id="remove_{{ item.item_id }}"
+                                       data-date="{{ item.form.booking_date.id_for_label }}"
+                                       data-time="{{ item.form.booking_time_slot.id_for_label }}"
+                                       title="Remove"
+                                       href="">
+                                        <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
+                                    </a>
+                                </td>
                             </tr>
                             {% endfor %}
                             
@@ -102,11 +123,15 @@
                             {% endif %}
                         </tbody>
                     </table>
-                    <a href="{% url 'tours' %}" class="display-decoration-none btn bg-yellow text-black mt-3 mb-3">Continue Browsing Whiskey Experiences</a>
+                    <a href="{% url 'tours' %}" class="display-decoration-none btn bg-yellow text-black mt-3 mb-3">
+                        Continue Browsing Whiskey Experiences
+                    </a>
                     <a href="#" class="display-decoration-none btn bg-yellow text-black mt-3 mb-3">Book Now</a>
                 {% else %}
                     <p class="text-center text-yellow">Your basket is currently empty</p>
-                    <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">Back to Whiskey Experiences</a>
+                    <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">
+                        Back to Whiskey Experiences
+                    </a>
                 {% endif %}
             </div>
         </div>
@@ -123,6 +148,31 @@
                 enableTime: false,
                 dateFormat: "Y-m-d",
                 minDate: "today",
+            });
+
+            // Assistance from CI - Boutique Ado walkthrough
+            // Update quantity on click
+            $(".update-link").click(function(e) {
+                let form = $(this).prev('.update-form');
+                form.submit();
+            })
+
+            // Remove item and reload on click
+            $(".remove-item").click(function(e) {
+                let csrfToken = "{{ csrf_token }}";
+                let itemId = $(this).attr("id").split("remove_")[1];
+                let date = $(this).data("{{ item.form.booking_date.id_for_label }}");
+                let timeSlot = $(this).data("{{ item.form.booking_time_slot.id_for_label }}");
+                let url = `/basket/remove/${itemId}`;
+                let data = {
+                    'csrfmiddlewaretoken': csrfToken,
+                    'date': date,
+                    'timeSlot': timeSlot,
+                };
+
+                $.post(url, data).done(function() {
+                    location.reload();
+                })
             });
         });
 
