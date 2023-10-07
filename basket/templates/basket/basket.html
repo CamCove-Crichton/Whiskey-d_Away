@@ -43,64 +43,59 @@
                                 <!-- Booking Name -->
                                 <td>{{ item.experience.tour_name }}</td>
 
-                                <!-- Booking Date -->
+                                <!-- Booking Date, time and attendees -->
                                 <td>
-                                    <form class="form update-form" method="post" action="">
+                                    {% if item.form %}
+                                    <form class="form update-form" method="post" action="{% url 'adjust_basket' item.experience.id %}">
                                         {% csrf_token %}
+                                        <!-- Booking Date -->
                                         <div class="form-group visually-hidden">
                                             <label for="{{ item.form.booking_date.id_for_label }}">Number of Attendees:</label>
                                             {{ item.form.booking_date }}
                                         </div>
-                                    </form>
-                                </td>
 
-                                <!-- Booking Time Slot -->
-                                <td>
-                                    <form class="form update-form" method="post" action="">
-                                        {% csrf_token %}
+                                        <!-- Booking time slot -->
                                         <div class="form-group visually-hidden">
                                             <label for="{{ item.form.booking_time_slot.id_for_label }}">Number of Attendees:</label>
                                             {{ item.form.booking_time_slot }}
                                         </div>
-                                    </form>
-                                </td>
 
-                                <!-- Number of Attendees -->
-                                <td>
-                                    <form class="form update-form" method="post" action="">
-                                        {% csrf_token %}
+                                        <!-- Number of attendees -->
                                         <div class="form-group visually-hidden">
                                             <label for="{{ item.form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
                                             {{ item.form.number_of_attendees }}
                                         </div>
+
+                                        <!-- Hidden input for item_id -->
+                                        <input type="hidden" name="item_id" value="{{ item.experience.id }}">
+
+                                        <!-- Experience price per person -->
+                                        £{{ item.experience.tour_price }}
+
+                                        <!-- Experience line item total -->
+                                        £{{ item.experience.tour_price }}
+
+                                        <!-- Update button -->
+                                        <a class="text-danger float-right update-link"
+                                            data-date="{{ item.form.booking_date.id_for_label }}"
+                                            data-time="{{ item.form.booking_time_slot.id_for_label }}"
+                                            data-attendees="{{ item.form.number_of_attendees.id_for_label }}"
+                                            title="Update"
+                                            href="#">
+                                                <span class="icon text-yellow"><i class="fa-solid fa-rotate-right fa-xs"></i></span>
+                                        </a>
+
+                                        <!-- Remove button -->
+                                        <a class="remove-item text-danger float-right"
+                                            id="remove_{{ item.item_id }}"
+                                            data-date="{{ item.form.booking_date.id_for_label }}"
+                                            data-time="{{ item.form.booking_time_slot.id_for_label }}"
+                                            title="Remove"
+                                            href="#">
+                                                <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
+                                        </a>
                                     </form>
-                                </td>
-
-                                <!-- Experience price per person -->
-                                <td>£{{ item.experience.tour_price }}</td>
-
-                                <!-- Experience line item total -->
-                                <td>£{{ item.experience.tour_price }}</td>
-                                <td>
-                                    <a class="text-danger float-right update-link"
-                                       id="remove_{{ item.item_id }}"
-                                       data-date="{{ item.form.booking_date.id_for_label }}"
-                                       data-time="{{ item.form.booking_time_slot.id_for_label }}"
-                                       data-attendees="{{ item.form.number_of_attendees.id_for_label }}"
-                                       title="Update"
-                                       href="">
-                                        <span class="icon text-yellow"><i class="fa-solid fa-rotate-right fa-xs"></i></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="remove-item text-danger float-right"
-                                       id="remove_{{ item.item_id }}"
-                                       data-date="{{ item.form.booking_date.id_for_label }}"
-                                       data-time="{{ item.form.booking_time_slot.id_for_label }}"
-                                       title="Remove"
-                                       href="">
-                                        <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
-                                    </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -150,12 +145,13 @@
                 minDate: "today",
             });
 
-            // Assistance from CI - Boutique Ado walkthrough
             // Update quantity on click
-            $(".update-link").click(function(e) {
-                let form = $(this).prev('.update-form');
+            $(".update-link").click(function (e) {
+                e.preventDefault();
+                let form = $(this).closest('form');
                 form.submit();
-            })
+            });
+                
 
             // Remove item and reload on click
             $(".remove-item").click(function(e) {

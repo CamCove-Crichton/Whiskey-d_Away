@@ -89,6 +89,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Moved onto the basket view being able to not only display data for items added to the basket, but having the ability to edit the data for each item in the basket, and will need to come back to it down the line with validations to prevent users from selecting dates/time slots that are fully booked or do not have the capacity to take the selected number of attendees
 - Implemented the flatpickr for date editing in the basket view, for a better UX
 - Then added in an update and remove button to each line item in the basket, to allow the user to update or remove a line item that is in their basket
+- I added in the view, and url to be able to adjust the basket, so users can update the items in the baset without having to stray away from the basket
 
 ### Future Developments
 
@@ -147,6 +148,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Had an issue with trying to get the sort selector working with the javascript, but it kept throwing an error, and I realised that because I was splitting the name where there was an underscore, it was actually splitting the name for the field name from the model so it could not recognise it, so after splitting the names, I joined the filed name part into the variable for sort, and it fixed the issue
 - I was struggling to get the form fields to display in my template, and after trying to think what could be wrong in my context or template files, I then realised the booking form instance had not been created in the tour_detail view, and add to the context, so once I did this, the form fields displayed in the template
 - Had an issue trying to implement the flatpickr in the basket template, and realised because I was trying to access multiple items by the id name but in the form of a template tag, it was no longer a unique option and so then had to implement a class for the booking date and added that to the widgets in the form for the booking item, and then used the jQuery function by targeting the class instead
+- Had an issue with updating the session variable for the basket, and after getting assistance from a CI tutor, we found we needed toset the basket.session to .session.modified = True to inform django the session has been modified
 
 ### Validator Testing
 
@@ -836,6 +838,83 @@ LOGIN_REDIRECT_URL = '/'
                 let form = $(this).prev('.update-form');
                 form.submit();
             })
+
+            // Remove item and reload on click
+            $(".remove-item").click(function(e) {
+                let csrfToken = "{{ csrf_token }}";
+                let itemId = $(this).attr("id").split("remove_")[1];
+                let date = $(this).data("{{ item.form.booking_date.id_for_label }}");
+                let timeSlot = $(this).data("{{ item.form.booking_time_slot.id_for_label }}");
+                let url = `/basket/remove/${itemId}`;
+                let data = {
+                    'csrfmiddlewaretoken': csrfToken,
+                    'date': date,
+                    'timeSlot': timeSlot,
+                };
+
+                $.post(url, data).done(function() {
+                    location.reload();
+                })
+            });
+}
+```
+
+- Assistance with implementing the adjust_basket view
+
+```python
+{
+    def adjust_basket(request, item_id):
+    """
+    A view to aadjust the number of attendees, time slot or date in the
+    line items of the basket
+    """
+    try:
+        number_of_attendees = int(request.POST.get('number_of_attendees'))
+    except ValueError:
+        messages.error(request, 'Invalid number of attendees. \
+            Please enter a valid number.')
+        return redirect(reverse('view_basket'))
+
+    item_data = {}
+
+    booking_date = request.POST.get('booking_date')
+    booking_time_slot = request.POST.get('booking_time_slot')
+    basket = request.session.get('basket', {})
+
+    # Check if basket[item_id] is a dictionary
+    if (isinstance(basket.get(item_id), dict) and
+            'items_by_date_and_time' in basket[item_id]):
+        # The item is already in the basket
+        item_data = basket[item_id]
+
+        # Assistance from tutor at CI
+        item_data = {
+            'items_by_date_and_time': {
+                booking_date: {
+                    booking_time_slot: number_of_attendees
+                }
+            }
+        }
+
+    # Update the session variable with the modified basket
+    request.session['basket'][item_id] = item_data
+    # Assistance from tutor at CI
+    request.session.modified = True
+
+    messages.success(request, 'Basket successfully updated')
+    return redirect(reverse('view_basket'))
+}
+```
+
+``` javascript
+{
+    // Update quantity on click
+            $(".update-link").click(function (e) {
+                e.preventDefault();
+                let form = $(this).closest('form');
+                form.submit();
+            });
+                
 
             // Remove item and reload on click
             $(".remove-item").click(function(e) {

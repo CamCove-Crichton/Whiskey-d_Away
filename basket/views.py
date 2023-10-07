@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.urls import reverse
 from django.contrib import messages
 from .contexts import basket_contents
 from booking.forms import BookingItemForm
@@ -25,6 +27,7 @@ def view_basket(request):
             'number_of_attendees': item['number_of_attendees'],
             'booking_date': item['booking_date'],
             'booking_time_slot': item['booking_time_slot'],
+            'experience': item['experience'],
         }
 
         # Create a form instance with the existing data
@@ -96,3 +99,46 @@ def add_to_basket(request, item_id):
 
     request.session['basket'] = basket
     return redirect(redirect_url)
+
+
+# Assistance from CI - Boutique Ado walkthrough
+def adjust_basket(request, item_id):
+    """
+    A view to aadjust the number of attendees, time slot or date in the
+    line items of the basket
+    """
+    try:
+        number_of_attendees = int(request.POST.get('number_of_attendees'))
+    except ValueError:
+        messages.error(request, 'Invalid number of attendees. \
+            Please enter a valid number.')
+        return redirect(reverse('view_basket'))
+
+    item_data = {}
+
+    booking_date = request.POST.get('booking_date')
+    booking_time_slot = request.POST.get('booking_time_slot')
+    basket = request.session.get('basket', {})
+
+    # Check if basket[item_id] is a dictionary
+    if (isinstance(basket.get(item_id), dict) and
+            'items_by_date_and_time' in basket[item_id]):
+        # The item is already in the basket
+        item_data = basket[item_id]
+
+        # Assistance from tutor at CI
+        item_data = {
+            'items_by_date_and_time': {
+                booking_date: {
+                    booking_time_slot: number_of_attendees
+                }
+            }
+        }
+
+    # Update the session variable with the modified basket
+    request.session['basket'][item_id] = item_data
+    # Assistance from tutor at CI
+    request.session.modified = True
+
+    messages.success(request, 'Basket successfully updated')
+    return redirect(reverse('view_basket'))
