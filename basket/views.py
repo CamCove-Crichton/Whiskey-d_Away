@@ -69,9 +69,7 @@ def add_to_basket(request, item_id):
         if form.is_valid():
             # Proceed with adding products if form is valid
             number_of_attendees = form.cleaned_data['number_of_attendees']
-            # booking_date = form.cleaned_data['booking_date']
             booking_time_slot = form.cleaned_data['booking_time_slot']
-            # max_attendees = form.cleaned_data.get('max_attendees')
 
             # Check if the experience already exists in the basket
             if item_id in basket:
