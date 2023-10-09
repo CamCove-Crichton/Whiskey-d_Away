@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from .contexts import basket_contents
@@ -61,44 +60,44 @@ def add_to_basket(request, item_id):
     A view to add the number of attendees selected for
     an experience id to the basket
     """
-
-    number_of_attendees = int(request.POST.get('number_of_attendees'))
-    booking_date = request.POST.get('booking_date')
-    booking_time_slot = request.POST.get('booking_time_slot')
     redirect_url = request.POST.get('redirect_url')
-    basket = request.session.get('basket', {})
 
-    # Check if basket[item_id] is a dictionary
-    if (isinstance(basket.get(item_id), dict) and
-            'items_by_date_and_time' in basket[item_id]):
-        if booking_date in basket[item_id]['items_by_date_and_time']:
-            # The tour for the same day exists in the basket
-            if (booking_time_slot in basket[item_id]
-                    ['items_by_date_and_time'][booking_date]):
-                # The tour for the same date and time slot already in basket
-                (basket[item_id]['items_by_date_and_time']
-                    [booking_date][booking_time_slot]) += number_of_attendees
+    if request.method == 'POST':
+        basket = request.session.get('basket', {})
+        form = BookingItemForm(request.POST)
+
+        if form.is_valid():
+            # Proceed with adding products if form is valid
+            number_of_attendees = form.cleaned_data['number_of_attendees']
+            # booking_date = form.cleaned_data['booking_date']
+            booking_time_slot = form.cleaned_data['booking_time_slot']
+            # max_attendees = form.cleaned_data.get('max_attendees')
+
+            # Check if the experience already exists in the basket
+            if item_id in basket:
+                messages.error(request, 'This experience already \
+                    exists in your basket. If you wish to update it, please \
+                        go to the basket to do so.')
+                return redirect(redirect_url)
             else:
-                # Tour with the same date exists but with a different time slot
-                (basket[item_id]['items_by_date_and_time']
-                    [booking_date][booking_time_slot]) = number_of_attendees
-        else:
-            # The tour for a different date needs to be added
-            basket[item_id]['items_by_date_and_time'][booking_date] = {
-                booking_time_slot: number_of_attendees
-            }
-    else:
-        # Initialize a new entry for the item in the basket
-        basket[item_id] = {
-            'items_by_date_and_time': {
-                booking_date: {
-                    booking_time_slot: number_of_attendees
+                # Add the experience to the basket
+                basket[item_id] = {
+                    'number_of_attendees': number_of_attendees,
+                    'booking_date':  request.POST.get('booking_date'),
+                    'max_attendees': request.POST.get('max_attendees'),
+                    'booking_time_slot': booking_time_slot
                 }
-            }
-        }
 
-    request.session['basket'] = basket
-    return redirect(redirect_url)
+                request.session['basket'] = basket
+                messages.success(request, 'Experience successfully added to \
+                    your basket')
+
+            return redirect(redirect_url)
+        else:
+            messages.error(request, 'Invalid form submission. Please check \
+                your inputs')
+            print(f"Form errors: {form.errors}")
+            return redirect(redirect_url)
 
 
 # Assistance from CI - Boutique Ado walkthrough

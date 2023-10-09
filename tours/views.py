@@ -72,6 +72,8 @@ def tour_detail(request, id):
     """
     A view to display the full details of an individual tour experience
     """
+    print('BASKET: ', request.session.get('basket'))
+    # request.session['basket'] = {}
     try:
         tour = get_object_or_404(Tours, id=id)
     except Tours.DoesNotExist:
@@ -84,6 +86,7 @@ def tour_detail(request, id):
     context = {
         'tour': tour,
         'booking_form': booking_form,
+        'number_of_attendees': [x for x in range(1, tour.max_attendees + 1)]
     }
 
     template = 'tours/tour_detail.html'

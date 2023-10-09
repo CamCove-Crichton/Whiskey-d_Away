@@ -6,24 +6,45 @@ from tours.models import Tours
 from django.utils import timezone
 from django.conf import settings
 from django.forms.widgets import NumberInput
+from datetime import datetime
+import pytz
 
 
 class BookingItemForm(forms.ModelForm):
     """
     A form for to capture the user input for the selected whiskey experience
     """
-    number_of_attendees = forms.ChoiceField(label='Number of Attendees')
 
     # Assistance from ChatGPT
-    def __init__(self, max_attendees, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         A method to instantiate a dynamic choice for the number of attendees
         based on the max_attendees per tour
         """
-        super().__init__(*args, **kwargs)
-        self.fields['number_of_attendees'].choices = [
-            (i, str(i)) for i in range(1, max_attendees + 1)
-        ]
+
+        # Remove max_attendees from kwargs and set it to None if not present
+        max_attendees = kwargs.pop('max_attendees', None)
+        print(f"max_attendees: {max_attendees}")
+        super(BookingItemForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        """
+        A validation to try clean the number of attendees data
+        """
+        cleaned_data = super().clean()
+        number_of_attendees = cleaned_data.get('number_of_attendees')
+        max_attendees = cleaned_data.get('max_attendees')
+        print(f"number_of_attendees: {number_of_attendees}")
+        print(f"max_attendees in clean method: {max_attendees}")
+
+        if number_of_attendees is not None and max_attendees is not None:
+            if not 1 <= number_of_attendees <= max_attendees:
+                raise ValidationError(
+                    'Number of attendees must be between 1 and the \
+                        maximum allowed.')
+
+        print(f"cleaned_data: {cleaned_data}")
+        return cleaned_data
 
     class Meta:
         model = BookingItem
@@ -83,6 +104,10 @@ class BookingItemForm(forms.ModelForm):
         slot_datetime = timezone.datetime.combine(booking_date, start_time)
 
         # Check if the booking slots datetime is not in the past
+        utc = pytz.UTC
+        current_datetime = current_datetime.replace(tzinfo=utc)
+        slot_datetime = slot_datetime.replace(tzinfo=utc)
+
         if current_datetime > slot_datetime:
             raise ValidationError('This time slot is no longer available')
 
