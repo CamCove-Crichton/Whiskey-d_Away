@@ -27,7 +27,12 @@ def view_basket(request):
             'booking_date': item['booking_date'],
             'booking_time_slot': item['booking_time_slot'],
             'experience': item['experience'],
+            'max_attendees': item['experience'].max_attendees,
         }
+
+        # Create a list of values for the number of attendees dropdown
+        existing_data['number_of_attendees_values'] = [
+            x for x in range(1, existing_data['max_attendees'] + 1)]
 
         # Create a form instance with the existing data
         form = BookingItemForm(
@@ -47,6 +52,8 @@ def view_basket(request):
         'discount_delivery_threshold': (
             basket_context['discount_delivery_threshold']),
         'grand_total': basket_context['grand_total'],
+        'number_of_attendees_values': existing_data['number_of_attendees_values'],
+        'submitted_number_of_attendees': existing_data['number_of_attendees'],
     }
 
     template = 'basket/basket.html'
@@ -104,38 +111,70 @@ def adjust_basket(request, item_id):
     A view to aadjust the number of attendees, time slot or date in the
     line items of the basket
     """
-    try:
-        number_of_attendees = int(request.POST.get('number_of_attendees'))
-    except ValueError:
-        messages.error(request, 'Invalid number of attendees. \
-            Please enter a valid number.')
-        return redirect(reverse('view_basket'))
+    if request.method == 'POST':
+        print("Request is POST")
+        basket = request.session.get('basket', {})
+        form = BookingItemForm(request.POST)
+        print(f"Basket before form validation: {basket}")
+        print(f"Form before form validation: {form}")
 
-    item_data = {}
+        if form.is_valid():
+            print("Form is valid")
+            # Proceed with adding products if form is valid
+            number_of_attendees = form.cleaned_data['number_of_attendees']
+            booking_time_slot = form.cleaned_data['booking_time_slot']
+            booking_date = request.POST.get('booking_date', '')
 
-    booking_date = request.POST.get('booking_date')
-    booking_time_slot = request.POST.get('booking_time_slot')
-    basket = request.session.get('basket', {})
+            basket_item = request.session['basket'].get(item_id, {})
+            basket_item['number_of_attendees'] = number_of_attendees
+            basket_item['booking_time_slot'] = booking_time_slot
+            basket_item['booking_date'] = booking_date
 
-    # Check if basket[item_id] is a dictionary
-    if (isinstance(basket.get(item_id), dict) and
-            'items_by_date_and_time' in basket[item_id]):
-        # The item is already in the basket
-        item_data = basket[item_id]
+            request.session['basket'][item_id] = basket_item
+            request.session.modified = True
 
-        # Assistance from tutor at CI
-        item_data = {
-            'items_by_date_and_time': {
-                booking_date: {
-                    booking_time_slot: number_of_attendees
-                }
-            }
-        }
+            messages.success(request, 'Basket updated succesfully.')
+        else:
+            messages.error(request, 'Invalid form submission. Please \
+                check your inputs.')
+            print(f"Form errors: {form.errors}")
+    else:
+        messages.error(request, 'Invalid request method for adjusting basket')
 
-    # Update the session variable with the modified basket
-    request.session['basket'][item_id] = item_data
-    # Assistance from tutor at CI
-    request.session.modified = True
-
-    messages.success(request, 'Basket successfully updated')
     return redirect(reverse('view_basket'))
+
+    # try:
+    #     number_of_attendees = int(request.POST.get('number_of_attendees'))
+    # except ValueError:
+    #     messages.error(request, 'Invalid number of attendees. \
+    #         Please enter a valid number.')
+    #     return redirect(reverse('view_basket'))
+
+    # item_data = {}
+
+    # booking_date = request.POST.get('booking_date')
+    # booking_time_slot = request.POST.get('booking_time_slot')
+    # basket = request.session.get('basket', {})
+
+    # # Check if basket[item_id] is a dictionary
+    # if (isinstance(basket.get(item_id), dict) and
+    #         'items_by_date_and_time' in basket[item_id]):
+    #     # The item is already in the basket
+    #     item_data = basket[item_id]
+
+    #     # Assistance from tutor at CI
+    #     item_data = {
+    #         'items_by_date_and_time': {
+    #             booking_date: {
+    #                 booking_time_slot: number_of_attendees
+    #             }
+    #         }
+    #     }
+
+    # # Update the session variable with the modified basket
+    # request.session['basket'][item_id] = item_data
+    # # Assistance from tutor at CI
+    # request.session.modified = True
+
+    # messages.success(request, 'Basket successfully updated')
+    # return redirect(reverse('view_basket'))

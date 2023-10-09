@@ -30,11 +30,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Whiskey Experience</th>
-                                <th scope="col">Booking Date</th>
-                                <th scope="col">Booking Time Slot</th>
-                                <th scope="col">No. of Attendees</th>
-                                <th scope="col">Price pp</th>
-                                <th scope="col">Line item total</th>
+                                <th scope="col">Line Item Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,31 +45,37 @@
                                     <form class="form update-form" method="post" action="{% url 'adjust_basket' item.experience.id %}">
                                         {% csrf_token %}
                                         <!-- Booking Date -->
-                                        <div class="form-group visually-hidden">
-                                            <label for="{{ item.form.booking_date.id_for_label }}">Number of Attendees:</label>
+                                        <div class="form-group">
+                                            <label for="{{ item.form.booking_date.id_for_label }}">Booking Date:</label>
                                             {{ item.form.booking_date }}
                                         </div>
 
                                         <!-- Booking time slot -->
-                                        <div class="form-group visually-hidden">
-                                            <label for="{{ item.form.booking_time_slot.id_for_label }}">Number of Attendees:</label>
+                                        <div class="form-group">
+                                            <label for="{{ item.form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
                                             {{ item.form.booking_time_slot }}
                                         </div>
 
                                         <!-- Number of attendees -->
-                                        <div class="form-group visually-hidden">
+                                        <div class="form-group">
                                             <label for="{{ item.form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
-                                            {{ item.form.number_of_attendees }}
+                                            <div class="input-group">
+                                                <select name="number_of_attendees">
+                                                {% for i in number_of_attendees_values %}
+                                                    <option value="{{ i }}" {% if i == submitted_number_of_attendees %}selected{% endif %}>{{ i }}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <!-- Hidden input for item_id -->
                                         <input type="hidden" name="item_id" value="{{ item.experience.id }}">
 
                                         <!-- Experience price per person -->
-                                        £{{ item.experience.tour_price }}
+                                        <p><strong>Price pp:</strong> £{{ item.experience.tour_price }}</p>
 
                                         <!-- Experience line item total -->
-                                        £{{ item.experience.tour_price }}
+                                        <p><strong>Line Item Total:</strong> £{{ item.experience.tour_price }}</p>
 
                                         <!-- Update button -->
                                         <a class="text-danger float-right update-link"
@@ -102,7 +104,7 @@
                             
                             {% if discount %}
                             <tr>
-                                <td colspan="6" class="pt-3 text-right pr-4">
+                                <td colspan="2" class="pt-3 text-right pr-4">
                                     <strong>Total:</strong> £{{ total|floatformat:2 }} <br>
                                     <strong>Discount:</strong> £{{ discount|floatformat:2 }} <br>
                                     <strong>Basket Total:</strong> £{{ grand_total|floatformat:2 }}
@@ -110,7 +112,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="6" class="pt-3 text-right">
+                                <td colspan="2" class="pt-3 text-right">
                                     <strong>Basket Total:</strong> £{{ grand_total|floatformat:2 }}
                                 </td>
                             </tr>
