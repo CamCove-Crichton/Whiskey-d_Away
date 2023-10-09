@@ -90,9 +90,7 @@
 
                                         <!-- Remove button -->
                                         <a class="remove-item text-danger float-right"
-                                            id="remove_{{ item.item_id }}"
-                                            data-date="{{ item.form.booking_date.id_for_label }}"
-                                            data-time="{{ item.form.booking_time_slot.id_for_label }}"
+                                            id="remove_{{ item.experience.id }}"
                                             title="Remove"
                                             href="#">
                                                 <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
@@ -160,14 +158,11 @@
             $(".remove-item").click(function(e) {
                 let csrfToken = "{{ csrf_token }}";
                 let itemId = $(this).attr("id").split("remove_")[1];
-                let date = $(this).data("{{ item.form.booking_date.id_for_label }}");
-                let timeSlot = $(this).data("{{ item.form.booking_time_slot.id_for_label }}");
-                let url = `/basket/remove/${itemId}`;
+                let url = `/basket/remove/${itemId}/`;
                 let data = {
                     'csrfmiddlewaretoken': csrfToken,
-                    'date': date,
-                    'timeSlot': timeSlot,
                 };
+                console.log(url);
 
                 $.post(url, data).done(function() {
                     location.reload();

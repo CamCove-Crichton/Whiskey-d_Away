@@ -94,7 +94,7 @@
                         <div class="form-group w-50">
                             <label for="{{ booking_form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
                             <div class="input-group">
-                                <select name="number_of_attendees">
+                                <select id="number_of_attendees" name="number_of_attendees">
                                   {% for i in number_of_attendees %}
                                     <option value="{{ i }}">{{ i }}</option>
                                   {% endfor %}
@@ -135,7 +135,6 @@
                 minDate: "today",
             })
         })
-        console.log($("#{{ booking_form.booking_date.id_for_label }}"));
 
     </script>
 

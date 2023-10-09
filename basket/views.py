@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
 from .contexts import basket_contents
@@ -19,20 +19,25 @@ def view_basket(request):
     # Create empty forms list to append to
     forms = []
 
+    # Initialize existing_data outside the loop
+    existing_data = {
+        'number_of_attendees_values': [],
+    }
+
     # Iterate through basket items
     for item in basket_items:
         # Get existing data for the current item
-        existing_data = {
+        existing_data.update({
             'number_of_attendees': item['number_of_attendees'],
             'booking_date': item['booking_date'],
             'booking_time_slot': item['booking_time_slot'],
             'experience': item['experience'],
             'max_attendees': item['experience'].max_attendees,
-        }
+        })
 
         # Create a list of values for the number of attendees dropdown
-        existing_data['number_of_attendees_values'] = [
-            x for x in range(1, existing_data['max_attendees'] + 1)]
+        existing_data['number_of_attendees_values'].extend(
+            [x for x in range(1, existing_data['max_attendees'] + 1)])
 
         # Create a form instance with the existing data
         form = BookingItemForm(
@@ -54,7 +59,8 @@ def view_basket(request):
         'grand_total': basket_context['grand_total'],
         'number_of_attendees_values': (
             existing_data['number_of_attendees_values']),
-        'submitted_number_of_attendees': existing_data['number_of_attendees'],
+        'submitted_number_of_attendees': (
+            existing_data.get('number_of_attendees', 0)),
     }
 
     template = 'basket/basket.html'
@@ -110,11 +116,10 @@ def add_to_basket(request, item_id):
 # Assistance from CI - Boutique Ado walkthrough
 def adjust_basket(request, item_id):
     """
-    A view to aadjust the number of attendees, time slot or date in the
+    A view to adjust the number of attendees, time slot or date in the
     line items of the basket
     """
     if request.method == 'POST':
-        basket = request.session.get('basket', {})
         form = BookingItemForm(request.POST)
 
         if form.is_valid():
@@ -139,3 +144,25 @@ def adjust_basket(request, item_id):
         messages.error(request, 'Invalid request method for adjusting basket')
 
     return redirect(reverse('view_basket'))
+
+
+def remove_from_basket(request, item_id):
+    """
+    A view to remove an item from the basket
+    """
+    try:
+        if request.method == 'POST':
+            basket = request.session.get('basket', {})
+            print(f"Basket: {basket}")
+
+            if item_id in basket:
+                basket.pop(item_id)
+            else:
+                messages.error(request, 'Whiskey Experience does not exist in \
+                    basket')
+
+            request.session['basket'] = basket
+            return HttpResponse(status=200)
+
+    except Exception as e:
+        return HttpResponse(status=500)

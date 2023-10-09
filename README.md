@@ -93,6 +93,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - I decided to go back on myself to simplify things a bit due to time contraints, so changed my add to basket view to only allow one of every tour to be added to the basket, and if it already exists in the basket then it will return a message to explain to the user the tour already exists in the basket and if they would like to edit it, this can be done from the basket
 - We then generated the number of attendees from the template view and in the template itself
 - After refocusing the add to basket view, I then went on to readjust the adjust basket view to update the items that exist in the basket
+- Then moved onto getting the remove item from basket to work with the view and url which was created
 
 ### Future Developments
 
@@ -169,7 +170,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
 - Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
-- Although having a guided UX for limiting the number of people per group booking, there is a bug, that you are allowed to add a booking, and then add another booking for the same date, time slot and max_number of attendees which when viewed in the basket, takes the user over the maximum number of people allowed to book per group. Will need to return to this when I get to validations for maximum number of people allowed on any time slot and date
+- After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct.
 
 ## Credits
 
