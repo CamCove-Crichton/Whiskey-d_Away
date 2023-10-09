@@ -83,6 +83,7 @@ def tour_detail(request, id):
     # Pass max_attendees to the booking form
     booking_form = BookingItemForm(max_attendees=tour.max_attendees)
 
+    # Assistance from CI Tutor with generating the number of attendees list
     context = {
         'tour': tour,
         'booking_form': booking_form,

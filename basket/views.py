@@ -52,7 +52,8 @@ def view_basket(request):
         'discount_delivery_threshold': (
             basket_context['discount_delivery_threshold']),
         'grand_total': basket_context['grand_total'],
-        'number_of_attendees_values': existing_data['number_of_attendees_values'],
+        'number_of_attendees_values': (
+            existing_data['number_of_attendees_values']),
         'submitted_number_of_attendees': existing_data['number_of_attendees'],
     }
 
@@ -67,6 +68,7 @@ def add_to_basket(request, item_id):
     A view to add the number of attendees selected for
     an experience id to the basket
     """
+    # Assistance from CI Tutor with addressing some issues with form validation
     redirect_url = request.POST.get('redirect_url')
 
     if request.method == 'POST':
@@ -101,7 +103,7 @@ def add_to_basket(request, item_id):
         else:
             messages.error(request, 'Invalid form submission. Please check \
                 your inputs')
-            print(f"Form errors: {form.errors}")
+
             return redirect(redirect_url)
 
 
@@ -112,14 +114,10 @@ def adjust_basket(request, item_id):
     line items of the basket
     """
     if request.method == 'POST':
-        print("Request is POST")
         basket = request.session.get('basket', {})
         form = BookingItemForm(request.POST)
-        print(f"Basket before form validation: {basket}")
-        print(f"Form before form validation: {form}")
 
         if form.is_valid():
-            print("Form is valid")
             # Proceed with adding products if form is valid
             number_of_attendees = form.cleaned_data['number_of_attendees']
             booking_time_slot = form.cleaned_data['booking_time_slot']
@@ -137,44 +135,7 @@ def adjust_basket(request, item_id):
         else:
             messages.error(request, 'Invalid form submission. Please \
                 check your inputs.')
-            print(f"Form errors: {form.errors}")
     else:
         messages.error(request, 'Invalid request method for adjusting basket')
 
     return redirect(reverse('view_basket'))
-
-    # try:
-    #     number_of_attendees = int(request.POST.get('number_of_attendees'))
-    # except ValueError:
-    #     messages.error(request, 'Invalid number of attendees. \
-    #         Please enter a valid number.')
-    #     return redirect(reverse('view_basket'))
-
-    # item_data = {}
-
-    # booking_date = request.POST.get('booking_date')
-    # booking_time_slot = request.POST.get('booking_time_slot')
-    # basket = request.session.get('basket', {})
-
-    # # Check if basket[item_id] is a dictionary
-    # if (isinstance(basket.get(item_id), dict) and
-    #         'items_by_date_and_time' in basket[item_id]):
-    #     # The item is already in the basket
-    #     item_data = basket[item_id]
-
-    #     # Assistance from tutor at CI
-    #     item_data = {
-    #         'items_by_date_and_time': {
-    #             booking_date: {
-    #                 booking_time_slot: number_of_attendees
-    #             }
-    #         }
-    #     }
-
-    # # Update the session variable with the modified basket
-    # request.session['basket'][item_id] = item_data
-    # # Assistance from tutor at CI
-    # request.session.modified = True
-
-    # messages.success(request, 'Basket successfully updated')
-    # return redirect(reverse('view_basket'))

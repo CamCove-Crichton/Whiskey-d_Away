@@ -90,6 +90,9 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Implemented the flatpickr for date editing in the basket view, for a better UX
 - Then added in an update and remove button to each line item in the basket, to allow the user to update or remove a line item that is in their basket
 - I added in the view, and url to be able to adjust the basket, so users can update the items in the baset without having to stray away from the basket
+- I decided to go back on myself to simplify things a bit due to time contraints, so changed my add to basket view to only allow one of every tour to be added to the basket, and if it already exists in the basket then it will return a message to explain to the user the tour already exists in the basket and if they would like to edit it, this can be done from the basket
+- We then generated the number of attendees from the template view and in the template itself
+- After refocusing the add to basket view, I then went on to readjust the adjust basket view to update the items that exist in the basket
 
 ### Future Developments
 
@@ -99,6 +102,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Add a background hover border to tour experiences to make it more prominent to the user when hovering over an tour, that it is clickable
 - Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
 - I would like to be able to have the basket automatically update after any input change per line item to be able to provide a better UX, so the user has instant feedback on any change
+- I would like to be able to have the user add multiple of the same tour for different days and different time slots, in case they would like to attend the same tour multiple times but would like to do so in one booking
 
 ### Wireframes & Database Designs
 
@@ -149,6 +153,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - I was struggling to get the form fields to display in my template, and after trying to think what could be wrong in my context or template files, I then realised the booking form instance had not been created in the tour_detail view, and add to the context, so once I did this, the form fields displayed in the template
 - Had an issue trying to implement the flatpickr in the basket template, and realised because I was trying to access multiple items by the id name but in the form of a template tag, it was no longer a unique option and so then had to implement a class for the booking date and added that to the widgets in the form for the booking item, and then used the jQuery function by targeting the class instead
 - Had an issue with updating the session variable for the basket, and after getting assistance from a CI tutor, we found we needed toset the basket.session to .session.modified = True to inform django the session has been modified
+- Had some major issues in getting my form to validate when it was being submitted from the tour detail to be added to the basket, and ended up getting assistance from a CI Tutor, who was able to assist in untangling the mess, and we went down the route of generating the list for the number of attendees in the template and the template view, and removing the ChoiceField from the form input
 
 ### Validator Testing
 
@@ -1039,6 +1044,87 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Update to tour_detail and basket template with assistance from CI tutor and ChatGPT
+
+```html
+{
+    <div class="input-group">
+        <select name="number_of_attendees">
+        {% for i in number_of_attendees_values %}
+            <option value="{{ i }}" {% if i == submitted_number_of_attendees %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+        </select>
+    </div>
+}
+```
+
+- Assistance with initalising the form
+
+```python
+{
+    max_attendees = kwargs.pop('max_attendees', None)
+    print(f"max_attendees: {max_attendees}")
+    super(BookingItemForm, self).__init__(*args, **kwargs)
+}
+```
+
+- Assistance with generating the number of attendees list in the views
+
+```python
+{
+    'number_of_attendees': [x for x in range(1, tour.max_attendees + 1)]
+}
+```
+
+- Assistance from CI Tutor with addressing some issues in getting the number of attendees values in form validation
+
+```python
+{
+    def add_to_basket(request, item_id):
+    """
+    A view to add the number of attendees selected for
+    an experience id to the basket
+    """
+    # Assistance from CI Tutor with addressing some issues with form validation
+    redirect_url = request.POST.get('redirect_url')
+
+    if request.method == 'POST':
+        basket = request.session.get('basket', {})
+        form = BookingItemForm(request.POST)
+
+        if form.is_valid():
+            # Proceed with adding products if form is valid
+            number_of_attendees = form.cleaned_data['number_of_attendees']
+            booking_time_slot = form.cleaned_data['booking_time_slot']
+
+            # Check if the experience already exists in the basket
+            if item_id in basket:
+                messages.error(request, 'This experience already \
+                    exists in your basket. If you wish to update it, please \
+                        go to the basket to do so.')
+                return redirect(redirect_url)
+            else:
+                # Add the experience to the basket
+                basket[item_id] = {
+                    'number_of_attendees': number_of_attendees,
+                    'booking_date':  request.POST.get('booking_date'),
+                    'max_attendees': request.POST.get('max_attendees'),
+                    'booking_time_slot': booking_time_slot
+                }
+
+                request.session['basket'] = basket
+                messages.success(request, 'Experience successfully added to \
+                    your basket')
+
+            return redirect(redirect_url)
+        else:
+            messages.error(request, 'Invalid form submission. Please check \
+                your inputs')
+            print(f"Form errors: {form.errors}")
+            return redirect(redirect_url)
+}
+```
+
 [Bulma](https://bulma.io/) - CSS styling
 
 - Styling the fontawesome icons to be centered and proportionately sized
@@ -1498,6 +1584,106 @@ def generate_unique_booking_number():
     template = 'basket/basket.html'
 
     return render(request, template, context)
+}
+```
+
+- Assistance with cleaning the data for the number of attendees
+
+```python
+{
+    def clean(self):
+        """
+        A validation to try clean the number of attendees data
+        """
+        cleaned_data = super().clean()
+        number_of_attendees = cleaned_data.get('number_of_attendees')
+        max_attendees = cleaned_data.get('max_attendees')
+        print(f"number_of_attendees: {number_of_attendees}")
+        print(f"max_attendees in clean method: {max_attendees}")
+
+        if number_of_attendees is not None and max_attendees is not None:
+            if not 1 <= number_of_attendees <= max_attendees:
+                raise ValidationError(
+                    'Number of attendees must be between 1 and the \
+                        maximum allowed.')
+
+        print(f"cleaned_data: {cleaned_data}")
+        return cleaned_data
+}
+```
+
+- Assistance with trying to rewrite my basket contents context processor
+
+```python
+{
+    def basket_contents(request):
+    """
+    A function to return a dictionary of basket items
+    """
+    # Initialise empty lists and variables to store basket information
+    basket_items = []
+    total = 0
+    experience_count = 0
+    discount = 0
+    discount_delta = 0
+    grand_total = 0
+
+    # Get the basket from the session,
+    # Default to empty dictionary if it is not present
+    basket = request.session.get('basket', {})
+
+    # Iterate through each item in the basket
+    for item_id, item_data in basket.items():
+        # Retrieve relevant info for the item from the session data
+        number_of_attendees = item_data.get('number_of_attendees', 0)
+        booking_time_slot = item_data.get('booking_time_slot', '')
+        booking_date = item_data.get('booking_date', '')
+        max_attendees = item_data.get('max_attendees', 0)
+
+        # Retrieve corresponding experience object from the database
+        experience = get_object_or_404(Tours, pk=item_id)
+
+        # Calculate the total cost line item
+        total += number_of_attendees * experience.tour_price
+
+        # Update the count based on number of attendees in the basket
+        experience_count += number_of_attendees
+
+        # Append a dictionary representing the item to the basket_items list
+        basket_items.append({
+            'item_id': item_id,
+            'number_of_attendees': number_of_attendees,
+            'booking_time_slot': booking_time_slot,
+            'booking_date': booking_date,
+            'max_attendees': max_attendees,
+            'experience': experience,
+            'total': total,
+        })
+
+    # Check if the total exceeds the discount threshold
+    if total >= settings.DISCOUNT_SPEND_THRESHOLD:
+        # Calculate the discount amount
+        discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)
+
+        # Calculate the remaining amount needed to qualify for the discount
+        discount_delta = settings.DISCOUNT_SPEND_THRESHOLD - total
+
+    # Calculate the grand total after applying the discount
+    grand_total = total - discount
+
+    # Create a dictionary containing all the values
+    context = {
+        'basket_items': basket_items,
+        'total': total,
+        'experience_count': experience_count,
+        'discount': discount,
+        'discount_delta': discount_delta,
+        'discount_delivery_threshold': settings.DISCOUNT_SPEND_THRESHOLD,
+        'grand_total': grand_total,
+    }
+
+    return context
+
 }
 ```
 

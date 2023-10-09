@@ -21,12 +21,12 @@ class BookingItemForm(forms.ModelForm):
         A method to instantiate a dynamic choice for the number of attendees
         based on the max_attendees per tour
         """
-
+        # Assistance from CI Tutor & ChatGPT
         # Remove max_attendees from kwargs and set it to None if not present
         max_attendees = kwargs.pop('max_attendees', None)
-        print(f"max_attendees: {max_attendees}")
         super(BookingItemForm, self).__init__(*args, **kwargs)
 
+    # Assistance from ChatGPT
     def clean(self):
         """
         A validation to try clean the number of attendees data
@@ -34,8 +34,6 @@ class BookingItemForm(forms.ModelForm):
         cleaned_data = super().clean()
         number_of_attendees = cleaned_data.get('number_of_attendees')
         max_attendees = cleaned_data.get('max_attendees')
-        print(f"number_of_attendees: {number_of_attendees}")
-        print(f"max_attendees in clean method: {max_attendees}")
 
         if number_of_attendees is not None and max_attendees is not None:
             if not 1 <= number_of_attendees <= max_attendees:
@@ -43,7 +41,6 @@ class BookingItemForm(forms.ModelForm):
                     'Number of attendees must be between 1 and the \
                         maximum allowed.')
 
-        print(f"cleaned_data: {cleaned_data}")
         return cleaned_data
 
     class Meta:

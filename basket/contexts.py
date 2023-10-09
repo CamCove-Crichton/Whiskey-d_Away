@@ -5,6 +5,7 @@ from tours.models import Tours
 from booking.forms import BookingItemForm
 
 
+# Assistance from ChatGPT in trying to rewrite my basket_contents
 def basket_contents(request):
     """
     A function to return a dictionary of basket items
@@ -71,5 +72,4 @@ def basket_contents(request):
         'grand_total': grand_total,
     }
 
-    # return context
     return context
