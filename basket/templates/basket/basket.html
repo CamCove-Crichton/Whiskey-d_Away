@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load basket_tools %}
 
 <!-- Assistance from CI - Boutique Ado walkthrough -->
 {% block page_header %}
@@ -76,7 +77,10 @@
                                         <p><strong>Price pp:</strong> £{{ item.experience.tour_price }}</p>
 
                                         <!-- Experience line item total -->
-                                        <p><strong>Line Item Total:</strong> £{{ item.experience.tour_price }}</p>
+                                        <p>
+                                            <strong>Line Item Total:</strong> 
+                                            £{{ item.experience.tour_price | calc_subtotal:item.form.number_of_attendees.value }}
+                                        </p>
 
                                         <!-- Update button -->
                                         <a class="text-danger float-right update-link"
@@ -85,6 +89,7 @@
                                             data-attendees="{{ item.form.number_of_attendees.id_for_label }}"
                                             title="Update"
                                             href="#">
+                                                Update
                                                 <span class="icon text-yellow"><i class="fa-solid fa-rotate-right fa-xs"></i></span>
                                         </a>
 
@@ -93,6 +98,7 @@
                                             id="remove_{{ item.experience.id }}"
                                             title="Remove"
                                             href="#">
+                                                Delete
                                                 <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
                                         </a>
                                     </form>

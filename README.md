@@ -94,6 +94,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - We then generated the number of attendees from the template view and in the template itself
 - After refocusing the add to basket view, I then went on to readjust the adjust basket view to update the items that exist in the basket
 - Then moved onto getting the remove item from basket to work with the view and url which was created
+- Added in a basket_tools file to assist with things like having a function to calculate the line item totals
 
 ### Future Developments
 
@@ -104,6 +105,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
 - I would like to be able to have the basket automatically update after any input change per line item to be able to provide a better UX, so the user has instant feedback on any change
 - I would like to be able to have the user add multiple of the same tour for different days and different time slots, in case they would like to attend the same tour multiple times but would like to do so in one booking
+- I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee
 
 ### Wireframes & Database Designs
 
@@ -142,6 +144,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Basket tempate | The basket template renders and displays as expected with correct values and is responsive | |
 | Edit basket items | Items in the basket allow data to be edited with expected functionality | |
 | Update & Remove items | The update and remove buttons work as expected | |
+| Basket line item total | The line item total calculates correctly when an item has multiple attendees, and updates if the number of attendees is updated in the basket when the update is clicked | |
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
@@ -939,6 +942,25 @@ LOGIN_REDIRECT_URL = '/'
                     location.reload();
                 })
             });
+}
+```
+
+- Basket_tools to update the line item total
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django import template
+
+    register = template.Library()
+
+
+    @register.filter(name='calc_subtotal')
+    def calc_subtotal(price, number_of_attendees):
+        """
+        A function to calculate the line item total
+        """
+        return price * number_of_attendees
 }
 ```
 

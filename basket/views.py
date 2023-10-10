@@ -19,6 +19,8 @@ def view_basket(request):
     # Create empty forms list to append to
     forms = []
 
+    # Assistance from ChatGPT with delcaring the existing data outside the loop
+    # So that when there are no items in the basket there are no errors
     # Initialize existing_data outside the loop
     existing_data = {
         'number_of_attendees_values': [],
