@@ -1040,6 +1040,60 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- CSS colours for the toast capper and arrow taken directly from CI - Boutique Ado walkthrough due to time constraints
+
+```css
+{
+    /* Taken directly from CI - Boutique Ado walkthrough due to time constraints */
+    /* from CSS-tricks.com: https://css-tricks.com/snippets/css/css-triangle/ */
+    .arrow-up {
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 10px solid black;
+        position: absolute;
+        top: -10px;
+        right: 36px;
+    }
+
+
+    /* Taken directly from CI - Boutique Ado walkthrough due to time constraints */
+    /* Convenience classes - colors copied from Bootstrap */
+    .arrow-primary {
+        border-bottom-color: #007bff !important;
+    }
+
+    .arrow-secondary {
+        border-bottom-color: #6c757d !important;
+    }
+
+    .arrow-success {
+        border-bottom-color: #28a745 !important;
+    }
+
+    .arrow-danger {
+        border-bottom-color: #dc3545 !important;
+    }
+
+    .arrow-warning {
+        border-bottom-color: #ffc107 !important;
+    }
+
+    .arrow-info {
+        border-bottom-color: #17a2b8 !important;
+    }
+
+    .arrow-light {
+        border-bottom-color: #f8f9fa !important;
+    }
+
+    .arrow-dark {
+        border-bottom-color: #343a40 !important;
+    }
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
