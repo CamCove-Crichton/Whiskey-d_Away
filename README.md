@@ -95,6 +95,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - After refocusing the add to basket view, I then went on to readjust the adjust basket view to update the items that exist in the basket
 - Then moved onto getting the remove item from basket to work with the view and url which was created
 - Added in a basket_tools file to assist with things like having a function to calculate the line item totals
+- Then moved onto creating the html files for the toast messages to be able to display human readable messages to the user in an elegant way
 
 ### Future Developments
 
@@ -149,6 +150,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 | Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
 | Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | |
+| Toast Messages | Toast messages display and respond as expected | |
 
 ### Resolved Bugs
 
@@ -961,6 +963,80 @@ LOGIN_REDIRECT_URL = '/'
         A function to calculate the line item total
         """
         return price * number_of_attendees
+}
+```
+
+- CSS for toasts taken directly from CI Boutique Ado walkthrough due to time constraints
+
+```css
+{
+    /* Copied directly from CI - Boutique Ado walkthrough */
+    /* ------------------------------- bootstrap toasts */
+
+    .message-container {
+        position: fixed;
+        top: 72px;
+        right: 15px;
+        z-index: 99999999999;
+    }
+
+    .custom-toast {
+        overflow: visible;
+    }
+
+    .toast-capper {
+        height: 2px;
+    }
+}
+```
+
+- Javascript for toasts
+
+```javascript
+{
+        <script type="text/javascript">
+            $('.toast').toast('show');
+        </script>
+}
+```
+
+- Loop through message types
+
+```html
+{
+    {% with message.level as level %}
+        {% if level == 40 %}
+            {% include 'includes/toasts/toast_error.html' %}
+        {% elif level == 30 %}
+            {% include 'includes/toasts/toast_warning.html' %}
+        {% elif level == 25 %}
+            {% include 'includes/toasts/toast_success.html' %}
+        {% else %}
+            {% include 'includes/toasts/toast_info.html' %}
+        {% endif %}
+    {% endwith %}
+}
+```
+
+- Toast layout from CI - Boutique Ado walkthrough & Bootstrap
+
+```html
+{
+    <!-- General layout directly from Bootstrap -->
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    <div class="toast rounded-2 border-top-0" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true">
+        <div class="arrow-up arrow-success"></div>
+        <div class="w-100 toast-capper bg-success"></div>
+        <div class="toast-header bg-white text-black">
+            <strong class="mr-auto">Success!</strong>
+            <button type="button" class="ml-2 mb-1 close text-black" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body bg-white">
+            {{ message }}
+        </div>
+    </div>
 }
 ```
 

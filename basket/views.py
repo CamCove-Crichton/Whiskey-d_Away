@@ -159,6 +159,8 @@ def remove_from_basket(request, item_id):
 
             if item_id in basket:
                 basket.pop(item_id)
+                messages.success(request, 'Experience successfully removed \
+                    from basket')
             else:
                 messages.error(request, 'Whiskey Experience does not exist in \
                     basket')
