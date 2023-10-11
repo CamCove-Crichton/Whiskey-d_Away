@@ -96,6 +96,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then moved onto getting the remove item from basket to work with the view and url which was created
 - Added in a basket_tools file to assist with things like having a function to calculate the line item totals
 - Then moved onto creating the html files for the toast messages to be able to display human readable messages to the user in an elegant way
+- Had an issue with my Codeanywhere hours, so I had to switch to using Gitpod, and in turn had to add all my database again. After doing so, I also updated the Booking and BookingLineItem models to move forward with being able to being work on the booking process and taking payments
 
 ### Future Developments
 
@@ -176,6 +177,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
 - Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct.
+- I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend
 
 ## Credits
 
@@ -1091,6 +1093,68 @@ LOGIN_REDIRECT_URL = '/'
     .arrow-dark {
         border-bottom-color: #343a40 !important;
     }
+}
+```
+
+- Assistance with overwriting the save method in the BookingLineItem model
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    def save(self, *args, **kwargs):
+        """
+        Overide the original save method to set the lineitem
+        total and set the booking total
+        """
+        self.lineitem_total = self.tour.tour_price * self.number_of_attendees
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'Experience: {self.tour.tour_name} in Booking No: {self.booking.booking_number}'
+}
+```
+
+- Assistance with adding a couple extra fields to my Booking model and adding some methods
+
+```python
+{
+    # A few fields assisted by CI - Boutique Ado walkthrough
+    class Booking(models.Model):
+        """
+        A model to catpute all the bookings made by users
+        """
+        booking_number = models.CharField(
+            max_length=10, unique=True, editable=False)
+        first_name = models.CharField(max_length=20, null=False, blank=False)
+        last_name = models.CharField(max_length=20, null=False, blank=False)
+        email = models.EmailField(max_length=254, null=False, blank=False)
+        mobile_number = models.CharField(max_length=20, null=False, blank=False)
+        date_of_booking = models.DateTimeField(auto_now_add=True)
+        discount_amount = models.DecimalField(
+            max_digits=6, decimal_places=2, null=False, default=0)
+        booking_total = models.DecimalField(
+            max_digits=10, decimal_places=2, null=False, default=0)
+        grand_total = models.DecimalField(
+            max_digits=10, decimal_places=2, null=False, default=0)
+
+        # Assistance from CI - Boutique Ado walkthrough
+        def update_total(self):
+            """
+            Update the grand total each time a line item is added to the order
+            accounting for the discount
+            """
+            self.booking_total = (self.lineitems.aggregate(Sum(
+                'lineitem_total'))['lineitem_total__sum'])
+
+            # Determine discount amount
+            if self.booking_total > settings.DISCOUNT_SPEND_THRESHOLD:
+                self.discount_amount = self.booking_total * settings.STANDARD_DISCOUNT_PERCENTAGE / 100
+            else:
+                self.discount_amount = 0
+
+            # Calculate grand_total
+            self.grand_total = self.booking_total - self.discount_amount
+            self.save()
 }
 ```
 

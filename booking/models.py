@@ -24,6 +24,7 @@ class Booking(models.Model):
     grand_total = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, default=0)
 
+    # Assistance from CI - Boutique Ado walkthrough
     def update_total(self):
         """
         Update the grand total each time a line item is added to the order
@@ -42,6 +43,7 @@ class Booking(models.Model):
         self.grand_total = self.booking_total - self.discount_amount
         self.save()
 
+    # Assistance from ChatGPT
     def save(self, *args, **kwargs):
         """
         A method to overide the save method and assign the unique booking
@@ -56,6 +58,8 @@ class Booking(models.Model):
         return self.booking_number
 
 
+# Assistance with adding the lineitem_total field from CI
+# The Boutique Ado walkthrough
 class BookingItem(models.Model):
     """
     A model to capture line items of individual experiences for each booking
@@ -75,6 +79,7 @@ class BookingItem(models.Model):
         max_digits=6, decimal_places=2,
         null=False, blank=False, editable=False)
 
+    # Assistance from CI - Boutique Ado walkthrough
     def save(self, *args, **kwargs):
         """
         Overide the original save method to set the lineitem
