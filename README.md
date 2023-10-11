@@ -97,6 +97,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added in a basket_tools file to assist with things like having a function to calculate the line item totals
 - Then moved onto creating the html files for the toast messages to be able to display human readable messages to the user in an elegant way
 - Had an issue with my Codeanywhere hours, so I had to switch to using Gitpod, and in turn had to add all my database again. After doing so, I also updated the Booking and BookingLineItem models to move forward with being able to being work on the booking process and taking payments
+- Created a signals file to use for when lineitems are created/updated or deleted to update the booking total automatically
 
 ### Future Developments
 
@@ -1155,6 +1156,75 @@ LOGIN_REDIRECT_URL = '/'
             # Calculate grand_total
             self.grand_total = self.booking_total - self.discount_amount
             self.save()
+}
+```
+
+- Assistance setting up the admin with registering the models in the admin
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django.contrib import admin
+    from .models import Booking, BookingItem
+
+
+    class BookingItemAdminInline(admin.TabularInline):
+        model = BookingItem
+        readonly_fields = ('lineitem_total',)
+
+
+    class BookingAdmin(admin.ModelAdmin):
+        inlines = (BookingItemAdminInline,)
+
+        readonly_fields = ('booking_number', 'date_of_booking',
+                        'discount_amount', 'booking_total',
+                        'grand_total')
+
+        fields = ('booking_number', 'date_of_booking',
+                'first_name', 'last_name', 'mobile_number',
+                'email', 'booking_total', 'discount_amount',
+                'grand_total')
+
+        list_display = ('booking_number', 'date_of_booking',
+                        'first_name', 'last_name', 'booking_total',
+                        'discount_amount', 'grand_total')
+
+        ordering = ('-date_of_booking',)
+
+    admin.site.register(Booking, BookingAdmin)
+}
+```
+
+- Assistance with creating the signals.py and updating the ready method
+
+```python
+{
+    # Assistance from CI - Boutique Ad walkthrough
+    from django.db.models.signals import post_save, post_delete
+    from django.dispatch import receiver
+
+    from .models import BookingItem
+
+
+    @receiver(post_save, sender=BookingItem)
+    def update_on_save(sender, instance, created, **kwargs):
+        """
+        Update booking total on lineitem update/create
+        """
+        instance.booking.update_total()
+
+    @receiver(post_delete, sender=BookingItem)
+    def update_on_delete(sender, instance, **kwargs):
+        """
+        Update booking total on lineitem deletion
+        """
+        instance.booking.update_total()
+}
+
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    def ready(self):
+        import booking.signals
 }
 ```
 
