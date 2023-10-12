@@ -100,6 +100,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a signals file to use for when lineitems are created/updated or deleted to update the booking total automatically
 - Then moved onto creating the BookingForm in the forms.py file and used a for loop to loop through the fields of the form to customise them
 Then after that, I moved to creating the view for the booking template, added the url and included it in the project level urls and then created a template for the view to render
+-After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
 
 ### Future Developments
 
@@ -156,6 +157,7 @@ Then after that, I moved to creating the view for the booking template, added th
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
 | Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | |
 | Toast Messages | Toast messages display and respond as expected | |
+| Booking Template | Booking template renders as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -1479,6 +1481,98 @@ LOGIN_REDIRECT_URL = '/'
         </div>
     {% endblock %}
 
+}
+```
+
+- Setting up Stripe
+
+```html
+{
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+}
+
+{
+    {% block postloadjs %}
+        {{ block.super }}
+        {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+        {{ client_secret|json_script:"id_client_secret" }}
+        <script src="{% static 'booking/js/stripe_elements.js' %}"></script>
+    {% endblock %}
+}
+```
+
+- Stripe css
+
+```css
+{
+    /* Copied directly from CI - Boutique Ado walkthrough */
+    .StripeElement,
+    .stripe-style-input {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 0px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus,
+    .stripe-style-input:focus,
+    .stripe-style-input:active {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+    }
+
+    .stripe-style-input::placeholder {
+        color: #aab7c4;
+    }
+}
+```
+
+- Stripe JS
+
+```javascript
+{
+    /*
+    Assistance from CI - Boutique Ado walkthrough
+
+    Core logic/payment flow for this comes from here:
+    https://stripe.com/docs/payments/accept-a-payment
+
+    CSS from here: 
+    https://stripe.com/docs/stripe-js
+    */
+
+    let stripe_public_key = $('#id_stripe_public_key').text().slice(1, -1);
+    let client_secret = $('#id_client_secret').text().slice(1, -1);
+    let stripe = Stripe(stripe_public_key);
+    let elements = stripe.elements();
+
+    // Style directly copied from CI - Boutique Ado
+    let style = {
+        base: {
+            color: '#000',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#dc3545',
+            iconColor: '#dc3545'
+        }
+    };
+    let card = elements.create('card', {'style': style});
+    card.mount('#card-element');
 }
 ```
 

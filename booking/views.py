@@ -26,6 +26,7 @@ def booking(request):
     # Assign the context
     context = {
         'booking_form': booking_form,
+        'stripe_public_key': 'pk_test_51NfFqdFriqsRUzVpVnU6nJjvMtcbGKZdEegmo6cvEgai1mzBWplAIk0kx9xCYVBW9n46Abvkp2HQYsPJlTQXlkAg00tqRXVShF',
     }
 
     # Return the rendered view
