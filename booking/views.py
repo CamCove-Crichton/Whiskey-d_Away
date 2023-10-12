@@ -1,3 +1,32 @@
-from django.shortcuts import render
+# Assistance from CI - Boutique Ado walkthrough
+from django.shortcuts import render, redirect, reverse
+from django.contrib import messages
+from .forms import BookingForm
 
-# Create your views here.
+
+def booking(request):
+    """
+    A view to allow the user to create a booking
+    """
+    # Get the session basket
+    basket = request.session.get('basket', {})
+
+    # If not items are present, return error and return to tours
+    if not basket:
+        messages.error(request, 'No Experiences are currently \
+                       in your basket')
+        return redirect(reverse('tours'))
+    
+    # Create an empty booking form
+    booking_form = BookingForm()
+
+    # Assign a template
+    template = 'booking/booking.html/'
+
+    # Assign the context
+    context = {
+        'booking_form': booking_form,
+    }
+
+    # Return the rendered view
+    return render(request, template, context)

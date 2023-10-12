@@ -98,6 +98,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then moved onto creating the html files for the toast messages to be able to display human readable messages to the user in an elegant way
 - Had an issue with my Codeanywhere hours, so I had to switch to using Gitpod, and in turn had to add all my database again. After doing so, I also updated the Booking and BookingLineItem models to move forward with being able to being work on the booking process and taking payments
 - Created a signals file to use for when lineitems are created/updated or deleted to update the booking total automatically
+- Then moved onto creating the BookingForm in the forms.py file and used a for loop to loop through the fields of the form to customise them
+Then after that, I moved to creating the view for the booking template, added the url and included it in the project level urls and then created a template for the view to render
 
 ### Future Developments
 
@@ -120,6 +122,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Django Allauth
 - Pillow
 - Flatpickr
+- Django-crispy-forms
 
 ### Finished Site Screen Grabs
 
@@ -1268,6 +1271,214 @@ LOGIN_REDIRECT_URL = '/'
             self.fields[field].widget.attrs['placeholder'] = placeholder
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
             self.fields[field].label = False
+}
+```
+
+- Adding the booking view
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django.shortcuts import render, redirect, reverse
+    from django.contrib import messages
+    from .forms import BookingForm
+
+
+    def booking(request):
+        """
+        A view to allow the user to create a booking
+        """
+        # Get the session basket
+        basket = request.session.get('basket', {})
+
+        # If not items are present, return error and return to tours
+        if not basket:
+            messages.error(request, 'No Experiences are currently \
+                        in your basket')
+            return redirect(reverse('tours'))
+        
+        # Create an empty booking form
+        booking_form = BookingForm()
+
+        # Assign a template
+        template = 'booking/booking.html/'
+
+        # Assign the context
+        context = {
+            'booking_form': booking_form,
+        }
+
+        # Return the rendered view
+        return render(request, template, context)
+}
+```
+
+- Setup cripsy_forms
+
+```python
+{
+    CRISPY_TEMPLATE_PACK = 'bootstrap4'
+}
+
+{
+    'builtins': [
+        'crispy_forms.templatetags.crispy_forms_tags',
+        'crispy_forms.templatetags.crispy_forms_field',
+    ],
+}
+```
+
+- Booking template
+
+```html
+{
+    {% extends "base.html" %}
+    {% load static %}
+    {% load basket_tools %}
+
+    {% block extra_css%}
+        <link rel="stylesheet" href="{% static 'booking/css/booking.css' %}">
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block content %}
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-yellow heading-background-black">Booking</h3>
+                </div>
+            </div>
+
+            <!-- Booking summary -->
+            <div class="row">
+                <div class="col-12 col-lg-6 order-lg-last mb-5 rounded-background-yellow">
+                    <p class="text-black"><strong>Booking Summary:</strong> ({{ experience_count }})</p>
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="mb-1 mt-0 small text-black">
+                                <strong>Experience</strong>
+                            </p>
+                        </div>
+                        <div class="col-3 offset-2 text-right">
+                            <p class="mb-1 mt-0 small text-black">
+                                <strong>Subtotal</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Basket items summary -->
+                    {% for item in basket_items %}
+                        <div class="row transparent-background-black">
+                            <div class="col-7 mb-1">
+                                <a class="my-0 text-decoration-none text-black" href="{% url 'tour_detail' item.experience.id %}">
+                                    {{ item.experience.tour_name }}
+                                </a>
+                                <p class="my-0 text-black">Number of Attendees: {{ item.number_of_attendees }}</p>
+                            </div>
+                            <div class="col-3 offset-2 text-right">
+                                <p class="my-0 small text-black">£{{ item.experience.tour_price | calc_subtotal:item.number_of_attendees }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <hr class="my-0">
+                    <div class="row text-black text-right">
+                        <div class="col-7 offset-2">
+                            <p class="my-0">Booking Total:</p>
+                            <p class="my-0">Discount:</p>
+                            <p class="my-0">Grand Total:</p>
+                        </div>
+                        <div class="col-3">
+                            <p class="my-0">£{{ total | floatformat:2 }}</p>
+                            <p class="my-0">£{{ discount | floatformat:2 }}</p>
+                            <p class="my-0"><strong>£{{ grand_total | floatformat:2 }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking form details -->
+                <div class="col-12 col-lg-6">
+                    <p class="text-yellow">
+                        <strong>Please fill in the below details to complete your booking</strong>
+                    </p>
+                    <form action="{% url 'booking' %}" method="post" id="payment-form">
+                        {% csrf_token %}
+                        <fieldset class="rounded px-3 mb-5">
+                            <legend class="fieldset-label small text-yellow px-2 w-auto">
+                                <strong>Details</strong>
+                            </legend>
+                            
+                            <!-- Form inputs -->
+                            {{ booking_form.first_name | as_crispy_field }}
+                            {{ booking_form.last_name | as_crispy_field }}
+                            {{ booking_form.email | as_crispy_field }}
+                            {{ booking_form.mobile_number | as_crispy_field }}
+
+                            <!-- Save info to profile otherwise signin.signup to do so -->
+                            <div class="form-check form-check-inline float-right mr-0">
+                                {% if user.is_authenticated %}
+                                    <label for="id-save-info" class="form-check-label text-yellow mr-1">Save info to my profile</label>
+                                    <input type="checkbox" class="form-check-input" id="id-save-info" name="save-info" checked>
+                                {% else %}
+                                    <label for="id-save-info" class="form-check-label">
+                                        <a href="{% url 'account_signup' %}" class="text-info">Create Account</a> or 
+                                        <a href="{% url 'account_login' %}" class="text-info">login</a> to save this info
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </fieldset>
+
+                        <!-- Payment details -->
+                        <fieldset class="px-3">
+                            <legend class="fieldset-label small text-yellow px-2 w-auto">
+                                <strong>Payment</strong>
+                            </legend>
+                            <!-- Stripe Card element -->
+                            <div class="mb-3" id="card-element"></div>
+
+                            <!-- Used to display form errors -->
+                            <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+
+                            <!-- Edit Basket & Confirm Booking buttons -->
+                            <div class="submit-button text-right mb-2 mt-5">
+                                <a href="{% url 'view_basket' %}" class="btn bg-yellow rounded-2">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-basket-shopping fa-lg text-black"></i>
+                                    </span>
+                                    <span class="text-black">Adjust Basket</span>
+                                </a>
+                                <button id="submit-button" class="btn bg-yellow rounded-2">
+                                    <span class="text-black">Confirm Booking</span>
+                                    <span class="icon">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </span>
+                                </button>
+                                <p class="small text-yellow">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                    </span>
+                                    <span>The amount your card will be charged will be: <strong>£{{ grand_total|floatformat:2 }}</strong></span>
+                                </p>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    {% endblock %}
+
 }
 ```
 

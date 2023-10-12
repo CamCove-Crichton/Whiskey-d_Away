@@ -74,6 +74,19 @@ h6 {
     padding-bottom: 1rem;
 }
 
+.transparent-background-black {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rounded-background-yellow {
+    background-color: yellow;
+    border: none;
+    border-radius: 5px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0;
+}
+
 /* ----------------------------- Icons */
 /* Assistance from CI - Boutique Ado walkthrough */
 
