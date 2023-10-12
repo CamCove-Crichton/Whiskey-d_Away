@@ -100,7 +100,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a signals file to use for when lineitems are created/updated or deleted to update the booking total automatically
 - Then moved onto creating the BookingForm in the forms.py file and used a for loop to loop through the fields of the form to customise them
 Then after that, I moved to creating the view for the booking template, added the url and included it in the project level urls and then created a template for the view to render
--After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
+- After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
+- Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
 
 ### Future Developments
 
@@ -124,6 +125,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Pillow
 - Flatpickr
 - Django-crispy-forms
+- Stripe
 
 ### Finished Site Screen Grabs
 
@@ -1573,6 +1575,31 @@ LOGIN_REDIRECT_URL = '/'
     };
     let card = elements.create('card', {'style': style});
     card.mount('#card-element');
+}
+```
+
+- Handling realtime validations with stripe
+
+```javascript
+{
+    // Handle realtime validation errors on the card element
+    card.addEventListener('change', function(event) {
+        let errorDiv = document.getElementById('card-errors');
+        if (event.error) {
+            let html = `
+                <span class="icon" role="alert">
+                    <i class="fas fa-times"></i>
+                </span>
+                <span>
+                    ${event.error.message}
+                </span>
+            `;
+
+            $(errorDiv).html(html);
+        } else {
+            $(errorDiv).textContent = '';
+        }
+    });
 }
 ```
 

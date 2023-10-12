@@ -184,8 +184,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Idea & assistance from CI - Boutique Ado walkthrough
+# Stripe
 DISCOUNT_SPEND_THRESHOLD = 200
 STANDARD_DISCOUNT_PERCENTAGE = 10
+STRIPE_CURRENCY = 'gbp'
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 
 # Time slot and number of attendee constants
 TIME_SLOT_CHOICES = [
