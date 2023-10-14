@@ -103,6 +103,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
 - Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
 - I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed, which displays the booking details for what the user has booked, along with the booking number, and the users contact details and the cost they booking came to
+- Added in a webhook handler to be able to handle webhooks being received from Stripe
 
 ### Future Developments
 
@@ -2012,6 +2013,32 @@ LOGIN_REDIRECT_URL = '/'
             </span>
         </h1>
     </div>
+}
+```
+
+- Webhook handler
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django.http import HttpResponse
+
+
+    class StripeWH_Handler:
+        """
+        Handle Stripe webhooks
+        """
+        def __init__(self, request):
+            self.request = request
+        
+        def handle_event(self, event):
+            """
+            Handle a generic/unknown/unexpected webhook
+            """
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]}',
+                status=200
+            )
 }
 ```
 
