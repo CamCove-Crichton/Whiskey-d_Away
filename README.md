@@ -1621,6 +1621,25 @@ LOGIN_REDIRECT_URL = '/'
     .stripe-style-input::placeholder {
         color: #aab7c4;
     }
+
+    #loading-overlay {
+	display: none;
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 0, 0.85);
+    z-index: 9999;
+    }
+
+    .loading-spinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        height: 100%;
+    }
 }
 ```
 
@@ -1693,13 +1712,16 @@ LOGIN_REDIRECT_URL = '/'
 
 ```javascript
 {
-    // Handle form submit
+    // Taken directly from CI - Boutique Ado walkthrough
+    // Handle form submissions
     let form = document.getElementById('payment-form');
 
     form.addEventListener('submit', function(ev) {
         ev.preventDefault();
         card.update({ 'disabled': true});
         $('#submit-button').attr('disabled', true);
+        $('#payment-form').fadeToggle(100);
+        $('#loading-overlay').fadeToggle(100);
         stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: card,
@@ -1713,6 +1735,8 @@ LOGIN_REDIRECT_URL = '/'
                     </span>
                     <span>${result.error.message}</span>`;
                 $(errorDiv).html(html);
+                $('#payment-form').fadeToggle(100);
+                $('#loading-overlay').fadeToggle(100);
                 card.update({ 'disabled': false});
                 $('#submit-button').attr('disabled', false);
             } else {
@@ -1974,6 +1998,20 @@ LOGIN_REDIRECT_URL = '/'
         </div>
     {% endblock %}
 
+}
+```
+
+- Loading overlay div
+
+```html
+{
+    <div id="loading-overlay">
+        <h1 class="text-black loading-spinner">
+            <span class="icon">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-2xl"></i>
+            </span>
+        </h1>
+    </div>
 }
 ```
 
