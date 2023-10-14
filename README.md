@@ -102,7 +102,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 Then after that, I moved to creating the view for the booking template, added the url and included it in the project level urls and then created a template for the view to render
 - After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
 - Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
-- I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed
+- I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed, which displays the booking details for what the user has booked, along with the booking number, and the users contact details and the cost they booking came to
 
 ### Future Developments
 
@@ -1767,7 +1767,7 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
-- General layout for booking_success template
+- Layout for booking_success template
 
 ```html
 {
@@ -1806,11 +1806,174 @@ LOGIN_REDIRECT_URL = '/'
 
             <!-- Successfull booking details -->
             <div class="row">
-                <div class="col-12 col-lg-7"></div>
-            </div>
+                <div class="col-12 col-lg-7">
+                    <div class="booking-confirmation-wrapper rounded-background-yellow p-2 mb-3">
 
+                        <!-- Booking info section -->
+                        <div class="row">
+                            <div class="col">
+                                <small>
+                                    Booking Info:
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Booking number and date of booking -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Booking Number:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>{{ booking.booking_number }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Booked On:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>{{ booking.date_of_booking }}</p>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <!-- Booking line items section -->
+                        <div class="row">
+                            <div class="col">
+                                <small>
+                                    Booking Experience Details:
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Booking line item details -->
+                        {% for item in booking.lineitems.all %}
+                            <!-- Experience name -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p><strong>Whiskey Experience:</strong></p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p>{{ item.tour.tour_name }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Experience date -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p><strong>Date:</strong></p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p>{{ item.booking_date }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Experience time slot -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p><strong>Time Slot:</strong></p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p>{{ item.booking_time_slot }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Number of attendees -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <p><strong>No. of Attendees:</strong></p>
+                                </div>
+                                <div class="col-12 col-md-8 text-md-right">
+                                    <p>{{ item.number_of_attendees }} @ £{{ item.tour.tour_price }}pp</p>
+                                </div>
+                            </div>
+                            <hr>
+                        {% endfor %}
+
+                        <!-- Booking contact details section -->
+                        <div class="row">
+                            <div class="col">
+                                <small>
+                                    Contact Details:
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Contact name -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Contact Name:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>{{ booking.first_name }} {{ booking.last_name }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Contact number -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Mobile Number:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>{{ booking.mobile_number }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Contact email -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Email Address:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>{{ booking.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <!-- Booking charges section -->
+                        <div class="row">
+                            <div class="col">
+                                <small>
+                                    Booking Costs:
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Booking total -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Total:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>£{{ booking.booking_total }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Booking discount -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Discount:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>£{{ booking.discount_amount }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Booking grand total -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <p><strong>Grand Total:</strong></p>
+                            </div>
+                            <div class="col-12 col-md-8 text-md-right">
+                                <p>£{{ booking.grand_total }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     {% endblock %}
+
 }
 ```
 
