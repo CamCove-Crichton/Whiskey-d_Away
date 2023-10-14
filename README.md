@@ -102,6 +102,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 Then after that, I moved to creating the view for the booking template, added the url and included it in the project level urls and then created a template for the view to render
 - After the template was rendering correctly, I then moved onto adding the stripe element to the booking template
 - Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
+- I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed
 
 ### Future Developments
 
@@ -126,7 +127,6 @@ Then after that, I moved to creating the view for the booking template, added th
 - Flatpickr
 - Django-crispy-forms
 - Stripe
-- Flask
 
 ### Finished Site Screen Grabs
 
@@ -160,7 +160,9 @@ Then after that, I moved to creating the view for the booking template, added th
 | Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
 | Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | |
 | Toast Messages | Toast messages display and respond as expected | |
-| Booking Template | Booking template renders as expected and is responsive | |
+| Booking template | Booking template renders as expected and is responsive | |
+| Booking payment | Stripe payments work as expected | |
+| Booking success template | Booking success template renders and displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -170,6 +172,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Had an issue trying to implement the flatpickr in the basket template, and realised because I was trying to access multiple items by the id name but in the form of a template tag, it was no longer a unique option and so then had to implement a class for the booking date and added that to the widgets in the form for the booking item, and then used the jQuery function by targeting the class instead
 - Had an issue with updating the session variable for the basket, and after getting assistance from a CI tutor, we found we needed toset the basket.session to .session.modified = True to inform django the session has been modified
 - Had some major issues in getting my form to validate when it was being submitted from the tour detail to be added to the basket, and ended up getting assistance from a CI Tutor, who was able to assist in untangling the mess, and we went down the route of generating the list for the number of attendees in the template and the template view, and removing the ChoiceField from the form input
+- Had a slight issue with my booking view when it came down to iterating through the line items in the booking to save them to the database as part of the order. Using some print statements, I was able to find that my item_data was a dictionary, and so I change my logic from checing if item_data was an integer, to checking it was a dictionary, and then accessed the key in the dictionary and assigned them, and then added them to the booking_line_item variable to then save them to the database
 
 ### Validator Testing
 
@@ -1283,16 +1286,71 @@ LOGIN_REDIRECT_URL = '/'
 
 ```python
 {
-    # Assistance from CI - Boutique Ado walkthrough
-    from django.shortcuts import render, redirect, reverse
-    from django.contrib import messages
-    from .forms import BookingForm
-
-
     def booking(request):
-        """
-        A view to allow the user to create a booking
-        """
+    """
+    A view to allow the user to create a booking
+    """
+    # Assistance from CI - Boutique Ado walkthrough
+    # Assign stripe keys
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
+
+    # Handle payment submission
+    if request.method == 'POST':
+        # Get the session basket
+        basket = request.session.get('basket', {})
+
+        # Add the form data to a dictionary
+        form_data = {
+            'first_name': request.POST['first_name'],
+            'last_name': request.POST['last_name'],
+            'email': request.POST['email'],
+            'mobile_number': request.POST['mobile_number'],
+        }
+
+        # Assign the BookingForm with form data to booking_form
+        booking_form = BookingForm(form_data)
+
+        # Check if it is valid
+        if booking_form.is_valid():
+            booking = booking_form.save()
+
+            # Iterate through line items
+            for item_id, item_data in basket.items():
+                try:
+                    # Get the experience by id
+                    experience = Tours.objects.get(id=item_id)
+
+                    # Check if the item_data is an integer
+                    if isinstance(item_data, int):
+                        booking_line_item = BookingItem(
+                            booking=booking,
+                            tour=tour,
+                            number_of_attendees=item_data
+                        )
+                        booking_line_item.save()
+                
+                # Raise error if experience does not exist
+                except Tour.DoesNotExist:
+                    messages.error(request, 'One of the Experiences \
+                        in your basket, was not found in our \
+                        database. Please contact us for assistance')
+
+                    # Delete the empty order
+                    booking.delete()
+
+                    # redirect to the basket view
+                    return redirect(reverse('view_basket'))
+
+            # Check if the save info exists in the session
+            request.session['save-info'] = 'save-info' in request.POST
+            return redirect(reverse('booking_success', args=[booking.booking_number])) 
+   
+        # Raise error is form is invalid
+        else:
+            messages.error(request, 'There was an error with your form. \
+                Please double check your info.')
+    else:
         # Get the session basket
         basket = request.session.get('basket', {})
 
@@ -1301,20 +1359,47 @@ LOGIN_REDIRECT_URL = '/'
             messages.error(request, 'No Experiences are currently \
                         in your basket')
             return redirect(reverse('tours'))
-        
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Assign existing basket contents to current_basket
+        current_basket = basket_contents(request)
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Get the total key out of the current_basket
+        total = current_basket['grand_total']
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Assign grand_total to stripe_total
+        stripe_total = round(total * 100)
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+
         # Create an empty booking form
         booking_form = BookingForm()
 
-        # Assign a template
-        template = 'booking/booking.html/'
+    # Assistance from CI - Boutique Ado walkthrough
+    if not stripe_public_key:
+        messages.warning(request, 'Stripe public key is \
+            missing. Did you forget to set it in your \
+            environment?')
 
-        # Assign the context
-        context = {
-            'booking_form': booking_form,
-        }
+    # Assign a template
+    template = 'booking/booking.html/'
 
-        # Return the rendered view
-        return render(request, template, context)
+    # Assitance from CI - Boutique Ado walkthrough
+    # Assign the context
+    context = {
+        'booking_form': booking_form,
+        'stripe_public_key': stripe_public_key,
+        'client_secret': intent.client_secret,
+    }
+
+    # Return the rendered view
+    return render(request, template, context)
+
 }
 ```
 
@@ -1637,6 +1722,95 @@ LOGIN_REDIRECT_URL = '/'
             }
         });
     });
+}
+```
+
+- Adding the booking_success view
+
+```python
+{
+    def booking_success(request, booking_number):
+    """
+    Returns a booking successful view
+    """
+    # Get the save info from the session
+    save_info = request.session.get('save_info')
+    booking = get_object_or_404(Booking, booking_number=booking_number)
+    messages.success(request, f'Booking complete! Your \
+        booking number is {booking_number}. A confirmation \
+        email has been sent to {booking.email}')
+
+    # Delete basket from the session
+    if 'basket' in request.session:
+        del request.session['basket']
+
+    # Assign the template variable
+    template = 'booking/booking_success.html/'
+
+    # Assign the context variable
+    context = {
+        'booking': booking,
+    }
+
+    # Render the template
+    return render(request, template, context)
+
+}
+```
+
+- Adding the default app config
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    default_app_config = 'booking.apps.BookingConfig'
+}
+```
+
+- General layout for booking_success template
+
+```html
+{
+    {% extends "base.html" %}
+    {% load static %}
+
+    {% block extra_css%}
+        <link rel="stylesheet" href="{% static 'booking/css/booking.css' %}">
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block content %}
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-yellow heading-background-black">Thank you!</h3>
+                    <p class="text-yellow">
+                        Your Whiskey Dreams are coming true!
+                        <br>
+                        Here are your booking details, and an email confirmation has been sent to {{ booking.email }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Successfull booking details -->
+            <div class="row">
+                <div class="col-12 col-lg-7"></div>
+            </div>
+
+        </div>
+    {% endblock %}
 }
 ```
 

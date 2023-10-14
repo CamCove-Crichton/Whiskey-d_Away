@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css%}
+    <link rel="stylesheet" href="{% static 'booking/css/booking.css' %}">
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+    <div class="container">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-yellow heading-background-black">Thank you!</h3>
+                <p class="text-yellow">
+                    Your Whiskey Dreams are coming true!
+                    <br>
+                    Here are your booking details, and an email confirmation has been sent to {{ booking.email }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Successfull booking details -->
+        <div class="row">
+            <div class="col-12 col-lg-7"></div>
+        </div>
+
+    </div>
+{% endblock %}

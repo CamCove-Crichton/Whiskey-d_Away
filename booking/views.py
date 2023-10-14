@@ -1,10 +1,18 @@
 # Assistance from CI - Boutique Ado walkthrough
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import (
+    render,
+    redirect,
+    reverse,
+    get_object_or_404,
+)
+
 from django.contrib import messages
 from django.conf import settings
 
+from .models import Booking, BookingItem
 from .forms import BookingForm
 from basket.contexts import basket_contents
+from tours.models import Tours
 
 import stripe
 
@@ -17,34 +25,100 @@ def booking(request):
     # Assign stripe keys
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
-    # Get the session basket
-    basket = request.session.get('basket', {})
 
-    # If not items are present, return error and return to tours
-    if not basket:
-        messages.error(request, 'No Experiences are currently \
-                       in your basket')
-        return redirect(reverse('tours'))
+    # Handle payment submission
+    if request.method == 'POST':
+        # Get the session basket
+        basket = request.session.get('basket', {})
 
-    # Assistance from CI - Boutique Ado walkthrough
-    # Assign existing basket contents to current_basket
-    current_basket = basket_contents(request)
+        # Add the form data to a dictionary
+        form_data = {
+            'first_name': request.POST['first_name'],
+            'last_name': request.POST['last_name'],
+            'email': request.POST['email'],
+            'mobile_number': request.POST['mobile_number'],
+        }
 
-    # Assistance from CI - Boutique Ado walkthrough
-    # Get the total key out of the current_basket
-    total = current_basket['grand_total']
+        # Assign the BookingForm with form data to booking_form
+        booking_form = BookingForm(form_data)
 
-    # Assistance from CI - Boutique Ado walkthrough
-    # Assign grand_total to stripe_total
-    stripe_total = round(total * 100)
-    stripe.api_key = stripe_secret_key
-    intent = stripe.PaymentIntent.create(
-        amount=stripe_total,
-        currency=settings.STRIPE_CURRENCY,
-    )
+        # Check if it is valid
+        if booking_form.is_valid():
+            booking = booking_form.save()
 
-    # Create an empty booking form
-    booking_form = BookingForm()
+            # Iterate through line items
+            for item_id, item_data in basket.items():
+                try:
+                    # Get the experience by id
+                    experience = Tours.objects.get(id=item_id)
+                    print(f'Experience: {experience}')
+                    print(item_data)
+
+                    # Check if the item_data is an integer
+                    if isinstance(item_data, dict):
+                        number_of_attendees = (
+                            item_data['number_of_attendees'])
+                        booking_time_slot = (
+                            item_data['booking_time_slot'])
+                        booking_date = item_data['booking_date']
+                        booking_line_item = BookingItem(
+                            booking=booking,
+                            tour=experience,
+                            number_of_attendees=number_of_attendees,
+                            booking_date=booking_date,
+                            booking_time_slot=booking_time_slot,
+                        )
+                        booking_line_item.save()
+                
+                # Raise error if experience does not exist
+                except Tours.DoesNotExist:
+                    messages.error(request, 'One of the Experiences \
+                        in your basket, was not found in our \
+                        database. Please contact us for assistance')
+
+                    # Delete the empty order
+                    booking.delete()
+
+                    # redirect to the basket view
+                    return redirect(reverse('view_basket'))
+
+            # Check if the save info exists in the session
+            request.session['save-info'] = 'save-info' in request.POST
+            return redirect(reverse('booking_success', args=[booking.booking_number])) 
+   
+        # Raise error is form is invalid
+        else:
+            messages.error(request, 'There was an error with your form. \
+                Please double check your info.')
+    else:
+        # Get the session basket
+        basket = request.session.get('basket', {})
+
+        # If not items are present, return error and return to tours
+        if not basket:
+            messages.error(request, 'No Experiences are currently \
+                        in your basket')
+            return redirect(reverse('tours'))
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Assign existing basket contents to current_basket
+        current_basket = basket_contents(request)
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Get the total key out of the current_basket
+        total = current_basket['grand_total']
+
+        # Assistance from CI - Boutique Ado walkthrough
+        # Assign grand_total to stripe_total
+        stripe_total = round(total * 100)
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+
+        # Create an empty booking form
+        booking_form = BookingForm()
 
     # Assistance from CI - Boutique Ado walkthrough
     if not stripe_public_key:
@@ -64,4 +138,30 @@ def booking(request):
     }
 
     # Return the rendered view
+    return render(request, template, context)
+
+def booking_success(request, booking_number):
+    """
+    Returns a booking successful view
+    """
+    # Get the save info from the session
+    save_info = request.session.get('save_info')
+    booking = get_object_or_404(Booking, booking_number=booking_number)
+    messages.success(request, f'Booking complete! Your \
+        booking number is {booking_number}. A confirmation \
+        email has been sent to {booking.email}')
+
+    # Delete basket from the session
+    if 'basket' in request.session:
+        del request.session['basket']
+
+    # Assign the template variable
+    template = 'booking/booking_success.html/'
+
+    # Assign the context variable
+    context = {
+        'booking': booking,
+    }
+
+    # Render the template
     return render(request, template, context)

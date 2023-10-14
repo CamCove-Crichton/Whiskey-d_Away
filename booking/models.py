@@ -1,5 +1,7 @@
 # Assistance from ChatGPT
 from django.db import models
+from django.db.models import Sum
+
 from .utils import generate_unique_booking_number
 from tours.models import Tours
 from .validators import validate_number_of_attendees
@@ -31,7 +33,7 @@ class Booking(models.Model):
         accounting for the discount
         """
         self.booking_total = (self.lineitems.aggregate(Sum(
-            'lineitem_total'))['lineitem_total__sum'])
+            'lineitem_total'))['lineitem_total__sum'] or 0)
 
         # Determine discount amount
         if self.booking_total > settings.DISCOUNT_SPEND_THRESHOLD:
