@@ -25,6 +25,9 @@ class Booking(models.Model):
         max_digits=10, decimal_places=2, null=False, default=0)
     grand_total = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, default=0)
+    original_basket = models.TextField(null=False, blank=False, default='')
+    stripe_pid = models.CharField(
+        max_length=254,null=False, blank=False, default='')
 
     # Assistance from CI - Boutique Ado walkthrough
     def update_total(self):

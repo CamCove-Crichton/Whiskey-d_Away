@@ -117,6 +117,9 @@
                         <!-- Used to display form errors -->
                         <div class="mb-3 text-yellow" id="card-errors" role="alert"></div>
 
+                        <!-- Pass the client secret to the view so we can get the payment intent id -->
+                        <input type="hidden" value="{{ client_secret }}" name="client_secret">
+
                         <!-- Edit Basket & Confirm Booking buttons -->
                         <div class="submit-button text-right mb-2 mt-5">
                             <a href="{% url 'view_basket' %}" class="btn bg-yellow rounded-2">

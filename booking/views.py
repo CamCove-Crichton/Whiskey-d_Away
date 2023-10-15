@@ -66,7 +66,11 @@ def booking(request):
 
         # Check if it is valid
         if booking_form.is_valid():
-            booking = booking_form.save()
+            booking = booking_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            booking.stripe_pid = pid
+            booking.original_basket = json.dumps(basket)
+            booking.save()
 
             # Iterate through line items
             for item_id, item_data in basket.items():
@@ -74,7 +78,7 @@ def booking(request):
                     # Get the experience by id
                     experience = Tours.objects.get(id=item_id)
 
-                    # Check if the item_data is an integer
+                    # Check if the item_data is a dictionary
                     if isinstance(item_data, dict):
                         number_of_attendees = (
                             item_data['number_of_attendees'])

@@ -104,7 +104,8 @@ Then after that, I moved to creating the view for the booking template, added th
 - Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
 - I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed, which displays the booking details for what the user has booked, along with the booking number, and the users contact details and the cost they booking came to
 - Added in a webhook handler to be able to handle webhooks being received from Stripe and then added the webhooks file to listen for the webhooks from stripe, pass them to the handlers, and then return the response back tp stripe
-- Then proceeded to add in a view to capture the save info information to be able to call it and then once confirmed if the save info is true or false, it then runs the confirm card payment
+- Then proceeded to add in a view to capture the save info information in the payment intent, to be able to call it and then once confirmed if the save info is true or false, it then runs the confirm card payment
+- I then added in original_basket and stripe_pid to my Booking model, so I could use this as a gaurantee for the webhook to check if the order has been created in the database or not, before creating a new order from the webhook
 
 ### Future Developments
 
@@ -1191,12 +1192,14 @@ LOGIN_REDIRECT_URL = '/'
 
         readonly_fields = ('booking_number', 'date_of_booking',
                         'discount_amount', 'booking_total',
-                        'grand_total')
+                        'grand_total','original_basket',
+                        'stripe_pid')
 
         fields = ('booking_number', 'date_of_booking',
                 'first_name', 'last_name', 'mobile_number',
                 'email', 'booking_total', 'discount_amount',
-                'grand_total')
+                'grand_total', 'original_basket',
+                'stripe_pid')
 
         list_display = ('booking_number', 'date_of_booking',
                         'first_name', 'last_name', 'booking_total',
@@ -2072,10 +2075,83 @@ LOGIN_REDIRECT_URL = '/'
         Handle the payment_intent.succeeded webhook
         from Stripe
         """
+        intent = event.data.object
+        pid = intent.id
+        basket = intent.metdata.basket
+        save_info = intent.metdata.save_info
+
+        # Get the charge object
+        stripe_charge = stripe.Charge.retrieve(
+            intent.latest_charge
+        )
+
+        billing_details = stripe_charge.billing_details
+        grand_total = round(stripe_charge.amount / 100, 2)
+        
+        booking_exists = False
+        attempt = 1
+        while attempt <= 5:
+            try:
+                booking = Booking.objects.get(
+                    first_name__iexact=billing_details.first_name,
+                    last_name__iexact=billing_details.last_name,
+                    mobile_number__iexact=billing_details.phone,
+                    email__iexact=billing_details.email,
+                    grand_total=grand_total,
+                    original_basket=basket,
+                    stripe_pid=pid,
+                )
+                booking_exists = True
+                break
+                
+    
+            except Booking.DoesNotExist:
+                attempt += 1
+                time.sleep(1)
+        if booking_exists:
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already exists in the database',
+                status=200)
+        else:
+            booking = None
+            try:
+                booking = Booking.objects.create(
+                    first_name=billing_details.first_name,
+                    last_name=billing_details.last_name,
+                    mobile_number=billing_details.phone,
+                    email=billing_details.email,
+                )
+                for item_id, item_data in json.loads(basket).items():
+                    # Get the experience by id
+                    experience = Tours.objects.get(id=item_id)
+
+                    # Check if the item_data is a dictionary
+                    if isinstance(item_data, dict):
+                        number_of_attendees = (
+                            item_data['number_of_attendees'])
+                        booking_time_slot = (
+                            item_data['booking_time_slot'])
+                        booking_date = item_data['booking_date']
+                        booking_line_item = BookingItem(
+                            booking=booking,
+                            tour=experience,
+                            number_of_attendees=number_of_attendees,
+                            booking_date=booking_date,
+                            booking_time_slot=booking_time_slot,
+                        )
+                        booking_line_item.save()
+            except Exception as e:
+                if booking:
+                    booking.delete()
+                return HttpResponse(
+                    content=f'Webhook received: {event["type"]} | ERROR: {e}',
+                    status=500)
+
         return HttpResponse(
-            content=f'Webhook received: {event["type"]}',
+            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
             status=200
         )
+
 
         def handle_payment_intent_payment_failed(self, event):
             """
@@ -2186,6 +2262,35 @@ LOGIN_REDIRECT_URL = '/'
             messages.error(request, 'Sorry, your payment could not be \
                 processed right now. Please try again later.')
             return HttpResponse(content=e, status=400)
+}
+```
+
+- Add stipe pid to booking model
+
+```python
+{
+    original_basket = models.TextField(null=False, blank=False, default='')
+    stripe_pid = models.CharField(
+        max_length=254,null=False, blank=False, default='')
+}
+```
+
+- booking template & view update to add stripe_pid
+
+```html
+{
+    <!-- Pass the client secret to the view so we can get the payment intent id -->
+    <input type="hidden" value="{{ client_secret }}" name="client_secret">
+}
+```
+
+```python
+{
+    booking = booking_form.save(commit=False)
+    pid = request.POST.get('client_secret').split('_secret')[0]
+    booking.stripe_pid = pid
+    booking.original_basket = json.dumps(basket)
+    booking.save()
 }
 ```
 
@@ -2932,6 +3037,16 @@ def generate_unique_booking_number():
 
     return context
 
+}
+```
+
+- Assistance with splitting a concatenated string in my webhook handler
+
+```python
+{
+    full_name = billing_details.name
+    first_name, *last_name_parts = full_name.split()
+    last_name = ''.join(last_name_parts).strip()
 }
 ```
 
