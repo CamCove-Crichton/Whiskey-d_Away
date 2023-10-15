@@ -104,6 +104,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Started working on the public and secret keys for stripe to add as environment variables and then to include them in my settings files and bring in the basket_contents context to the booking view, so I could access variables such as grand_total to add as part of the stripe payments
 - I  moved onto the booking confirmation view, url and template afterwards to be able to display a booking confirmation page to the user, for the peace of mind that the booking has been confirmed, which displays the booking details for what the user has booked, along with the booking number, and the users contact details and the cost they booking came to
 - Added in a webhook handler to be able to handle webhooks being received from Stripe and then added the webhooks file to listen for the webhooks from stripe, pass them to the handlers, and then return the response back tp stripe
+- Then proceeded to add in a view to capture the save info information to be able to call it and then once confirmed if the save info is true or false, it then runs the confirm card payment
 
 ### Future Developments
 
@@ -1723,29 +1724,55 @@ LOGIN_REDIRECT_URL = '/'
         $('#submit-button').attr('disabled', true);
         $('#payment-form').fadeToggle(100);
         $('#loading-overlay').fadeToggle(100);
-        stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card,
-            }
-        }).then(function(result) {
-            if (result.error) {
-                let errorDiv = document.getElementById('card-errors');
-                let html = `
-                    <span class="icon" role="alert">
-                    <i class="fas fa-times"></i>
-                    </span>
-                    <span>${result.error.message}</span>`;
-                $(errorDiv).html(html);
-                $('#payment-form').fadeToggle(100);
-                $('#loading-overlay').fadeToggle(100);
-                card.update({ 'disabled': false});
-                $('#submit-button').attr('disabled', false);
-            } else {
-                if (result.paymentIntent.status === 'succeeded') {
-                    form.submit();
+
+        // See if the save_info box is checked
+        let saveInfo = Boolean($('#id-save-info').attr('checked'));
+
+        // From using {% csrf_token %} in the form
+        let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+        let postData = {
+            'csrfmiddlewaretoken': csrfToken,
+            'client_secret': clientSecret,
+            'save_info': saveInfo,
+        }
+
+        // Create url variable
+        let url = '/booking/cache_booking_data/';
+
+        // Post the data to the view
+        $.post(url, postData).done(function() {
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: [form.first_name.value, form.last_name.value].join(' ').trim(),
+                        phone: $.trim(form.mobile_number.value),
+                        email: $.trim(form.email.value),
+                    }
+                },
+            }).then(function(result) {
+                if (result.error) {
+                    let errorDiv = document.getElementById('card-errors');
+                    let html = `
+                        <span class="icon" role="alert">
+                        <i class="fas fa-times"></i>
+                        </span>
+                        <span>${result.error.message}</span>`;
+                    $(errorDiv).html(html);
+                    $('#payment-form').fadeToggle(100);
+                    $('#loading-overlay').fadeToggle(100);
+                    card.update({ 'disabled': false});
+                    $('#submit-button').attr('disabled', false);
+                } else {
+                    if (result.paymentIntent.status === 'succeeded') {
+                        form.submit();
+                    }
                 }
-            }
-        });
+            });
+        }).fail(function() {
+            // Reload the page, the error will be in django messages
+            location.reload();
+        })
     });
 }
 ```
@@ -2131,6 +2158,34 @@ LOGIN_REDIRECT_URL = '/'
 ```python
 {
     path('wh/', webhook, name='webhook'),
+}
+```
+
+- View for capturing metadata
+
+```python
+{
+    import json
+
+
+    @require_POST
+    def cache_booking_data(request):
+        """
+        A view to capture the save_info information
+        """
+        try:
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            stripe.PaymentIntent.modify(pid, metadata={
+                'basket': json.dumps(request.session.get('basket', {})),
+                'save_info': request.POST.get('save_info'),
+                'username': reques.user,
+            })
+            return HttpResponse(status=200)
+        except Exception as e:
+            messages.error(request, 'Sorry, your payment could not be \
+                processed right now. Please try again later.')
+            return HttpResponse(content=e, status=400)
 }
 ```
 
