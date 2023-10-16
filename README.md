@@ -106,6 +106,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Added in a webhook handler to be able to handle webhooks being received from Stripe and then added the webhooks file to listen for the webhooks from stripe, pass them to the handlers, and then return the response back tp stripe
 - Then proceeded to add in a view to capture the save info information in the payment intent, to be able to call it and then once confirmed if the save info is true or false, it then runs the confirm card payment
 - I then added in original_basket and stripe_pid to my Booking model, so I could use this as a gaurantee for the webhook to check if the order has been created in the database or not, before creating a new order from the webhook
+- As I started working on my user profiles app, I knew I still needed to add a feature in for date of birth to be able to determine that the user booking the tour experience was over the age of 18, so I introduced it in the Profile model but I also wanted to introduce it to the booking form, in case I do not get to having user ensure they have an account before making a booking, then I have the validation in the booking form to ensure the user making the booking is over 18 years of age
 
 ### Future Developments
 
@@ -116,7 +117,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Vertically center the content in the div for the price & rating content in the cards for the all tour experiences template view
 - I would like to be able to have the basket automatically update after any input change per line item to be able to provide a better UX, so the user has instant feedback on any change
 - I would like to be able to have the user add multiple of the same tour for different days and different time slots, in case they would like to attend the same tour multiple times but would like to do so in one booking
-- I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee
+- I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee, and also have them have the validation of ensuring they are all over 18 years of age, but due to time constraints, I have not had a chance to implement it, but I would like to return to it and implement this, as I feel it would be a great feature
 
 ### Wireframes & Database Designs
 
@@ -176,6 +177,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Had an issue with updating the session variable for the basket, and after getting assistance from a CI tutor, we found we needed toset the basket.session to .session.modified = True to inform django the session has been modified
 - Had some major issues in getting my form to validate when it was being submitted from the tour detail to be added to the basket, and ended up getting assistance from a CI Tutor, who was able to assist in untangling the mess, and we went down the route of generating the list for the number of attendees in the template and the template view, and removing the ChoiceField from the form input
 - Had a slight issue with my booking view when it came down to iterating through the line items in the booking to save them to the database as part of the order. Using some print statements, I was able to find that my item_data was a dictionary, and so I change my logic from checing if item_data was an integer, to checking it was a dictionary, and then accessed the key in the dictionary and assigned them, and then added them to the booking_line_item variable to then save them to the database
+- I had an issue when trying to introduce the date of birth field, that it was not capturing it, which I think was because I had forgotten to return the date_of_birth value, but ended up using some print statements in my view to see where I was getting up to and what was being returned in the booking from when the form data had been parsed to it, and found date_of_birth was coming back with an error as could not be null, at which point I looked further into ensuring my date was being returned as date object and if not then converting it to a date object, and then also returning the date_of_birth variable after validation and at which point my payment intent was working again
 
 ### Validator Testing
 
@@ -2291,6 +2293,35 @@ LOGIN_REDIRECT_URL = '/'
     booking.stripe_pid = pid
     booking.original_basket = json.dumps(basket)
     booking.save()
+}
+```
+
+- Validating the date_of_birth in the booking_form
+
+```python
+{
+    def clean_date_of_birth(self):
+        """
+        A method to ensure the date of birth entered
+        is 18 years ago or more
+        """
+        # Assistance from ChatGPT
+        date_of_birth_str = self.cleaned_data['date_of_birth']
+
+        if isinstance(date_of_birth_str, str):
+            # Parse the string into a datetime object
+            date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+        else:
+            date_of_birth = date_of_birth_str
+            
+        today = timezone.now().date()
+        age = (today.year - date_of_birth.year - (
+                (today.month, today.day) < (date_of_birth.month, date_of_birth.day)))
+    
+        if age < 18:
+            raise ValidationError('Applicants must be at least 18 years old')
+        
+        return date_of_birth
 }
 ```
 

@@ -18,9 +18,9 @@ class BookingAdmin(admin.ModelAdmin):
 
     fields = ('booking_number', 'date_of_booking',
               'first_name', 'last_name', 'mobile_number',
-              'email', 'booking_total', 'discount_amount',
-              'grand_total', 'original_basket',
-              'stripe_pid')
+              'email', 'date_of_birth', 'booking_total',
+              'discount_amount', 'grand_total',
+              'original_basket', 'stripe_pid')
 
     list_display = ('booking_number', 'date_of_booking',
                     'first_name', 'last_name', 'booking_total',

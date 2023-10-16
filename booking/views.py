@@ -59,6 +59,7 @@ def booking(request):
             'last_name': request.POST['last_name'],
             'email': request.POST['email'],
             'mobile_number': request.POST['mobile_number'],
+            'date_of_birth': request.POST['date_of_birth']
         }
 
         # Assign the BookingForm with form data to booking_form

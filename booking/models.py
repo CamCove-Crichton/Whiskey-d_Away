@@ -4,8 +4,11 @@ from django.db.models import Sum
 
 from .utils import generate_unique_booking_number
 from tours.models import Tours
+from profiles.models import UserProfile
 from .validators import validate_number_of_attendees
 from django.conf import settings
+
+from django.utils import timezone
 
 # A few fields assisted by CI - Boutique Ado walkthrough
 class Booking(models.Model):
@@ -14,10 +17,14 @@ class Booking(models.Model):
     """
     booking_number = models.CharField(
         max_length=10, unique=True, editable=False)
+    user_profile = models.ForeignKey(
+        UserProfile, on_delete=models.SET_NULL, null=True,
+        blank=True, related_name='bookings')
     first_name = models.CharField(max_length=20, null=False, blank=False)
     last_name = models.CharField(max_length=20, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     mobile_number = models.CharField(max_length=20, null=False, blank=False)
+    date_of_birth = models.DateField()
     date_of_booking = models.DateTimeField(auto_now_add=True)
     discount_amount = models.DecimalField(
         max_digits=6, decimal_places=2, null=False, default=0)

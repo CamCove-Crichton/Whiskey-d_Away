@@ -91,6 +91,7 @@
                         {{ booking_form.last_name | as_crispy_field }}
                         {{ booking_form.email | as_crispy_field }}
                         {{ booking_form.mobile_number | as_crispy_field }}
+                        {{ booking_form.date_of_birth | as_crispy_field }}
 
                         <!-- Save info to profile otherwise signin.signup to do so -->
                         <div class="form-check form-check-inline float-right mr-0">
@@ -162,4 +163,15 @@
     {{ stripe_public_key|json_script:"id_stripe_public_key" }}
     {{ client_secret|json_script:"id_client_secret" }}
     <script src="{% static 'booking/js/stripe_elements.js' %}"></script>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#{{ booking_form.date_of_birth.id_for_label }}", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
+                maxDate: "today",
+            })
+        })
+
+    </script>
 {% endblock %}

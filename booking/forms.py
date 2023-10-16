@@ -118,7 +118,7 @@ class BookingForm(forms.ModelForm):
     """
     class Meta:
         model = Booking
-        fields = ['first_name', 'last_name', 'email', 'mobile_number']
+        fields = ['first_name', 'last_name', 'email', 'mobile_number', 'date_of_birth']
 
     def __init__(self, *args, **kwargs):
         """
@@ -132,6 +132,7 @@ class BookingForm(forms.ModelForm):
             'last_name': 'Last Name',
             'email': 'Email Address',
             'mobile_number': 'Mobile Number',
+            'date_of_birth': 'Date of Birth',
         }
 
         # Set auto foucs to the first name input
@@ -153,3 +154,26 @@ class BookingForm(forms.ModelForm):
 
             # Remove the default labels
             self.fields[field].label = False
+    
+    def clean_date_of_birth(self):
+        """
+        A method to ensure the date of birth entered
+        is 18 years ago or more
+        """
+        # Assistance from ChatGPT
+        date_of_birth_str = self.cleaned_data['date_of_birth']
+
+        if isinstance(date_of_birth_str, str):
+            # Parse the string into a datetime object
+            date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+        else:
+            date_of_birth = date_of_birth_str
+            
+        today = timezone.now().date()
+        age = (today.year - date_of_birth.year - (
+                (today.month, today.day) < (date_of_birth.month, date_of_birth.day)))
+    
+        if age < 18:
+            raise ValidationError('Applicants must be at least 18 years old')
+        
+        return date_of_birth
