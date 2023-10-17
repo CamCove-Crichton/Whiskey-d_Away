@@ -52,7 +52,7 @@ h6 {
     color: yellow;
 }
 
-.text-yellow:hover {
+a .text-yellow:hover {
     color: gold;
 }
 
@@ -189,6 +189,10 @@ h6 {
 
 .text-decoration-none {
     text-decoration: none;
+}
+
+.bold-text {
+    font-weight: bold;
 }
 
 /* Assistance from ChatGPT */
