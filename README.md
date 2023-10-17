@@ -107,6 +107,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Then proceeded to add in a view to capture the save info information in the payment intent, to be able to call it and then once confirmed if the save info is true or false, it then runs the confirm card payment
 - I then added in original_basket and stripe_pid to my Booking model, so I could use this as a gaurantee for the webhook to check if the order has been created in the database or not, before creating a new order from the webhook
 - As I started working on my user profiles app, I knew I still needed to add a feature in for date of birth to be able to determine that the user booking the tour experience was over the age of 18, so I introduced it in the Profile model but I also wanted to introduce it to the booking form, in case I do not get to having user ensure they have an account before making a booking, then I have the validation in the booking form to ensure the user making the booking is over 18 years of age
+I then moved onto creating the Profiles app in the project and started by adding a basic view, then the url and including the url in my project level urls as well as creating a very basic template to render to get going with the user profile
 
 ### Future Developments
 
@@ -167,6 +168,8 @@ Then after that, I moved to creating the view for the booking template, added th
 | Booking template | Booking template renders as expected and is responsive | |
 | Booking payment | Stripe payments work as expected | |
 | Booking success template | Booking success template renders and displays as expected and is responsive | |
+| Stripe Payments | Stripe payment successfull in the Stripe event log as expected | |
+| Profile template | Profile template renders and displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -2322,6 +2325,71 @@ LOGIN_REDIRECT_URL = '/'
             raise ValidationError('Applicants must be at least 18 years old')
         
         return date_of_birth
+}
+```
+
+- Work on the profiles template, url and view
+
+```python
+{
+    from django.shortcuts import render
+
+
+    def profile(request):
+        """
+        A view to render the users details
+        """
+        template = 'profiles/profile.html'
+
+        context = {
+
+        }
+
+        return render(request, template, context)
+
+}
+
+{
+    # Assistance from CI - Boutique Ado Walkthrough
+    from django.urls import path
+    from . import views
+
+    # Assistance from CI - Boutique Ado Walkthrough
+    urlpatterns = [
+        path('', views.profile, name='profile'),
+    ]
+
+}
+
+{
+    {% extends "base.html" %}
+    {% load static %}
+
+    {% block extra_css%}
+        <link rel="stylesheet" href="{% static 'profiles/css/profile.css' %}">
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block content %}
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-yellow heading-background-black">Profile</h3>
+                </div>
+            </div>
+    {% endblock %}
 }
 ```
 

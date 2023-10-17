@@ -164,6 +164,7 @@
     {{ client_secret|json_script:"id_client_secret" }}
     <script src="{% static 'booking/js/stripe_elements.js' %}"></script>
 
+    <!-- Flatpickr script -->
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.date_of_birth.id_for_label }}", {
