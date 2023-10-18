@@ -109,6 +109,8 @@ Then after that, I moved to creating the view for the booking template, added th
 - As I started working on my user profiles app, I knew I still needed to add a feature in for date of birth to be able to determine that the user booking the tour experience was over the age of 18, so I introduced it in the Profile model but I also wanted to introduce it to the booking form, in case I do not get to having user ensure they have an account before making a booking, then I have the validation in the booking form to ensure the user making the booking is over 18 years of age
 - I then moved onto creating the Profiles app in the project and started by adding a basic view, then the url and including the url in my project level urls as well as creating a very basic template to render to get going with the user profile
 - Once I had the profile view basic setup done, I went through all the allauth templates to adjust them to fit in with the header element by going to the allauth account base template and adding my header-container class to style it, and then add in an inner_content template block, and then went and adjusted all the account templates to have their block contant as inner_content to extend from the base template in the account directory in my templates directory on the project level
+- I then moved back to the User model and added a method to check if a user profile exists, and if so then update the profile otherwise create a new profile if it does not exist
+- Then within my view I used the get_object_or_404 to be able to access the user profile and added it to the context, so I could just print the user out in the template to check it was working
 
 ### Future Developments
 
@@ -2351,14 +2353,20 @@ LOGIN_REDIRECT_URL = '/'
 }
 
 {
-    # Assistance from CI - Boutique Ado Walkthrough
-    from django.urls import path
-    from . import views
+    def profile(request):
+    """
+    A view to render the users details
+    """
+    # Get the user profile
+    profile = get_object_or_404(UserProfile, user=request.user)
 
-    # Assistance from CI - Boutique Ado Walkthrough
-    urlpatterns = [
-        path('', views.profile, name='profile'),
-    ]
+    template = 'profiles/profile.html'
+
+    context = {
+        'profile': profile,
+    }
+
+    return render(request, template, context)
 
 }
 
@@ -2391,6 +2399,22 @@ LOGIN_REDIRECT_URL = '/'
                 </div>
             </div>
     {% endblock %}
+}
+```
+
+- Create or update user method
+
+```python
+{
+    @receiver(post_save, sender=User)
+    def create_or_update_user_profile(sender, instance, created, **kwargs):
+        """
+        Create or update the uder profile
+        """
+        if created:
+            UserProfile.objects.create(user=instance)
+        # Existing users: just save the profile
+        instance.userprofile.save()
 }
 ```
 

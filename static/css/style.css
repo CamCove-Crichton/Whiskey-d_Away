@@ -236,6 +236,21 @@ a .text-yellow:hover {
     }
 }
 
+/* ----------------------------- Allauth formatting */
+.allauth-form-inner-content p {
+    margin-top: 1.5rem;
+
+}
+
+.allauth-form-inner-content input {
+    border: none;
+    border-radius: 5px;
+}
+
+.allauth-form-inner-content label:not([for='id_remember']) {
+    display: none;
+}
+
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
