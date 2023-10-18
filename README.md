@@ -111,6 +111,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Once I had the profile view basic setup done, I went through all the allauth templates to adjust them to fit in with the header element by going to the allauth account base template and adding my header-container class to style it, and then add in an inner_content template block, and then went and adjusted all the account templates to have their block contant as inner_content to extend from the base template in the account directory in my templates directory on the project level
 - I then moved back to the User model and added a method to check if a user profile exists, and if so then update the profile otherwise create a new profile if it does not exist
 - Then within my view I used the get_object_or_404 to be able to access the user profile and added it to the context, so I could just print the user out in the template to check it was working
+- I added the form fields into the profile to allow the user to update their mobile number or date of birth, if the user happened to mistakenly put the incorrect contact number or date of birth in
 
 ### Future Developments
 
@@ -122,6 +123,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - I would like to be able to have the basket automatically update after any input change per line item to be able to provide a better UX, so the user has instant feedback on any change
 - I would like to be able to have the user add multiple of the same tour for different days and different time slots, in case they would like to attend the same tour multiple times but would like to do so in one booking
 - I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee, and also have them have the validation of ensuring they are all over 18 years of age, but due to time constraints, I have not had a chance to implement it, but I would like to return to it and implement this, as I feel it would be a great feature
+- It would be great to be able to add in a feature for the user to be able to edit their booking once made by either changing the date, adding more attendees if possible or removing attendees or adding other experiences and paying the balance or receiving a refund if the new balance is less than what they paid, or to be able to cancel the entire booking and get a full refund if cancellation is not within a 48hr period of the booking taking place
 
 ### Wireframes & Database Designs
 
@@ -201,6 +203,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct.
 - I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend
+- I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
 
 ## Credits
 
@@ -2335,24 +2338,6 @@ LOGIN_REDIRECT_URL = '/'
 
 ```python
 {
-    from django.shortcuts import render
-
-
-    def profile(request):
-        """
-        A view to render the users details
-        """
-        template = 'profiles/profile.html'
-
-        context = {
-
-        }
-
-        return render(request, template, context)
-
-}
-
-{
     def profile(request):
     """
     A view to render the users details
@@ -2360,14 +2345,31 @@ LOGIN_REDIRECT_URL = '/'
     # Get the user profile
     profile = get_object_or_404(UserProfile, user=request.user)
 
+    # Populate with users profile information
+    form = UserProfileForm(instance=profile)
+
+    # Get the users bookings
+    bookings = profile.bookings.all()
+
     template = 'profiles/profile.html'
 
     context = {
-        'profile': profile,
+        'form': form,
+        'bookings': bookings,
     }
 
     return render(request, template, context)
+}
 
+{
+    # Assistance from CI - Boutique Ado Walkthrough
+    from django.urls import path
+    from . import views
+
+    # Assistance from CI - Boutique Ado Walkthrough
+    urlpatterns = [
+        path('', views.profile, name='profile'),
+    ]
 }
 
 {

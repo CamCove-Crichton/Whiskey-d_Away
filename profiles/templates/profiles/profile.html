@@ -25,5 +25,36 @@
                 <h3 class="text-yellow heading-background-black">Profile</h3>
             </div>
         </div>
-        {{ profile }}
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <p class="text-yellow">Default Info:</p>
+                <form class="mt-3" action="{% url 'profile' %}" method="post" id="profile-update-form">
+                    {% csrf_token %}
+                    {{ form.default_mobile_number | as_crispy_field }}
+                    {{ form.default_date_of_birth | as_crispy_field }}
+                    <button class="btn btn-yellow float-right mb-3">Update Info</button>
+                </form>
+            </div>
+            <div class="col-12 col-lg-6">
+                <p class="text-yellow">Booking History:</p>
+                {{ bookings }}
+            </div>
+        </div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block postloadjs %}
+    {{ block.super }}
+
+    <!-- Flatpickr script -->
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#{{ form.default_date_of_birth.id_for_label }}", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
+                maxDate: "today",
+            })
+        })
+
+    </script>
 {% endblock %}
