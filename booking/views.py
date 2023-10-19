@@ -64,7 +64,6 @@ def booking(request):
 
         # Assign the BookingForm with form data to booking_form
         booking_form = BookingForm(form_data)
-        print("Form Data Before Submission:", request.POST)
 
         # Check if it is valid
         if booking_form.is_valid():
@@ -115,7 +114,8 @@ def booking(request):
         # Raise error is form is invalid
         else:
             messages.error(request, 'There was an error with your form. \
-                Please double check your info.')
+                Please double check your info. Users must be 18 years \
+                or older')
             
             return redirect(reverse('booking'))
     else:

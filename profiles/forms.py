@@ -47,7 +47,7 @@ class UserProfileForm(forms.ModelForm):
             # Remove the default labels
             self.fields[field].label = False
     
-    def clean_date_of_birth(self):
+    def clean_default_date_of_birth(self):
         """
         A method to ensure the date of birth entered
         is 18 years ago or more
@@ -64,7 +64,7 @@ class UserProfileForm(forms.ModelForm):
         today = timezone.now().date()
         age = (today.year - date_of_birth.year - (
                 (today.month, today.day) < (date_of_birth.month, date_of_birth.day)))
-    
+
         if age < 18:
             raise ValidationError('Applicants must be at least 18 years old')
         
