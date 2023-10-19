@@ -121,14 +121,14 @@
                                     <strong>Basket Total:</strong> £{{ grand_total|floatformat:2 }}
                                 </td>
                             </tr>
-                            <p class="text-right"><strong>Spend £{{ discount_delta }} to get your 10% discount!</strong></p>
+                            <p class="text-right text-yellow"><strong>Spend £{{ discount_delta }} to get your 10% discount!</strong></p>
                             {% endif %}
                         </tbody>
                     </table>
-                    <a href="{% url 'tours' %}" class="display-decoration-none btn bg-yellow text-black mt-3 mb-3">
+                    <a href="{% url 'tours' %}" class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">
                         Continue Browsing Whiskey Experiences
                     </a>
-                    <a href="{% url 'booking' %}" class="display-decoration-none btn bg-yellow text-black mt-3 mb-3">Book Now</a>
+                    <a href="{% url 'booking' %}" class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">Book Now</a>
                 {% else %}
                     <p class="text-center text-yellow">Your basket is currently empty</p>
                     <a class="display-decoration-none btn bg-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">

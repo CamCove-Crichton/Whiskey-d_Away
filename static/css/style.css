@@ -22,8 +22,16 @@ h6 {
 }
 
 /* ----------------------------- Colours */
-.bg-black {
+.bg-black,
+.btn-black {
     background-color: black;
+    color: yellow;
+}
+
+.btn-black:hover {
+    background-color: gold;
+    color: black;
+    border: 1px solid black;
 }
 
 .border-black {

@@ -99,9 +99,13 @@
                                 <label for="id-save-info" class="form-check-label text-yellow mr-1">Save info to my profile</label>
                                 <input type="checkbox" class="form-check-input" id="id-save-info" name="save-info" checked>
                             {% else %}
-                                <label for="id-save-info" class="form-check-label">
-                                    <a href="{% url 'account_signup' %}" class="text-info">Create Account</a> or 
-                                    <a href="{% url 'account_login' %}" class="text-info">login</a> to save this info
+                                <label for="id-save-info" class="form-check-label text-yellow">
+                                    <a href="{% url 'account_signup' %}" class="text-decoration-none">
+                                        <span class="text-yellow"><strong>Create Account</strong></span>
+                                    </a> or 
+                                    <a href="{% url 'account_login' %}" class="text-decoration-none">
+                                        <span class="text-yellow"><strong>login</strong></span>
+                                    </a> to save this info
                                 </label>
                             {% endif %}
                         </div>

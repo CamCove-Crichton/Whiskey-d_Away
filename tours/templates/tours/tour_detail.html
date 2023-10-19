@@ -106,9 +106,9 @@
 
                     <!-- Continue shopping, Book Now and Add to Basket buttons -->
                     <div class="col-12">
-                        <a href="{% url 'tours' %}" class="btn bg-black text-yellow mb-2">Continue Browsing Experiences</a>
-                        <input type="submit" class="btn bg-black text-yellow mb-2" value="Book Now">
-                        <input type="submit" class="btn bg-black text-yellow mb-2" value="Add to basket">
+                        <a href="{% url 'tours' %}" class="btn btn-black mb-2">Continue Browsing Experiences</a>
+                        <input type="submit" class="btn btn-black mb-2" value="Book Now">
+                        <input type="submit" class="btn btn-black mb-2" value="Add to basket">
                     </div>
                     <input type="hidden" name="max_attendees" value="{{ tour.max_attendees }}" />
                     <input type="hidden" name="redirect_url" value="{{ request.path }}" />
