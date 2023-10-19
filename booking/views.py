@@ -64,6 +64,7 @@ def booking(request):
 
         # Assign the BookingForm with form data to booking_form
         booking_form = BookingForm(form_data)
+        print("Form Data Before Submission:", request.POST)
 
         # Check if it is valid
         if booking_form.is_valid():
@@ -115,6 +116,8 @@ def booking(request):
         else:
             messages.error(request, 'There was an error with your form. \
                 Please double check your info.')
+            
+            return redirect(reverse('booking'))
     else:
         # Get the session basket
         basket = request.session.get('basket', {})
