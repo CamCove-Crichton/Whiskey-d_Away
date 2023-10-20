@@ -16,8 +16,9 @@ class BookingAdmin(admin.ModelAdmin):
                        'grand_total', 'original_basket',
                        'stripe_pid')
 
-    fields = ('booking_number', 'date_of_booking',
-              'first_name', 'last_name', 'mobile_number',
+    fields = ('booking_number', 'user_profile',
+              'date_of_booking', 'first_name',
+              'last_name', 'mobile_number',
               'email', 'date_of_birth', 'booking_total',
               'discount_amount', 'grand_total',
               'original_basket', 'stripe_pid')

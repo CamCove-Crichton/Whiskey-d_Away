@@ -43,12 +43,12 @@
             </div>
             <div class="col-12 col-lg-6">
                 <p class="text-yellow">Booking History:</p>
-                <div class="table-responsive booking-history">
-                    <table class="table table-sm table-borderless text-yellow">
-                        <thead>
+                <div class="table-responsive booking-history rounded-background-yellow">
+                    <table class="table table-sm table-borderless">
+                        <thead class="small">
                             <tr>
                                 <th>Booking Number:</th>
-                                <th>Booking Place On:</th>
+                                <th>Booking Placed On:</th>
                                 <th>Experience</th>
                                 <th>Total:</th>
                             </tr>
@@ -60,19 +60,19 @@
                                         <a class="text-decoration-none" 
                                         href="{% url 'booking_history' booking.booking_number %}" 
                                         title="{{ booking.booking_number}}">
-                                            <span class="yellow-text">
+                                            <span class="small">
                                                 {{ booking.booking_number|truncatechars:4 }}
                                             </span>
                                         </a>
                                     </td>
-                                    <td>
+                                    <td class="small">
                                         {{ booking.date_of_booking }}
                                     </td>
                                     <td>
                                         <ul class="list-unstyled">
-                                            {% for item in booking.booking_items.all %}
+                                            {% for item in booking.lineitems.all %}
                                                 <li class="small">
-                                                    {{ item.experience.tour_name }} 
+                                                    {{ item.tour.tour_name }} 
                                                     x {{ item.number_of_attendees }} 
                                                     for {{ item.booking_time_slot }} time slot, 
                                                     on {{ item.booking_date }}
@@ -80,7 +80,7 @@
                                             {% endfor %}
                                         </ul>
                                     </td>
-                                    <td>
+                                    <td class="small">
                                         {{ booking.grand_total }}
                                     </td>
                                 </tr>

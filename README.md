@@ -114,6 +114,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - I added the form fields into the profile to allow the user to update their mobile number or date of birth, if the user happened to mistakenly put the incorrect contact number or date of birth in
 - I added in the first name, last name and email fields to my profile template, by adding fields to my UserProfileForm from the django User model, so that I could allow the user to update their name, last name and email address which will save to the User profile
 - Then moved onto adding a view and url for the booking_history for the user to be able to see previous bookings
+- Added to the booking view to check if the user is authenticated and if so, to then prepopulate the form with the users details when on the booking template for a better UX
 
 ### Future Developments
 
@@ -177,6 +178,7 @@ Then after that, I moved to creating the view for the booking template, added th
 | Booking success template | Booking success template renders and displays as expected and is responsive | |
 | Stripe Payments | Stripe payment successfull in the Stripe event log as expected | |
 | Profile template | Profile template renders and displays as expected and is responsive | |
+| Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -2615,6 +2617,29 @@ LOGIN_REDIRECT_URL = '/'
         views.booking_history,
         name='booking_history'
         ),
+}
+```
+
+- Update booking view to see if the user is authenticated
+
+```python
+{
+    # Check if the user is authenticated
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+                booking_form = BookingForm(initial={
+                    'first_name': profile.user.first_name,
+                    'last_name': profile.user.last_name,
+                    'email': profile.user.email,
+                    'mobile_number': profile.default_mobile_number,
+                    'date_of_birth': profile.default_date_of_birth,
+                })
+            except UserProfile.DoesNotExist:
+                booking_form = BookingForm()
+        else:
+            # Create an empty booking form
+            booking_form = BookingForm()
 }
 ```
 

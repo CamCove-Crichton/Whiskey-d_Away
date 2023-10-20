@@ -13,8 +13,11 @@ from django.views.decorators.http import require_POST
 
 from .models import Booking, BookingItem
 from .forms import BookingForm
+
 from basket.contexts import basket_contents
 from tours.models import Tours
+from profiles.models import UserProfile
+from profiles.forms import UserProfileForm
 
 import stripe
 import json
@@ -145,8 +148,22 @@ def booking(request):
             currency=settings.STRIPE_CURRENCY,
         )
 
-        # Create an empty booking form
-        booking_form = BookingForm()
+        # Check if the user is authenticated
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+                booking_form = BookingForm(initial={
+                    'first_name': profile.user.first_name,
+                    'last_name': profile.user.last_name,
+                    'email': profile.user.email,
+                    'mobile_number': profile.default_mobile_number,
+                    'date_of_birth': profile.default_date_of_birth,
+                })
+            except UserProfile.DoesNotExist:
+                booking_form = BookingForm()
+        else:
+            # Create an empty booking form
+            booking_form = BookingForm()
 
     # Assistance from CI - Boutique Ado walkthrough
     if not stripe_public_key:
@@ -175,6 +192,26 @@ def booking_success(request, booking_number):
     # Get the save info from the session
     save_info = request.session.get('save_info')
     booking = get_object_or_404(Booking, booking_number=booking_number)
+
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        # Attach the users profile to the booking
+        booking.user_profile = profile
+        booking.save()
+
+        if save_info:
+            profile_data = {
+                'first_name': booking.first_name,
+                'last_name': booking.last_name,
+                'email': booking.email,
+                'default_mobile_number': booking.mobile_number,
+                'default_date_of_birth': booking.date_of_birth,
+            }
+            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
+
     messages.success(request, f'Booking complete! Your \
         booking number is {booking_number}. A confirmation \
         email has been sent to {booking.email}')
