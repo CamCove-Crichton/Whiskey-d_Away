@@ -113,6 +113,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Then within my view I used the get_object_or_404 to be able to access the user profile and added it to the context, so I could just print the user out in the template to check it was working
 - I added the form fields into the profile to allow the user to update their mobile number or date of birth, if the user happened to mistakenly put the incorrect contact number or date of birth in
 - I added in the first name, last name and email fields to my profile template, by adding fields to my UserProfileForm from the django User model, so that I could allow the user to update their name, last name and email address which will save to the User profile
+- Then moved onto adding a view and url for the booking_history for the user to be able to see previous bookings
 
 ### Future Developments
 
@@ -2546,6 +2547,74 @@ LOGIN_REDIRECT_URL = '/'
                 raise ValidationError('Applicants must be at least 18 years old')
             
             return date_of_birth
+}
+```
+
+- Assistance with the addition to booking_success template
+
+```html
+{
+    <div class="row">
+        <div class="col-12 col-lg-7 text-right">
+            {% if from_profile %}
+                <a href="{% url 'profile'%}" class="btn btn-yellow mb-3">
+                    <span class="icon">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </span>
+                    <span>Return to Profile</span>
+                </a>
+            {% else %}
+                <a href="{% url 'tours'%}?category=on_offer" class="btn btn-yellow mb-3">
+                    <span class="icon">
+                        <i class="fa-solid fa-gift"></i>
+                    </span>
+                    <span>Whiskey Experiences on offer!</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+}
+```
+
+- Creating the booking_history view, and url
+
+```python
+{
+    def booking_history(request, booking_number):
+    """
+    A view to render the booking history details
+    """
+    # Get the booking object from the booking number
+    booking = get_object_or_404(
+                Booking, booking_number=booking_number)
+    
+    # Display a message to the user
+    messages.info(request, (
+        f'This is a previous booking confirmation \
+        for booking number {booking_number}.'
+        f'A confirmation email was sent to {booking.email} \
+        on {booking.date_of_booking}.'
+        ))
+    
+    # Assign the template
+    template = 'booking/booking_success.html/'
+
+    # Assign the context
+    context = {
+        'booking': booking,
+        'from_profile': True,
+    }
+
+    # Render the view
+    return render(request, template, context)
+}
+
+{
+    path(
+        'booking_history/<booking_number>/',
+        views.booking_history,
+        name='booking_history'
+        ),
 }
 ```
 
