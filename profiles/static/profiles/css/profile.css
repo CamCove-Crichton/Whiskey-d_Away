@@ -1,3 +1,9 @@
+/* Assistance from CI - Boutique Ado walkthrough */
+.booking-history {
+    max-height: 416px;
+    overflow: auto;
+}
+
 #profile-update-form .form-control {
     color: black;
 }

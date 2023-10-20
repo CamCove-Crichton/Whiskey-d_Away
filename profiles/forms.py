@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from .models import UserProfile
 
@@ -11,9 +12,17 @@ class UserProfileForm(forms.ModelForm):
     """
     A form for the user to make a booking
     """
+    # Assistance from ChatGPT
+    # Additional fields from the User model
+    first_name = forms.CharField(max_length=20, required=False, label='First Name')
+    last_name = forms.CharField(max_length=20, required=False, label='Last Name')
+    email = forms.EmailField(max_length=254, required=False, label='Email Address')
+
     class Meta:
         model = UserProfile
-        exclude = ('user',)
+        fields = ['first_name', 'last_name',
+                  'email', 'default_mobile_number',
+                  'default_date_of_birth']
 
     def __init__(self, *args, **kwargs):
         """
@@ -23,12 +32,15 @@ class UserProfileForm(forms.ModelForm):
         """
         super().__init__(*args, **kwargs)
         placeholders = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'email': 'Email',
             'default_mobile_number': 'Mobile Number',
             'default_date_of_birth': 'Date of Birth',
         }
 
         # Set auto foucs to the first name input
-        self.fields['default_mobile_number'].widget.attrs['autofocus'] = True
+        self.fields['first_name'].widget.attrs['autofocus'] = True
 
         # Iterate through form fields to manipulate as required
         for field in self.fields:

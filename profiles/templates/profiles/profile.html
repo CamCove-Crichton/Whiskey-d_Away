@@ -27,9 +27,15 @@
         </div>
         <div class="row">
             <div class="col-12 col-lg-6">
-                <p class="text-yellow">Default Info:</p>
-                <form class="mt-3" action="{% url 'profile' %}" method="POST" id="profile-update-form">
+                <p class="text-yellow">Contact Info:</p>
+                <form class="mt-3" 
+                action="{% url 'profile' %}" 
+                method="POST" 
+                id="profile-update-form">
                     {% csrf_token %}
+                    {{ form.first_name | as_crispy_field }}
+                    {{ form.last_name | as_crispy_field }}
+                    {{ form.email | as_crispy_field }}
                     {{ form.default_mobile_number | as_crispy_field }}
                     {{ form.default_date_of_birth | as_crispy_field }}
                     <button class="btn btn-yellow float-right mb-3">Update Info</button>
@@ -37,7 +43,51 @@
             </div>
             <div class="col-12 col-lg-6">
                 <p class="text-yellow">Booking History:</p>
-                {{ bookings }}
+                <div class="table-responsive booking-history">
+                    <table class="table table-sm table-borderless text-yellow">
+                        <thead>
+                            <tr>
+                                <th>Booking Number:</th>
+                                <th>Booking Place On:</th>
+                                <th>Experience</th>
+                                <th>Total:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                    <td>
+                                        <a class="text-decoration-none" 
+                                        href="{% url 'booking_history' booking.booking_number %}" 
+                                        title="{{ booking.booking_number}}">
+                                            <span class="yellow-text">
+                                                {{ booking.booking_number|truncatechars:4 }}
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ booking.date_of_booking }}
+                                    </td>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            {% for item in booking.booking_items.all %}
+                                                <li class="small">
+                                                    {{ item.experience.tour_name }} 
+                                                    x {{ item.number_of_attendees }} 
+                                                    for {{ item.booking_time_slot }} time slot, 
+                                                    on {{ item.booking_date }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {{ booking.grand_total }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 {% endblock %}
