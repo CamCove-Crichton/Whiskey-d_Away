@@ -1,0 +1,32 @@
+Hi {{ booking.first_name }},
+
+Thank you for your booking and we hope you are getting excited for your upcoming Whiskey Experience(s).
+
+This is a confirmation email to confirm your booking with Whiskey'd Away. Please keep this email saved, as you will be asked for your booking number when you arrive to check in for your Whiskey Experience(s).
+
+Your booking details are listed below:
+
+Booking Number: {{ booking.booking_number }}
+
+{% for item in booking.lineitems.all %}
+Whiskey Experience: {{ item.tour.tour_name }}
+Date: {{ item.booking_date }}
+Time Slot: {{ item.booking_time_slot }}
+No. of Attendees: {{ item.number_of_attendees }} @ £{{ item.tour.tour_price }}pp
+
+{% endfor %}
+Booking Total: £{{ booking.booking_total }}
+Discount: £{{ booking.discount_amount }}
+Grand Total: £ {{ booking.grand_total }}
+
+The contact details we have save for you are:
+
+Name: {{ booking.first_name}} {{ booking.last_name }}
+Mobile Number: {{ booking.mobile_number }}
+Email Address: {{ booking.email }}
+
+Please double check that all the details above are correct, and if anything is not right please get in touch at {{ contact_email }}
+
+Sincerely,
+
+Whiskey'd Away

@@ -116,6 +116,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Then moved onto adding a view and url for the booking_history for the user to be able to see previous bookings
 - Added to the booking view to check if the user is authenticated and if so, to then prepopulate the form with the users details when on the booking template for a better UX
 - Added updating the users profile in the webhook handler, with the users first name, last name, email and mobile number. Due to time constraints, I was unable to figure out how to get access to the date of birth field to be able to update this in the users profile from the webhook
+- Then implemented sending a confirmation email to the user when a booking is confirmed
 
 ### Future Developments
 
@@ -180,6 +181,7 @@ Then after that, I moved to creating the view for the booking template, added th
 | Stripe Payments | Stripe payment successfull in the Stripe event log as expected | |
 | Profile template | Profile template renders and displays as expected and is responsive | |
 | Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | |
+| Confirmation Email | Confirmation email sent when booking is placed | |
 
 ### Resolved Bugs
 
@@ -2659,6 +2661,42 @@ LOGIN_REDIRECT_URL = '/'
                 profile.default_mobile_number = billing_details.phone
                 profile.default_email = billing_details.email
                 profile.save()
+}
+```
+
+- Assistance with implementing the email confirmation into the webhook handler
+
+```python
+{
+    class StripeWH_Handler:
+    """
+    Handle Stripe webhooks
+    """
+    def __init__(self, request):
+        self.request = request
+    
+    def _send_confirmation_email(self, booking):
+        """
+        Sends the user a confirmation email
+        """
+        cust_email = booking.email
+        subject = render_to_string(
+            'booking/confirmation_emails/confirmation_email_subject.txt',
+            {'booking': booking}
+        )
+        body = render_to_string(
+            'booking/confirmation_emails/confirmation_email_body.txt',
+            {
+                'booking': booking,
+                'contact_email': settings.DEFAULT_FROM_EMAIL,
+            }
+        )
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [cust_email]
+        )
 }
 ```
 

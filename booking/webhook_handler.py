@@ -1,5 +1,8 @@
 # Assistance from CI - Boutique Ado walkthrough
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 
 from .models import Booking, BookingItem
 from tours.models import Tours
@@ -15,6 +18,30 @@ class StripeWH_Handler:
     """
     def __init__(self, request):
         self.request = request
+    
+    def _send_confirmation_email(self, booking):
+        """
+        Sends the user a confirmation email
+        """
+        cust_email = booking.email
+        subject = render_to_string(
+            'booking/confirmation_emails/confirmation_email_subject.txt',
+            {'booking': booking}
+        )
+        body = render_to_string(
+            'booking/confirmation_emails/confirmation_email_body.txt',
+            {
+                'booking': booking,
+                'contact_email': settings.DEFAULT_FROM_EMAIL,
+            }
+        )
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [cust_email]
+        )
+
     
     def handle_event(self, event):
         """
@@ -82,6 +109,7 @@ class StripeWH_Handler:
                 attempt += 1
                 time.sleep(1)
         if booking_exists:
+            self._send_confirmation_email(booking)
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already exists in the database',
                 status=200)
@@ -122,7 +150,7 @@ class StripeWH_Handler:
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500)
-
+        self._send_confirmation_email(booking)
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
             status=200
