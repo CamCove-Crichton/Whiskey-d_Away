@@ -118,6 +118,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Added updating the users profile in the webhook handler, with the users first name, last name, email and mobile number. Due to time constraints, I was unable to figure out how to get access to the date of birth field to be able to update this in the users profile from the webhook
 - Then implemented sending a confirmation email to the user when a booking is confirmed
 - I added a form to the tours app, so I can have a place for the admin user to be able to add, view and edit the tour experience offerings on the site, so it does not have to be done from the django admin side of things
+- I then moved onto adding the view, url and template for the add tour form to display in, so the admin can add tour experiences to the database from the site when logged in, instead of using the django admin panel
 
 ### Future Developments
 
@@ -183,6 +184,7 @@ Then after that, I moved to creating the view for the booking template, added th
 | Profile template | Profile template renders and displays as expected and is responsive | |
 | Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | |
 | Confirmation Email | Confirmation email sent when booking is placed | |
+| Add Tour template | The add tour template renders and displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -2727,6 +2729,77 @@ LOGIN_REDIRECT_URL = '/'
             self.fields['category'].choices = friendly_names
             for field_name, field in self.fields.items():
                 field.widget.attrs['class'] = 'rounded-2'
+}
+```
+
+- Adding the add_tour view, url & template
+
+```python
+{
+    def add_tour(request):
+    """
+    A view for the admin to add tour experiences
+    """
+    form = ToursForm()
+    template = 'tours/add_tour.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
+}
+
+{
+    path('add/', views.add_tour, name='add_tour'),
+}
+```
+
+```html
+{
+    {% extends "base.html" %}
+    {% load static %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block content %}
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12 col-md-6 text-center">
+                    <h3 class="text-yellow heading-background-black p-2 mb-3">Tour Experience Management</h3>
+                    <h4 class="text-yellow text-medium">Add Tour Experience</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6 rounded-background-yellow mb-3">
+                    <form 
+                    action="{% url 'add_tour' %}"
+                    method="POST" class="form"
+                    enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-black">Add</button>
+                            <a href="{% url 'tours'%}" class="text-decoration-none btn btn-black">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 }
 ```
 

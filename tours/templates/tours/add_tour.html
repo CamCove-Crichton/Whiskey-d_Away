@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+    <div class="container">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-12 col-md-6 text-center">
+                <h3 class="text-yellow heading-background-black p-2 mb-3">Tour Experience Management</h3>
+                <h4 class="text-yellow text-medium">Add Tour Experience</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 rounded-background-yellow mb-3">
+                <form 
+                action="{% url 'add_tour' %}"
+                method="POST" class="form"
+                enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-black">Add</button>
+                        <a href="{% url 'tours'%}" class="text-decoration-none btn btn-black">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

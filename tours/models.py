@@ -35,7 +35,8 @@ class Tours(models.Model):
     class Meta:
         verbose_name_plural = 'Tours'
     tour_category = models.ManyToManyField(
-        Category, blank=True, related_name='tours')
+        Category, blank=True, related_name='tours',
+        help_text="Hold ctrl/cmd key to select more than one")
     tour_name = models.CharField(max_length=100)
     # Assistance from ChatGPT
     tour_description = models.TextField(

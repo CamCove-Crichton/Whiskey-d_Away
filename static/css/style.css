@@ -21,6 +21,12 @@ h6 {
     font-family: "Diplomata SC", Verdana, sans-serif;
 }
 
+/* ----------------------------- Font sizes */
+
+.text-medium {
+    font-size: medium;
+}
+
 /* ----------------------------- Colours */
 .bg-black,
 .btn-black {

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Tours, Category
+from .forms import ToursForm
 from booking.forms import BookingItemForm
 from django.http import Http404
 
@@ -91,5 +92,18 @@ def tour_detail(request, id):
     }
 
     template = 'tours/tour_detail.html'
+
+    return render(request, template, context)
+
+
+def add_tour(request):
+    """
+    A view for the admin to add tour experiences
+    """
+    form = ToursForm()
+    template = 'tours/add_tour.html'
+    context = {
+        'form': form,
+    }
 
     return render(request, template, context)
