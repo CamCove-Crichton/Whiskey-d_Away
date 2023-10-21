@@ -109,10 +109,10 @@ def add_tour(request):
         # Check if the form is valid
         if form.is_valid():
             # Save the form and return a success message
-            form.save()
+            tour = form.save()
             messages.success(request, 'Experience successfully \
                 added to Tour offerings!')
-            return redirect(reverse('add_tour'))
+            return redirect(reverse('tour_detail', args=[tour.id]))
         else:
             # Otherwise return an error message
             messages.error(request, 'Failed to add Experience. \
@@ -176,3 +176,18 @@ def edit_tour(request, tour_id):
 
     # Render the view
     return render(request, template, context)
+
+
+def delete_tour(request, tour_id):
+    """
+    A view to allow admin users to remove
+    tour experiences from the database
+    """
+    # Get the tour using get_object_or_404
+    tour = get_object_or_404(Tours, pk=tour_id)
+    
+    # Delete the tour & return a success message
+    tour.delete()
+    messages.success(request, f'{tour.tour_name} \
+        successfully deleted!')
+    return redirect(reverse('tours'))

@@ -7,8 +7,8 @@ def validate_country(value):
     """
     A function to validate the country field in the tours model
     """
-    allowed_countries = ['England', 'Ireland', 'Scotland', 'Wales']
-    if value not in allowed_countries:
+    allowed_countries = ['england', 'ireland', 'scotland', 'wales']
+    if value.lower() not in allowed_countries:
         raise ValidationError(_('Invalid country. Please enter one of the \
             following countries: England, Ireland, Scotland or Wales'))
 

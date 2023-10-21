@@ -38,7 +38,7 @@
               <strong>Price per person:</strong> £{{ tour.tour_price }}
             </p>
             {% if tour.tour_rating %}
-            <p><strong>Rating:</strong> {{ tour.tour_rating|floatformat:0 }}<i class="fa-sharp fa-solid fa-star"></i></p>
+            <p class="card-text"><strong>Rating:</strong> {{ tour.tour_rating|floatformat:0 }}<i class="fa-sharp fa-solid fa-star"></i></p>
             {% endif %}
 
             <!-- Tour Category -->
@@ -110,6 +110,23 @@
                         <input type="submit" class="btn btn-black mb-2" value="Book Now">
                         <input type="submit" class="btn btn-black mb-2" value="Add to basket">
                     </div>
+                    {% if request.user.is_superuser %}
+                        <div class="container mt-3 ml-0 p-1">
+                            <span class="card-text">
+                                <a 
+                                href="{% url 'edit_tour' tour.id %}"
+                                class="text-decoration-none btn btn-black">Edit</a>
+                            </span>
+                            <span class="card-text">
+                                <button 
+                                type="button"
+                                class="btn btn-danger"
+                                data-toggle="modal"
+                                data-target="#confirmDeleteModal_{{ tour.id }}">
+                                    Delete
+                                </button>
+                            </span>
+                        {% endif %}
                     <input type="hidden" name="max_attendees" value="{{ tour.max_attendees }}" />
                     <input type="hidden" name="redirect_url" value="{{ request.path }}" />
                 </div>
@@ -119,6 +136,51 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal from Boostrap -->
+<div 
+class="modal fade"
+id="confirmDeleteModal_{{ tour.id }}"
+tabindex="-1"
+role="dialog"
+aria-labelledby="confirmDeleteModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-yellow">
+            <div class="modal-header">
+                <h5
+                class="modal-title"
+                id="confirmDeleteModalLabel">
+                    Confirm Deletion
+                </h5>
+
+                <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this Experience?</p>
+            </div>
+            <div class="modal-footer">
+                <button
+                type="button"
+                class="btn btn-black"
+                data-dismiss="modal">
+                    Cancel
+                </button>
+
+                <a href="{% url 'delete_tour' tour.id %}" class="btn btn-danger">
+                    Delete
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

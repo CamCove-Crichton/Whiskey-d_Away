@@ -40,6 +40,10 @@ h6 {
     border: 1px solid black;
 }
 
+.btn-danger:hover {
+    color: yellow;
+}
+
 .border-black {
     border: 1px solid black;
 }
@@ -124,7 +128,7 @@ a .text-yellow:hover {
 
 .container-card {
     width: 330px;
-    height: 550px;
+    height: 600px;
     overflow: scroll;
 }
 

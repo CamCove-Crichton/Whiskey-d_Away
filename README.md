@@ -119,7 +119,8 @@ Then after that, I moved to creating the view for the booking template, added th
 - Then implemented sending a confirmation email to the user when a booking is confirmed
 - I added a form to the tours app, so I can have a place for the admin user to be able to add, view and edit the tour experience offerings on the site, so it does not have to be done from the django admin side of things
 - I then moved onto adding the view, url and template for the add tour form to display in, so the admin can add tour experiences to the database from the site when logged in, instead of using the django admin panel
-- Afterwards I moved onto adding the edit tour view, url and template to allow admin users to be able to view and edit existing tour experiences
+- Afterwards I moved onto adding the edit tour view, url and template to allow admin users to be able to view and edit existing tour experiences, which the admin can do from the tours template or the tour detail template
+- Added in a modal to appear when the admin is trying to delete a Tour Experience, as a bit of defensive programming to ensure the admin has not accidentally clicked the delete button, and then upon clicking the delete button in the modal, the experience is removed from the database, so the administrator can delete experiences from the site when logged in and does not have to go into the django admin panel. The admin is able to do this from either the tours template or the tour_detail template
 
 ### Future Developments
 
@@ -187,6 +188,8 @@ Then after that, I moved to creating the view for the booking template, added th
 | Confirmation Email | Confirmation email sent when booking is placed | |
 | Add Tour template | The add tour template renders and displays as expected and is responsive | |
 | Edit Tour template | The edit tour template renders and displays as expected and is responsive | |
+| Confirmation Modal | The confirmation modal appears as expected when trying to delete an experience as an admin | |
+| Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | |
 
 ### Resolved Bugs
 
@@ -2908,6 +2911,30 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Adding the delete url & view
+
+```python
+{
+    path('delete/<int:tour_id>/', views.delete_tour, name='delete_tour'),
+}
+
+{
+    def delete_tour(request, tour_id):
+    """
+    A view to allow admin users to remove
+    tour experiences from the database
+    """
+    # Get the tour using get_object_or_404
+    tour = get_object_or_404(Tours, pk=tour_id)
+    
+    # Delete the tour & return a success message
+    tour.delete()
+    messages.success(request, f'{tour.tour_name} \
+        successfully deleted!')
+    return redirect(reverse('tours'))
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -3089,6 +3116,69 @@ LOGIN_REDIRECT_URL = '/'
                 your inputs')
             print(f"Form errors: {form.errors}")
             return redirect(redirect_url)
+}
+```
+
+- Confirmation modal from Boostrap and assistance from ChatGpt
+
+```html
+{
+    <span class="card-text">
+        <button 
+        type="button"
+        class="btn btn-danger"
+        data-toggle="modal"
+        data-target="#confirmDeleteModal_{{ tour.id }}">
+            Delete
+        </button>
+    </span>
+}
+
+{
+    <!-- Modal from Boostrap -->
+    <div 
+    class="modal fade"
+    id="confirmDeleteModal_{{ tour.id }}"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmDeleteModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5
+                    class="modal-title"
+                    id="confirmDeleteModalLabel">
+                        Confirm Deletion
+                    </h5>
+
+                    <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this Experience?</p>
+                </div>
+                <div class="modal-footer">
+                    <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <a href="{% url 'delete_tour' tour.id %}" class="btn btn-danger">
+                        Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 ```
 
