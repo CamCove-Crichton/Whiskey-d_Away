@@ -117,6 +117,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Added to the booking view to check if the user is authenticated and if so, to then prepopulate the form with the users details when on the booking template for a better UX
 - Added updating the users profile in the webhook handler, with the users first name, last name, email and mobile number. Due to time constraints, I was unable to figure out how to get access to the date of birth field to be able to update this in the users profile from the webhook
 - Then implemented sending a confirmation email to the user when a booking is confirmed
+- I added a form to the tours app, so I can have a place for the admin user to be able to add, view and edit the tour experience offerings on the site, so it does not have to be done from the django admin side of things
 
 ### Future Developments
 
@@ -2697,6 +2698,35 @@ LOGIN_REDIRECT_URL = '/'
             settings.DEFAULT_FROM_EMAIL,
             [cust_email]
         )
+}
+```
+
+- Adding the form for the tours admin
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django import forms
+    from .models import Tours, Category
+
+
+    class ToursForm(forms.ModelForm):
+        """
+        A form for admin users to add, view
+        and edit tour experiences
+        """
+        class Meta:
+            model = Tours
+            fields = '__all__'
+        
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            categories = Category.objects.all()
+            friendly_names = [(c.id, c.get_friendly_names()) for c in categories]
+
+            self.fields['category'].choices = friendly_names
+            for field_name, field in self.fields.items():
+                field.widget.attrs['class'] = 'rounded-2'
 }
 ```
 
