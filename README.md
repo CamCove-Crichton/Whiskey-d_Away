@@ -119,6 +119,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Then implemented sending a confirmation email to the user when a booking is confirmed
 - I added a form to the tours app, so I can have a place for the admin user to be able to add, view and edit the tour experience offerings on the site, so it does not have to be done from the django admin side of things
 - I then moved onto adding the view, url and template for the add tour form to display in, so the admin can add tour experiences to the database from the site when logged in, instead of using the django admin panel
+- Afterwards I moved onto adding the edit tour view, url and template to allow admin users to be able to view and edit existing tour experiences
 
 ### Future Developments
 
@@ -185,6 +186,7 @@ Then after that, I moved to creating the view for the booking template, added th
 | Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | |
 | Confirmation Email | Confirmation email sent when booking is placed | |
 | Add Tour template | The add tour template renders and displays as expected and is responsive | |
+| Edit Tour template | The edit tour template renders and displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -2791,6 +2793,109 @@ LOGIN_REDIRECT_URL = '/'
                         {{ form | crispy }}
                         <div class="text-right">
                             <button type="submit" class="btn btn-black">Add</button>
+                            <a href="{% url 'tours'%}" class="text-decoration-none btn btn-black">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+}
+```
+
+- Adding the edit tour experience view, url & template
+
+```python
+{
+    def edit_tour(request, tour_id):
+    """
+    A view to allow admin users to edit the
+    existing experiences in the database
+    """
+    # Assign the tour using get_object_or_404 with the id
+    tour = get_object_or_404(Tours, pk=tour_id)
+
+    # Check if the request is POST
+    if request.method == 'POST':
+        form = ToursForm(
+            request.POST,
+            request.FILES,
+            instance=tour
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{tour.tour_name} \
+                successfully updated!')
+            return redirect(reverse('tour_detail', args=[tour.id]))
+        else:
+            messages.error(request, f'Failed to update \
+                {tour.tour_name}. Please check all your \
+                form inputs are valid!')
+    else:
+        # Initiate the form with the instance of the tour
+        form = ToursForm(instance=tour)
+
+        # Inform the admin user they are editing a tour experience
+        messages.info(request, f'You are editing {tour.tour_name}')
+
+    # Assign the template
+    template = 'tours/edit_tour.html'
+
+    # Assign the context
+    context = {
+        'form': form,
+        'tour': tour,
+    }
+
+    # Render the view
+    return render(request, template, context)
+}
+
+{
+    path('edit/<int:tour_id>/', views.edit_tour, name='edit_tour'),
+}
+```
+
+```html
+{
+    {% extends "base.html" %}
+    {% load static %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Assistance from CI - Boutique Ado walkthrough -->
+    {% block content %}
+        <div class="container">
+            <!-- Page Header -->
+            <div class="row">
+                <div class="col-12 col-md-6 text-center">
+                    <h3 class="text-yellow heading-background-black p-2 mb-3">Tour Experience Management</h3>
+                    <h4 class="text-yellow text-medium">Edit Tour Experience</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6 rounded-background-yellow mb-3">
+                    <form 
+                    action="{% url 'edit_tour' tour.id %}"
+                    method="POST" class="form"
+                    enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-black">Update</button>
                             <a href="{% url 'tours'%}" class="text-decoration-none btn btn-black">
                                 Cancel
                             </a>

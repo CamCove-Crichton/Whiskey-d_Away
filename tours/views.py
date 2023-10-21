@@ -131,3 +131,48 @@ def add_tour(request):
 
     # Render the view
     return render(request, template, context)
+
+
+def edit_tour(request, tour_id):
+    """
+    A view to allow admin users to edit the
+    existing experiences in the database
+    """
+    # Assign the tour using get_object_or_404 with the id
+    tour = get_object_or_404(Tours, pk=tour_id)
+
+    # Check if the request is POST
+    if request.method == 'POST':
+        form = ToursForm(
+            request.POST,
+            request.FILES,
+            instance=tour
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{tour.tour_name} \
+                successfully updated!')
+            return redirect(reverse('tour_detail', args=[tour.id]))
+        else:
+            messages.error(request, f'Failed to update \
+                {tour.tour_name}. Please check all your \
+                form inputs are valid!')
+    else:
+        # Initiate the form with the instance of the tour
+        form = ToursForm(instance=tour)
+
+        # Inform the admin user they are editing a tour experience
+        messages.info(request, f'You are editing {tour.tour_name}')
+
+    # Assign the template
+    template = 'tours/edit_tour.html'
+
+    # Assign the context
+    context = {
+        'form': form,
+        'tour': tour,
+    }
+
+    # Render the view
+    return render(request, template, context)
