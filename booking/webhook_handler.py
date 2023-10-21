@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 from .models import Booking, BookingItem
 from tours.models import Tours
+from profiles.models import UserProfile
 
 import json
 import time
@@ -42,11 +43,23 @@ class StripeWH_Handler:
         billing_details = stripe_charge.billing_details
         grand_total = round(stripe_charge.amount / 100, 2)
 
-        # Split billing detaails name value into first and last names
+        # Split billing details name value into first and last names
         # Assistance from ChatGPT
         full_name = billing_details.name
         first_name, *last_name_parts = full_name.split()
         last_name = ''.join(last_name_parts).strip()
+
+        # Update profile info if save-info was checked
+        profile = None
+        username = intent.metdata.username
+        if username != 'AnonymousUser':
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                profile.user.first_name = first_name
+                profile.user.last_name = last_name
+                profile.default_mobile_number = billing_details.phone
+                profile.default_email = billing_details.email
+                profile.save()
         
         booking_exists = False
         attempt = 1
@@ -78,6 +91,7 @@ class StripeWH_Handler:
                 booking = Booking.objects.create(
                     first_name=first_name,
                     last_name=last_name,
+                    user_profile=profile,
                     mobile_number=billing_details.phone,
                     email=billing_details.email,
                     original_basket=basket,

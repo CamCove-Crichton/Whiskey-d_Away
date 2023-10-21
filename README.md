@@ -115,6 +115,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - I added in the first name, last name and email fields to my profile template, by adding fields to my UserProfileForm from the django User model, so that I could allow the user to update their name, last name and email address which will save to the User profile
 - Then moved onto adding a view and url for the booking_history for the user to be able to see previous bookings
 - Added to the booking view to check if the user is authenticated and if so, to then prepopulate the form with the users details when on the booking template for a better UX
+- Added updating the users profile in the webhook handler, with the users first name, last name, email and mobile number. Due to time constraints, I was unable to figure out how to get access to the date of birth field to be able to update this in the users profile from the webhook
 
 ### Future Developments
 
@@ -2640,6 +2641,24 @@ LOGIN_REDIRECT_URL = '/'
         else:
             # Create an empty booking form
             booking_form = BookingForm()
+}
+```
+
+- Assistance with updating the user profile from the webhook
+
+```python
+{
+    # Update profile info if save-info was checked
+        profile = None
+        username = intent.metdata.username
+        if username != 'AnonymousUser':
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                profile.user.first_name = first_name
+                profile.user.last_name = last_name
+                profile.default_mobile_number = billing_details.phone
+                profile.default_email = billing_details.email
+                profile.save()
 }
 ```
 
