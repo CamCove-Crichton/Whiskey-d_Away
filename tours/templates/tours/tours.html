@@ -60,7 +60,7 @@
         <div class="col-12 col-md-6 col-lg-4 text-center">
             <a class="text-decoration-none text-black" href="{% url 'tour_detail' id=tour.id %}">
                 <div class="card mb-3 bg-yellow container-card">
-                    <img src="{{ tour.tour_image.url }}" class="card-img-top container-card-image" alt="{{ tour.tour_image.name }}">
+                    <img src="{{ tour.tour_image.url }}" class="card-img-top container-card-image" alt="{{ tour.tour_name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ tour.tour_name }}</h5>
                         <p class="card-text">{{ tour.tour_description }}</p>

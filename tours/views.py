@@ -100,10 +100,34 @@ def add_tour(request):
     """
     A view for the admin to add tour experiences
     """
-    form = ToursForm()
+    # Check if the request is POST
+    if request.method == 'POST':
+
+        # Assign the form with the post and files data
+        form = ToursForm(request.POST, request.FILES)
+
+        # Check if the form is valid
+        if form.is_valid():
+            # Save the form and return a success message
+            form.save()
+            messages.success(request, 'Experience successfully \
+                added to Tour offerings!')
+            return redirect(reverse('add_tour'))
+        else:
+            # Otherwise return an error message
+            messages.error(request, 'Failed to add Experience. \
+                Please check all form inputs are valid!')
+    else:
+        # If request is not POST, initiate an empty form
+        form = ToursForm()
+
+    # Assign the template
     template = 'tours/add_tour.html'
+
+    # Assign the context
     context = {
         'form': form,
     }
 
+    # Render the view
     return render(request, template, context)
