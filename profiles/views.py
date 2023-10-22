@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 from .forms import UserProfileForm
@@ -8,6 +9,7 @@ from .forms import UserProfileForm
 from booking.models import Booking
 
 
+@login_required
 def profile(request):
     """
     A view to render the users details
@@ -60,6 +62,7 @@ def profile(request):
 
     # Render the view
     return render(request, template, context)
+
 
 def booking_history(request, booking_number):
     """

@@ -1,12 +1,15 @@
 # Assistance from CI - Boutique Ado walkthrough
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
+from django.http import Http404
+
 from .models import Tours, Category
 from .forms import ToursForm
+
 from booking.forms import BookingItemForm
-from django.http import Http404
 
 
 # Assistance from CI - Boutique Ado walkthrough
@@ -96,10 +99,17 @@ def tour_detail(request, id):
     return render(request, template, context)
 
 
+@login_required
 def add_tour(request):
     """
     A view for the admin to add tour experiences
     """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have the \
+            admin rights to do that!')
+        return redirect(reverse('home'))
+
     # Check if the request is POST
     if request.method == 'POST':
 
@@ -133,11 +143,18 @@ def add_tour(request):
     return render(request, template, context)
 
 
+@login_required
 def edit_tour(request, tour_id):
     """
     A view to allow admin users to edit the
     existing experiences in the database
     """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have the \
+            admin rights to do that!')
+        return redirect(reverse('home'))
+
     # Assign the tour using get_object_or_404 with the id
     tour = get_object_or_404(Tours, pk=tour_id)
 
@@ -178,11 +195,18 @@ def edit_tour(request, tour_id):
     return render(request, template, context)
 
 
+@login_required
 def delete_tour(request, tour_id):
     """
     A view to allow admin users to remove
     tour experiences from the database
     """
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have the \
+            admin rights to do that!')
+        return redirect(reverse('home'))
+
     # Get the tour using get_object_or_404
     tour = get_object_or_404(Tours, pk=tour_id)
     

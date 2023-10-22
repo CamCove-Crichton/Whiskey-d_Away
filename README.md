@@ -121,6 +121,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - I then moved onto adding the view, url and template for the add tour form to display in, so the admin can add tour experiences to the database from the site when logged in, instead of using the django admin panel
 - Afterwards I moved onto adding the edit tour view, url and template to allow admin users to be able to view and edit existing tour experiences, which the admin can do from the tours template or the tour detail template
 - Added in a modal to appear when the admin is trying to delete a Tour Experience, as a bit of defensive programming to ensure the admin has not accidentally clicked the delete button, and then upon clicking the delete button in the modal, the experience is removed from the database, so the administrator can delete experiences from the site when logged in and does not have to go into the django admin panel. The admin is able to do this from either the tours template or the tour_detail template
+- Imported the login_required decorator from django to use on the add, edit, delete and profile views to ensure the user is logged in to access the views and added in a check to see if the user is a super user before being able to continue through the view code
 
 ### Future Developments
 
@@ -2932,6 +2933,23 @@ LOGIN_REDIRECT_URL = '/'
     messages.success(request, f'{tour.tour_name} \
         successfully deleted!')
     return redirect(reverse('tours'))
+}
+```
+
+- Securing the add, edit, delete & profile views
+
+```python
+{
+    from django.contrib.auth.decorators import login_required
+
+    @login_required
+}
+
+{
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have the \
+            admin rights to do that!')
+        return redirect(reverse('home'))
 }
 ```
 
