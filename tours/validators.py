@@ -36,3 +36,13 @@ def validate_image_size(value):
     if value.size > max_size_bytes:
         raise ValidationError(_("Invaild image size. Image size cannot be \
             larger than 2MB"))
+
+# Assistance from ChatGPT
+def set_default_image(instance):
+    """
+    A function to set the default image if
+    the original image is deleted
+    """
+    # Check if the tour image is not set
+    if not instance.tour_image:
+        instance.tour_image.name = "default whiskey experience.jpg"

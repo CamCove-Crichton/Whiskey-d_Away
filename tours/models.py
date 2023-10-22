@@ -3,7 +3,8 @@ from django.core.validators import MaxLengthValidator
 from .validators import (
     validate_country,
     validate_image_size,
-    validate_img_extension
+    validate_img_extension,
+    set_default_image
 )
 
 
@@ -68,3 +69,9 @@ class Tours(models.Model):
 
     def __str__(self):
         return self.tour_name
+    
+    def save(self, *args, **kwargs):
+        # Use set default image function to set image if needed
+        set_default_image(self)
+
+        super().save(*args, **kwargs)

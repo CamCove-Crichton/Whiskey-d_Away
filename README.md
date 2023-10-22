@@ -204,6 +204,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Had a slight issue with my booking view when it came down to iterating through the line items in the booking to save them to the database as part of the order. Using some print statements, I was able to find that my item_data was a dictionary, and so I change my logic from checing if item_data was an integer, to checking it was a dictionary, and then accessed the key in the dictionary and assigned them, and then added them to the booking_line_item variable to then save them to the database
 - I had an issue when trying to introduce the date of birth field, that it was not capturing it, which I think was because I had forgotten to return the date_of_birth value, but ended up using some print statements in my view to see where I was getting up to and what was being returned in the booking from when the form data had been parsed to it, and found date_of_birth was coming back with an error as could not be null, at which point I looked further into ensuring my date was being returned as date object and if not then converting it to a date object, and then also returning the date_of_birth variable after validation and at which point my payment intent was working again
 - I found a bug in my validation for the booking date, and so I used a return redirect and reverse statement to reload the template. Although it would be great to have the form return prepopulated with the data that was entered, I struggled to then get the new date to be submitted in the POST method as it seemed to keep having the first invlaid date submitting when I resubmitted the form with a valid date, and due to time constraints I had to find a solution and move on, so using the redirect and reverse was the best solution for now
+- When testing if an image is deleted from an experience, if the image is set to the default, and found a bug, and so I went and added a function in the validators file in the tours app to check if the image field instance is none, then to set the image field back to the default image
 
 ### Validator Testing
 
@@ -3023,6 +3024,63 @@ LOGIN_REDIRECT_URL = '/'
 }
 ```
 
+- Update rendering of form fields in add and edit tours templates
+
+```html
+{
+    {% for field in form %}
+        {% if field.name != 'tour_image' %}
+            {{ field | as_crispy_field }}
+        {% else %}
+            {{ field }}
+        {% endif %}
+    {% endfor %}
+}
+```
+
+- Styling for image field in form for adding and editing tours
+
+```css
+{
+    /* Assistance from CI - Boutique Ado walkthrough */
+    /* ----------------------------- Tours Form */
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-file input[type="file"] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .custom-checkbox .custom-control-label::before {
+        border-color: #dc3545;
+    }
+
+    .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+}
+```
+
+- Adding javascript to handle the change event
+
+```javascript
+{
+    $('#new-image').change(function() {
+        let file = $('#new-image')[0].files[0];
+        $('#filename').text(`Image will be set to ${file.name}`);
+    });
+}
+```
+
 [Bootstrap](https://getbootstrap.com/) - Boostrap boiler plate code where needed to serve a function
 
 - Boilerplate code for base.html template
@@ -3839,6 +3897,29 @@ def generate_unique_booking_number():
     full_name = billing_details.name
     first_name, *last_name_parts = full_name.split()
     last_name = ''.join(last_name_parts).strip()
+}
+```
+
+- Adding in a validator to check if the image field is none, and if so to set it as the default image
+
+```python
+{
+    def set_default_image(instance):
+    """
+    A function to set the default image if
+    the original image is deleted
+    """
+    # Check if the tour image is not set
+    if not instance.tour_image:
+        instance.tour_image.name = "default whiskey experience.jpg"
+}
+
+{
+    def save(self, *args, **kwargs):
+        # Use set default image function to set image if needed
+        set_default_image(self)
+
+        super().save(*args, **kwargs)
 }
 ```
 
