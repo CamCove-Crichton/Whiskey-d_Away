@@ -122,6 +122,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Afterwards I moved onto adding the edit tour view, url and template to allow admin users to be able to view and edit existing tour experiences, which the admin can do from the tours template or the tour detail template
 - Added in a modal to appear when the admin is trying to delete a Tour Experience, as a bit of defensive programming to ensure the admin has not accidentally clicked the delete button, and then upon clicking the delete button in the modal, the experience is removed from the database, so the administrator can delete experiences from the site when logged in and does not have to go into the django admin panel. The admin is able to do this from either the tours template or the tour_detail template
 - Imported the login_required decorator from django to use on the add, edit, delete and profile views to ensure the user is logged in to access the views and added in a check to see if the user is a super user before being able to continue through the view code
+- Added some customisation to the image field input for the tours form for a better UI
 
 ### Future Developments
 
@@ -2950,6 +2951,75 @@ LOGIN_REDIRECT_URL = '/'
         messages.error(request, 'You do not have the \
             admin rights to do that!')
         return redirect(reverse('home'))
+}
+```
+
+- Styling the image field in the tours form
+
+```html
+{
+    <!-- Assistance from CI - Boutique Ado walkthrough and from django github repo -->
+    {% if widget.is_initial %}
+        <p>{{ widget.initial_text }}:</p>
+        <a href="{{ widget.value.url }}">
+            <img
+            width="96"
+            height="96"
+            class="rounded-2 shadow-sm"
+            src="{{ widget.value.url }}"
+            alt="{{ widget.value.name }}">
+        </a>
+        {% if not widget.required %}
+            <div class="custom-control custom-checkbox mt-2">
+                <input
+                type="checkbox"
+                class="custom-control-input"
+                name="{{ widget.checkbox_name }}"
+                id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
+
+                <label
+                class="custom-control-label text-danger"
+                for="{{ widget.checkbox_id }}">
+                    {{ widget.clear_checkbox_label }}
+                </label>
+            </div>
+        {% endif %}
+        <br>
+        {{ widget.input_text }}
+    {% endif %}
+    <span class="btn btn-black rounded-2 btn-file">
+        Select Image
+        <input
+        id="new-image"
+        type="{{ widget.type }}"
+        name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    </span>
+    <strong><p class="text-danger" id="filename"></p></strong>
+}
+```
+
+```python
+{
+    # Assistance from CI - Boutique Ado walkthrough
+    from django.forms.widgets import ClearableFileInput
+    from django.utils.translation import gettext_lazy as _
+
+
+    class CustomClearableFileInput(ClearableFileInput):
+        clear_checkbox_label = _('Remove')
+        initial_text = _('Current Image')
+        input_text = _('')
+        template_name = (
+            'tours/custom_widget_templates/'
+            'custom_clearable_file_input.html')
+}
+
+{
+    tour_image = forms.ImageField(
+        label='Image',
+        required=False,
+        widget=CustomClearableFileInput
+    )
 }
 ```
 
