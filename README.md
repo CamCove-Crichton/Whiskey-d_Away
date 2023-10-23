@@ -148,6 +148,9 @@ Then after that, I moved to creating the view for the booking template, added th
 - Flatpickr
 - Django-crispy-forms
 - Stripe
+- DJ Database URL
+- Psycopg 2
+- Gunicorn
 
 ### Finished Site Screen Grabs
 

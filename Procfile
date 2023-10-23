@@ -1,0 +1,1 @@
+web: gunicorn whiskeyd_away.wsgi:application
