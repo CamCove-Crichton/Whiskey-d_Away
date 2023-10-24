@@ -2,7 +2,7 @@
 
 Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate company bringing consumers the best offerings of Whiskey Experiences in the UK. Filling their customers with a wealth of knowledge as well as a drop or two of the most stunning Whiskeys produced locally to each specific distillery.
 
-- **You must be over the age of 18 to register an account in order to make a booking**
+- **You must be over the age of 18 in order to make a booking**
 
 ## Features
 
@@ -37,6 +37,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Added in a check for uploading and existing static and media files from the development environment to the S3 bucket, and to upload new files and save changes in the S3 bucket moving forward by checking if the variable USE_AWS is in the os.environ
 - Made the the commit and pushed to github to initiate a push to heroku and checked the S3 bucket to confirm the static folder was now in my bucket
 - Added in an S3 object parameter to inform the browser to cache files for an extended period of time to improve performance for the user
+- Then moved back to the S3 bucket and uploaded the images for my site
+- Went to open the app from heroku to see it was all deployed and that the css, javascript and images are present
 
 
 ### Forking & Cloning
@@ -142,7 +144,9 @@ Then after that, I moved to creating the view for the booking template, added th
 - Added in a modal to appear when the admin is trying to delete a Tour Experience, as a bit of defensive programming to ensure the admin has not accidentally clicked the delete button, and then upon clicking the delete button in the modal, the experience is removed from the database, so the administrator can delete experiences from the site when logged in and does not have to go into the django admin panel. The admin is able to do this from either the tours template or the tour_detail template
 - Imported the login_required decorator from django to use on the add, edit, delete and profile views to ensure the user is logged in to access the views and added in a check to see if the user is a super user before being able to continue through the view code
 - Added some customisation to the image field input for the tours form for a better UI
-I began working on the deployment of the project
+- I began working on the deployment of the project
+- After the project was deployed, I went through some final touches before getting to the testing of the site
+- First of the final touch was to update the settings to be able to send emails from django
 
 ### Future Developments
 
@@ -217,6 +221,7 @@ I began working on the deployment of the project
 | Edit Tour template | The edit tour template renders and displays as expected and is responsive | |
 | Confirmation Modal | The confirmation modal appears as expected when trying to delete an experience as an admin | |
 | Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | |
+| Sending Emails | Sending emails from django works as expected | |
 
 ### Resolved Bugs
 
@@ -3143,6 +3148,24 @@ LOGIN_REDIRECT_URL = '/'
 
     class MediaStorage(S3Boto3Storage):
         location = settings.MEDIAFILES_LOCATION
+}
+```
+
+- Setup sending emails from django
+
+```python
+{
+    if 'DEVELOPMENT' in os.environ:
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        DEFAULT_FROM_EMAIL = 'whiskeydaway@example.com'
+    else:  
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_USE_TLS = True
+        EMAIL_PORT = 587
+        EMAIL_HOST = 'smtp.gmail.com'
+        EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+        EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
+        DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 }
 ```
 
