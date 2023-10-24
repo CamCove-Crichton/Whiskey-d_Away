@@ -10,3 +10,4 @@ cloudinary_python.txt
 # Assitance from boutique_ado walkthrough project
 *.sqlite3
 *.pyc
+db.json

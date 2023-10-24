@@ -18,7 +18,23 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 ## Deployment
 
-*deployment process here*
+- I started by setting up a PostgreSQL database instance on ElephantSQL
+- Then updated my settings to switch to using the new database instance
+- Made my migrations to the database instance
+- Transferred the tours and categories data over to the database using the db.json file which I captured the data from the sqlite3 database from my development environment
+- I created an app on Heroku, and added the config var for my DATABAS_URL
+- Updated the allowed hosts in the settings file
+- In my development environment I created a new superuser for the PostgreSQL database
+- I then pushed the latest commit to heroku to my app
+- Set the app to automatically deploy from my github repository by linking it to the repo for my project in github
+- Began updating my settings file to use the right database and switch from the django secret key for production to my own secret key which is in the heroku app, and used os.environ to get the variable from the app in heroku
+- Once deployed to Heroku, I needed to setup my storage for my static files and media files
+- Using Amazon AWS S3, I created a bucket, a policy, and a user and extracted the access key
+- Setup the access key and id in my heroku app as config variables
+- Installed boto3 and django-storages and added storages to the list of installed apps in the settings
+- Created a custom_storages file to create static and media file locations to call in the settings file
+- Updated the debug setting temporarily to only show if using the production environment for some final touches before setting it to False
+- Added in a check for uploading and existing static and media files from the development environment to the S3 bucket, and to upload new files and save changes in the S3 bucket moving forward by checking if the variable USE_AWS is in the os.environ
 
 ### Forking & Cloning
 
@@ -123,6 +139,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - Added in a modal to appear when the admin is trying to delete a Tour Experience, as a bit of defensive programming to ensure the admin has not accidentally clicked the delete button, and then upon clicking the delete button in the modal, the experience is removed from the database, so the administrator can delete experiences from the site when logged in and does not have to go into the django admin panel. The admin is able to do this from either the tours template or the tour_detail template
 - Imported the login_required decorator from django to use on the add, edit, delete and profile views to ensure the user is logged in to access the views and added in a check to see if the user is a super user before being able to continue through the view code
 - Added some customisation to the image field input for the tours form for a better UI
+I began working on the deployment of the project
 
 ### Future Developments
 
@@ -151,6 +168,8 @@ Then after that, I moved to creating the view for the booking template, added th
 - DJ Database URL
 - Psycopg 2
 - Gunicorn
+- Boto 3
+- Django-Storages
 
 ### Finished Site Screen Grabs
 
@@ -3081,6 +3100,40 @@ LOGIN_REDIRECT_URL = '/'
         let file = $('#new-image')[0].files[0];
         $('#filename').text(`Image will be set to ${file.name}`);
     });
+}
+```
+
+- Setup of AWS S3
+
+```python
+{
+    # Assistnce from CI - Boutique Ado walkthrough
+    if 'USE_AWS' in os.environ:
+        # Bucket config
+        AWS_STORAGE_BUCKET_NAME = 'whiskeyd-away'
+        AWS_S3_REGION_NAME = 'eu-west-2'
+        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+        # Static and media files
+        STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+        STATICFILES_LOCATION = 'static'
+        DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+        MEDIAFILES_LOCATION = 'media'
+}
+
+{
+    from django.conf import settings
+    from storages.backends.s3boto3 import S3Boto3Storage
+
+
+    class StaticStorage(S3Boto3Storage):
+        location = settings.STATICFILES_LOCATION
+
+
+    class MediaStorage(S3Boto3Storage):
+        location = settings.MEDIAFILES_LOCATION
 }
 ```
 
