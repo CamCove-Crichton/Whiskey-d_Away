@@ -35,6 +35,9 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Created a custom_storages file to create static and media file locations to call in the settings file
 - Updated the debug setting temporarily to only show if using the production environment for some final touches before setting it to False
 - Added in a check for uploading and existing static and media files from the development environment to the S3 bucket, and to upload new files and save changes in the S3 bucket moving forward by checking if the variable USE_AWS is in the os.environ
+- Made the the commit and pushed to github to initiate a push to heroku and checked the S3 bucket to confirm the static folder was now in my bucket
+- Added in an S3 object parameter to inform the browser to cache files for an extended period of time to improve performance for the user
+
 
 ### Forking & Cloning
 
@@ -3109,6 +3112,12 @@ LOGIN_REDIRECT_URL = '/'
 {
     # Assistnce from CI - Boutique Ado walkthrough
     if 'USE_AWS' in os.environ:
+        # Cache control
+        AWS_S3_OBJECT_PARAMETERS = {
+            'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+            'CacheControl': 'max-age=94608000',
+        }
+
         # Bucket config
         AWS_STORAGE_BUCKET_NAME = 'whiskeyd-away'
         AWS_S3_REGION_NAME = 'eu-west-2'
