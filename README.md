@@ -147,6 +147,7 @@ Then after that, I moved to creating the view for the booking template, added th
 - I began working on the deployment of the project
 - After the project was deployed, I went through some final touches before getting to the testing of the site
 - First of the final touch was to update the settings to be able to send emails from django
+I then went through and made added some touch ups to the styling for an improvement on the responsive design
 
 ### Future Developments
 
@@ -3413,6 +3414,35 @@ LOGIN_REDIRECT_URL = '/'
             </div>
         </div>
     </div>
+}
+```
+
+- Tidying up some responsiveness for the navbar on mobile
+
+```css
+{
+    .display-4 .btn-yellow {
+        font-size: .9rem;
+    }
+
+    .discount-banner {
+        position: fixed;
+        top: 125px;
+        left: 50%;
+        z-index: 99;
+        cursor: none;
+        font-size: .8rem;
+        margin-right: 10px;
+    }
+
+    .nav-link {
+        padding: 0.15rem;
+    }
+
+    .navbar-toggler {
+        padding: .6rem .6rem;
+        font: 1rem;
+    }
 }
 ```
 

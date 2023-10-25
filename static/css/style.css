@@ -266,6 +266,7 @@ a .text-yellow:hover {
     left: 50%;
     z-index: 99;
     cursor: none;
+    margin: 10px;
 }
 
 .visually-hidden label {
@@ -309,6 +310,23 @@ a .text-yellow:hover {
     .header-container {
         padding-top: 164px;
     }
+
+    /* .form-group {
+        display: inline-block;
+    } */
+
+    .form-group label {
+        display: block;
+    }
+
+    .inline-item {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    #id_booking_date {
+        width: 100px;
+    }
 }
 
 /* From CI - Boutique Ado walkthrough */
@@ -320,6 +338,25 @@ a .text-yellow:hover {
 
     body {
         height: calc(100vh - 120px);
+    }
+
+    .display-4 .btn-yellow {
+        font-size: .9rem;
+    }
+
+    .discount-banner {
+        top: 100px;
+        font-size: .8rem;
+        margin-right: 10px;
+    }
+
+    .nav-link {
+        padding: 0.15rem;
+    }
+
+    .navbar-toggler {
+        padding: .6rem .6rem;
+        font: 1rem;
     }
 }
 
@@ -353,5 +390,30 @@ a .text-yellow:hover {
     #contact:hover {
         color: black;
         border: 1px solid black;
+    }
+}
+
+/* main content for screens 992px and down */
+@media (max-width: 991px) {
+    .container-card {
+        width: 100%;
+        height: 650px;
+    }
+}
+
+/* main content for screens 580px and down */
+@media (max-width: 580px) {
+    a h3,
+    .row .text-center h3,
+    .card .row .text-center h3,
+    a .card-title,
+    .allauth-form-inner-content h1 {
+        font-size: 1rem;
+    }
+
+    .container .card {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

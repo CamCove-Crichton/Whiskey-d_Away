@@ -46,19 +46,19 @@
                                     <form class="form update-form" method="post" action="{% url 'adjust_basket' item.experience.id %}">
                                         {% csrf_token %}
                                         <!-- Booking Date -->
-                                        <div class="form-group">
+                                        <div class="form-group inline-item">
                                             <label for="{{ item.form.booking_date.id_for_label }}">Booking Date:</label>
                                             {{ item.form.booking_date }}
                                         </div>
 
                                         <!-- Booking time slot -->
-                                        <div class="form-group">
+                                        <div class="form-group inline-item">
                                             <label for="{{ item.form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
                                             {{ item.form.booking_time_slot }}
                                         </div>
 
                                         <!-- Number of attendees -->
-                                        <div class="form-group">
+                                        <div class="form-group inline-item">
                                             <label for="{{ item.form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
                                             <!-- Assistance from CI Tutor and ChatGPT -->
                                             <div class="input-group">
@@ -74,10 +74,10 @@
                                         <input type="hidden" name="item_id" value="{{ item.experience.id }}">
 
                                         <!-- Experience price per person -->
-                                        <p><strong>Price pp:</strong> £{{ item.experience.tour_price }}</p>
+                                        <p class="inline-item"><strong>Price pp:</strong> £{{ item.experience.tour_price }}</p>
 
                                         <!-- Experience line item total -->
-                                        <p>
+                                        <p class="inline-item">
                                             <strong>Line Item Total:</strong> 
                                             £{{ item.experience.tour_price | calc_subtotal:item.form.number_of_attendees.value }}
                                         </p>
