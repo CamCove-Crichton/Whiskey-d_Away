@@ -141,41 +141,38 @@
 {% endblock %}
 
 {% block postloadjs %}
-{{ block.super }}
+    {{ block.super }}
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                // Add the flatpickr-date-input as a class to the booking date input
+                $(".flatpickr-date-input").flatpickr({
+                    enableTime: false,
+                    dateFormat: "Y-m-d",
+                    minDate: "today",
+                });
 
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            // Add the flatpickr-date-input as a class to the booking date input
-            $(".flatpickr-date-input").flatpickr({
-                enableTime: false,
-                dateFormat: "Y-m-d",
-                minDate: "today",
+                // Update quantity on click
+                $(".update-link").click(function (e) {
+                    e.preventDefault();
+                    let form = $(this).closest('form');
+                    form.submit();
+                });
+                    
+
+                // Remove item and reload on click
+                $(".remove-item").click(function(e) {
+                    let csrfToken = "{{ csrf_token }}";
+                    let itemId = $(this).attr("id").split("remove_")[1];
+                    let url = `/basket/remove/${itemId}/`;
+                    let data = {
+                        'csrfmiddlewaretoken': csrfToken,
+                    };
+                    console.log(url);
+
+                    $.post(url, data).done(function() {
+                        location.reload();
+                    })
+                });
             });
-
-            // Update quantity on click
-            $(".update-link").click(function (e) {
-                e.preventDefault();
-                let form = $(this).closest('form');
-                form.submit();
-            });
-                
-
-            // Remove item and reload on click
-            $(".remove-item").click(function(e) {
-                let csrfToken = "{{ csrf_token }}";
-                let itemId = $(this).attr("id").split("remove_")[1];
-                let url = `/basket/remove/${itemId}/`;
-                let data = {
-                    'csrfmiddlewaretoken': csrfToken,
-                };
-                console.log(url);
-
-                $.post(url, data).done(function() {
-                    location.reload();
-                })
-            });
-        });
-
-    </script>
-
+        </script>
 {% endblock %}
