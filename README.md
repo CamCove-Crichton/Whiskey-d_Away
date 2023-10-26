@@ -150,6 +150,7 @@ Then after that, I moved to creating the view for the booking template, added th
 I then went through and made added some touch ups to the styling for an improvement on the responsive design
 - I then added in the anchor tags and links for the social media links in the footer after resolving the issue of the footer not appearing on mobile devices
 - Started tidying up my project by going through all the linting errors I could find and fix
+- Then added in the 404 page in case there are any urls that do not exist in the site that the user tries to access
 
 ### Future Developments
 
@@ -225,6 +226,7 @@ I then went through and made added some touch ups to the styling for an improvem
 | Confirmation Modal | The confirmation modal appears as expected when trying to delete an experience as an admin | |
 | Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | |
 | Sending Emails | Sending emails from django works as expected | |
+| 404 Page | The 404 page displays as expected and is responsive | |
 
 ### Resolved Bugs
 
@@ -3445,6 +3447,55 @@ LOGIN_REDIRECT_URL = '/'
         padding: .6rem .6rem;
         font: 1rem;
     }
+}
+```
+
+- Adding the 404 template
+
+```html
+{
+    <!-- Assistance from CI Boutique Ado walkthrough -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-7 col-md-6 my-auto">
+                <h1 class="display-4 text-yellow">
+                    The page you are looking for isn't available
+                </h1>
+                <div class="my-5">
+                    <h4>
+                        <a href="{% url 'tours' %}" 
+                            class="btn btn-yellow rounded-2 py-3">
+                                Return to Experiences
+                        </a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+```
+
+```python
+{
+    handler404 = 'whiskeyd_away.views.handler404'
+}
+
+{
+    from django.shortcuts import render
+
+
+    def handler404(request, exception):
+        """ Error Handler 404 - Page Not Found """
+        return render(request, "errors/404.html", status=404)
+
 }
 ```
 
