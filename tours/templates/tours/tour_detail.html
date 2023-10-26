@@ -107,8 +107,18 @@
                     <!-- Continue shopping, Book Now and Add to Basket buttons -->
                     <div class="col-12">
                         <a href="{% url 'tours' %}" class="btn btn-black mb-2">Continue Browsing Experiences</a>
-                        <input type="submit" class="btn btn-black mb-2" value="Book Now">
-                        <input type="submit" class="btn btn-black mb-2" value="Add to basket">
+                        <!-- <input type="submit" class="btn btn-black mb-2" value="Book Now"> -->
+                        <a
+                        href="{% url 'booking' %}"
+                        id="btn-book-now"
+                        class="display-decoration-none btn btn-black mb-2">
+                          Book Now
+                        </a>
+                        <input
+                        id="btn-add-to-basket"
+                        type="submit"
+                        class="btn btn-black mb-2"
+                        value="Add to basket">
                     </div>
                     {% if request.user.is_superuser %}
                         <div class="container mt-3 ml-0 p-1">
@@ -189,15 +199,16 @@ aria-hidden="true">
 <!-- Assistance from CI - Boutique Ado walkthrough -->
 {% include 'tours/includes/quantity_input_script.html' %}
 
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
-                enableTime: false,
-                dateFormat: "Y-m-d",
-                minDate: "today",
-            })
-        })
+  <!-- Flatpickr -->
+  <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+          flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
+              enableTime: false,
+              dateFormat: "Y-m-d",
+              minDate: "today",
+          })
+      })
 
-    </script>
+  </script>
 
 {% endblock %}

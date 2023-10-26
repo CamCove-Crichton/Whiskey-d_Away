@@ -3,6 +3,8 @@
     // Disable the initial form fields
     $('#{{ booking_form.booking_time_slot.id_for_label }}').prop('disabled', true);
     $('#number_of_attendees').prop('disabled', true);
+    // Disable the book now button initially
+    $('#btn-book-now').prop('disabled', true);
 
     // Add an event listener for the booking date field
     $('#{{ booking_form.booking_date.id_for_label }}').change(function() {
@@ -17,6 +19,12 @@
         // Enable the number of attendees field when the time slot is selected
         $('#number_of_attendees').prop('disabled', false);
     });
+
+    // Enable book now btn when add to basket btn is clicked
+    $('#btn-add-to-basket').click(function() {
+        $('#btn-book-now').prop('disabled', false);
+    });
+    
 
     /**
      * A function to update the number of attendees choices
