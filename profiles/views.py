@@ -71,7 +71,7 @@ def booking_history(request, booking_number):
     # Get the booking object from the booking number
     booking = get_object_or_404(
                 Booking, booking_number=booking_number)
-    
+
     # Display a message to the user
     messages.info(request, (
         f'This is a previous booking confirmation \
@@ -79,7 +79,7 @@ def booking_history(request, booking_number):
         f'A confirmation email was sent to {booking.email} \
         on {booking.date_of_booking}.'
         ))
-    
+
     # Assign the template
     template = 'booking/booking_success.html/'
 

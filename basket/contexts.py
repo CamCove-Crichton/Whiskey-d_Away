@@ -2,7 +2,6 @@ from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from tours.models import Tours
-from booking.forms import BookingItemForm
 
 
 # Assistance from ChatGPT in trying to rewrite my basket_contents

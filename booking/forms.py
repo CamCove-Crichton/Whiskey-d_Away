@@ -2,7 +2,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import BookingItem, Booking
-from tours.models import Tours
 from django.utils import timezone
 from django.conf import settings
 from django.forms.widgets import NumberInput
@@ -118,7 +117,13 @@ class BookingForm(forms.ModelForm):
     """
     class Meta:
         model = Booking
-        fields = ['first_name', 'last_name', 'email', 'mobile_number', 'date_of_birth']
+        fields = [
+            'first_name',
+            'last_name',
+            'email',
+            'mobile_number',
+            'date_of_birth'
+        ]
 
     def __init__(self, *args, **kwargs):
         """
@@ -154,7 +159,7 @@ class BookingForm(forms.ModelForm):
 
             # Remove the default labels
             self.fields[field].label = False
-    
+
     def clean_date_of_birth(self):
         """
         A method to ensure the date of birth entered
@@ -165,15 +170,19 @@ class BookingForm(forms.ModelForm):
 
         if isinstance(date_of_birth_str, str):
             # Parse the string into a datetime object
-            date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            date_of_birth = (
+                datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            )
         else:
             date_of_birth = date_of_birth_str
-            
+
         today = timezone.now().date()
-        age = (today.year - date_of_birth.year - (
-                (today.month, today.day) < (date_of_birth.month, date_of_birth.day)))
-    
+        age = (
+            today.year - date_of_birth.year -
+            ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
+        )
+
         if age < 18:
             raise ValidationError('Applicants must be at least 18 years old')
-        
+
         return date_of_birth

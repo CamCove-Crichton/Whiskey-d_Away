@@ -7,6 +7,7 @@ from .models import UserProfile
 
 from datetime import datetime
 
+
 # Assistance from CI - Boutique Ado walkthrough
 class UserProfileForm(forms.ModelForm):
     """
@@ -14,9 +15,15 @@ class UserProfileForm(forms.ModelForm):
     """
     # Assistance from ChatGPT
     # Additional fields from the User model
-    first_name = forms.CharField(max_length=20, required=False, label='First Name')
-    last_name = forms.CharField(max_length=20, required=False, label='Last Name')
-    email = forms.EmailField(max_length=254, required=False, label='Email Address')
+    first_name = forms.CharField(
+        max_length=20, required=False, label='First Name'
+    )
+    last_name = forms.CharField(
+        max_length=20, required=False, label='Last Name'
+    )
+    email = forms.EmailField(
+        max_length=254, required=False, label='Email Address'
+    )
 
     class Meta:
         model = UserProfile
@@ -58,7 +65,7 @@ class UserProfileForm(forms.ModelForm):
 
             # Remove the default labels
             self.fields[field].label = False
-    
+
     def clean_default_date_of_birth(self):
         """
         A method to ensure the date of birth entered
@@ -69,15 +76,19 @@ class UserProfileForm(forms.ModelForm):
 
         if isinstance(date_of_birth_str, str):
             # Parse the string into a datetime object
-            date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            date_of_birth = (
+                datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            )
         else:
             date_of_birth = date_of_birth_str
-            
+
         today = timezone.now().date()
-        age = (today.year - date_of_birth.year - (
-                (today.month, today.day) < (date_of_birth.month, date_of_birth.day)))
+        age = (
+            today.year - date_of_birth.year -
+            ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
+        )
 
         if age < 18:
             raise ValidationError('Applicants must be at least 18 years old')
-        
+
         return date_of_birth

@@ -69,7 +69,7 @@ class Tours(models.Model):
 
     def __str__(self):
         return self.tour_name
-    
+
     def save(self, *args, **kwargs):
         # Use set default image function to set image if needed
         set_default_image(self)

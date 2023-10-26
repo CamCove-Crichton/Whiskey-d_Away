@@ -37,6 +37,7 @@ def validate_image_size(value):
         raise ValidationError(_("Invaild image size. Image size cannot be \
             larger than 2MB"))
 
+
 # Assistance from ChatGPT
 def set_default_image(instance):
     """

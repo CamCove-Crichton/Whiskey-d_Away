@@ -8,7 +8,6 @@ from profiles.models import UserProfile
 from .validators import validate_number_of_attendees
 from django.conf import settings
 
-from django.utils import timezone
 
 # A few fields assisted by CI - Boutique Ado walkthrough
 class Booking(models.Model):
@@ -34,7 +33,7 @@ class Booking(models.Model):
         max_digits=10, decimal_places=2, null=False, default=0)
     original_basket = models.TextField(null=False, blank=False, default='')
     stripe_pid = models.CharField(
-        max_length=254,null=False, blank=False, default='')
+        max_length=254, null=False, blank=False, default='')
 
     # Assistance from CI - Boutique Ado walkthrough
     def update_total(self):
@@ -47,7 +46,9 @@ class Booking(models.Model):
 
         # Determine discount amount
         if self.booking_total > settings.DISCOUNT_SPEND_THRESHOLD:
-            self.discount_amount = self.booking_total * settings.STANDARD_DISCOUNT_PERCENTAGE / 100
+            self.discount_amount = (
+                self.booking_total * settings.STANDARD_DISCOUNT_PERCENTAGE / 100
+            )
         else:
             self.discount_amount = 0
 
@@ -101,4 +102,7 @@ class BookingItem(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Experience: {self.tour.tour_name} in Booking No: {self.booking.booking_number}'
+        return (
+            f'Experience: {self.tour.tour_name} '
+            f'in Booking No: {self.booking.booking_number}'
+        )

@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
 from .contexts import basket_contents
 from booking.forms import BookingItemForm
-from tours.models import Tours
 
 
 # Assistance from CI - Boutique Ado walkthrough

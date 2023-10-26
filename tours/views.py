@@ -209,7 +209,7 @@ def delete_tour(request, tour_id):
 
     # Get the tour using get_object_or_404
     tour = get_object_or_404(Tours, pk=tour_id)
-    
+
     # Delete the tour & return a success message
     tour.delete()
     messages.success(request, f'{tour.tour_name} \

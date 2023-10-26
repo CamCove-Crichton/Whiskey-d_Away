@@ -12,13 +12,13 @@ class ToursForm(forms.ModelForm):
     class Meta:
         model = Tours
         fields = '__all__'
-    
+
     tour_image = forms.ImageField(
         label='Image',
         required=False,
         widget=CustomClearableFileInput
     )
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         categories = Category.objects.all()

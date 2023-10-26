@@ -11,6 +11,8 @@ from profiles.models import UserProfile
 import json
 import time
 
+import stripe
+
 
 class StripeWH_Handler:
     """
@@ -18,7 +20,7 @@ class StripeWH_Handler:
     """
     def __init__(self, request):
         self.request = request
-    
+
     def _send_confirmation_email(self, booking):
         """
         Sends the user a confirmation email
@@ -42,7 +44,6 @@ class StripeWH_Handler:
             [cust_email]
         )
 
-    
     def handle_event(self, event):
         """
         Handle a generic/unknown/unexpected webhook
@@ -87,7 +88,7 @@ class StripeWH_Handler:
                 profile.default_mobile_number = billing_details.phone
                 profile.default_email = billing_details.email
                 profile.save()
-        
+
         booking_exists = False
         attempt = 1
         while attempt <= 5:
@@ -103,15 +104,16 @@ class StripeWH_Handler:
                 )
                 booking_exists = True
                 break
-                
-    
+
             except Booking.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
         if booking_exists:
             self._send_confirmation_email(booking)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already exists in the database',
+                content=f'Webhook received: {event["type"]} | '
+                        f'SUCCESS: Verified order already \
+                        exists in the database',
                 status=200)
         else:
             booking = None
@@ -152,7 +154,8 @@ class StripeWH_Handler:
                     status=500)
         self._send_confirmation_email(booking)
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
+            content=f'Webhook received: {event["type"]} | '
+                    f'SUCCESS: Created order in webhook',
             status=200
         )
 

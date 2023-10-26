@@ -28,7 +28,8 @@ DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = [
     '8000-camcove-crichton-whiskey-5s4lohy9f0.us2.codeanyapp.com',
-    'whiskeyd-away-b104788bd50a.herokuapp.com'
+    'whiskeyd-away-b104788bd50a.herokuapp.com',
+    '*'
 ]
 
 
@@ -190,7 +191,7 @@ if 'USE_AWS' in os.environ:
         'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
-    
+
     # Bucket config
     AWS_STORAGE_BUCKET_NAME = 'whiskeyd-away'
     AWS_S3_REGION_NAME = 'eu-west-2'
@@ -229,7 +230,7 @@ STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'whiskeydaway@example.com'
-else:  
+else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
     EMAIL_PORT = 587

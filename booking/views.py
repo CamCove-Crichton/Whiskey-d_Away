@@ -42,6 +42,7 @@ def cache_booking_data(request):
             processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
 
+
 def booking(request):
     """
     A view to allow the user to create a booking
@@ -97,7 +98,7 @@ def booking(request):
                             booking_time_slot=booking_time_slot,
                         )
                         booking_line_item.save()
-                
+
                 # Raise error if experience does not exist
                 except Tours.DoesNotExist:
                     messages.error(request, 'One of the Experiences \
@@ -112,14 +113,16 @@ def booking(request):
 
             # Check if the save info exists in the session
             request.session['save-info'] = 'save-info' in request.POST
-            return redirect(reverse('booking_success', args=[booking.booking_number])) 
-   
+            return redirect(
+                reverse('booking_success', args=[booking.booking_number])
+            )
+
         # Raise error is form is invalid
         else:
             messages.error(request, 'There was an error with your form. \
                 Please double check your info. Users must be 18 years \
                 or older')
-            
+
             return redirect(reverse('booking'))
     else:
         # Get the session basket
@@ -184,6 +187,7 @@ def booking(request):
 
     # Return the rendered view
     return render(request, template, context)
+
 
 def booking_success(request, booking_number):
     """
