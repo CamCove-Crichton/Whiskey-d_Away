@@ -54,8 +54,8 @@ def basket_contents(request):
         # Calculate the discount amount
         discount = total * Decimal(settings.STANDARD_DISCOUNT_PERCENTAGE/100)
 
-        # Calculate the remaining amount needed to qualify for the discount
-        discount_delta = settings.DISCOUNT_SPEND_THRESHOLD - total
+    # Calculate the remaining amount needed to qualify for the discount
+    discount_delta = settings.DISCOUNT_SPEND_THRESHOLD - total
 
     # Calculate the grand total after applying the discount
     grand_total = total - discount
