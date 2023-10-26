@@ -27,6 +27,10 @@ h6 {
     font-size: medium;
 }
 
+.text-large {
+    font-size: large;
+}
+
 /* ----------------------------- Colours */
 .bg-black,
 .btn-black {
