@@ -148,6 +148,8 @@ Then after that, I moved to creating the view for the booking template, added th
 - After the project was deployed, I went through some final touches before getting to the testing of the site
 - First of the final touch was to update the settings to be able to send emails from django
 I then went through and made added some touch ups to the styling for an improvement on the responsive design
+- I then added in the anchor tags and links for the social media links in the footer after resolving the issue of the footer not appearing on mobile devices
+- Started tidying up my project by going through all the linting errors I could find and fix
 
 ### Future Developments
 
@@ -236,6 +238,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I had an issue when trying to introduce the date of birth field, that it was not capturing it, which I think was because I had forgotten to return the date_of_birth value, but ended up using some print statements in my view to see where I was getting up to and what was being returned in the booking from when the form data had been parsed to it, and found date_of_birth was coming back with an error as could not be null, at which point I looked further into ensuring my date was being returned as date object and if not then converting it to a date object, and then also returning the date_of_birth variable after validation and at which point my payment intent was working again
 - I found a bug in my validation for the booking date, and so I used a return redirect and reverse statement to reload the template. Although it would be great to have the form return prepopulated with the data that was entered, I struggled to then get the new date to be submitted in the POST method as it seemed to keep having the first invlaid date submitting when I resubmitted the form with a valid date, and due to time constraints I had to find a solution and move on, so using the redirect and reverse was the best solution for now
 - When testing if an image is deleted from an experience, if the image is set to the default, and found a bug, and so I went and added a function in the validators file in the tours app to check if the image field instance is none, then to set the image field back to the default image
+- Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, used a media query in my css to resolve
+- Footer is not displaying on smaller displays, I found it was to do with the stying using a bootstrap style of d-none for small screens, so I removed it and it resolved the issue
 
 ### Validator Testing
 
@@ -249,9 +253,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - Issue with getting the cards to display in the manner in which I require, so have put a hold on it and will return to it at a later stage
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
-- Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, needs to be looked at and have a media query added to handle the display on smaller devices
-- Footer is not displaying on smaller displays, it probably has something to do with styling, but will need to come back to look at it
-- After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct.
+- After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
 - I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
 
