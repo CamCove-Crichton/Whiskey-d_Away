@@ -151,6 +151,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I then added in the anchor tags and links for the social media links in the footer after resolving the issue of the footer not appearing on mobile devices
 - Started tidying up my project by going through all the linting errors I could find and fix
 - Then added in the 404 page in case there are any urls that do not exist in the site that the user tries to access
+- I added in the template for the about us page, and within the content of the page I was thinking about my SEO and having meaningful content to assist with improving my sites ranking with SEO standards
+- I then began adding in template names to extend from the title tag, and then worked on adding in the meta tags for the site description and the keywords for search results from search engines
 
 ### Future Developments
 
@@ -260,6 +262,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
+- I found there is an issue that the cursor displays and the colour changes when you hover over the discount banner, but I cannto seem to figure out why. I have searched my css file and do not know what class is causing this, as the classes assigned to it, do not have this attribute to it
 
 ## Credits
 
