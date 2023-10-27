@@ -5,6 +5,7 @@ $(document).ready(function() {
     handleActiveIcon();
     scrollToTop();
     delayFadeIn("discountBanner", 1500);
+    scrollFade("discountBanner");
 });
 
 // Assistance from ChatGPT
@@ -87,4 +88,36 @@ function moveIconToActiveLink(linkId) {
  */
 function delayFadeIn(elementId, delayTime) {
     $('#' + elementId).delay(delayTime).fadeIn();
+}
+
+
+/**
+     * Detects scrolling on the page, and fades
+     * out the targeted element when scrolling down
+     * and when scroll is back to the top the element fades
+     * back in
+     */
+function scrollFade(elementId) {
+    let element = $('#' + elementId);
+    let lastScrollTop = 0;
+    let delta = 5;
+    let elementHeight = element.outerHeight();
+
+    $(window).scroll(function(event) {
+        let st = $(this).scrollTop();
+
+        // Check if the user is scrolling up or down
+        if (Math.abs(lastScrollTop - st) <= delta)
+            return;
+
+        if (st > lastScrollTop && st > elementHeight) {
+            // Scroll down, hide the element
+            element.fadeOut();
+        } else {
+            // Scroll up, show the element
+            element.fadeIn();
+        }
+
+        lastScrollTop = st;
+    });
 }

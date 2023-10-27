@@ -2,22 +2,18 @@
 <!-- Base template boilerplate code from Bootstrap Starter Template -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <!-- Asstistance from CI - Boutique Ado walkthrough -->
-    <!-- Main meta tags -->
-    {% block meta %}
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="description" content="Whiskey tasting distillery tours around the UK">
-    <meta
-    name="keywords" 
-    content="whiskey distillery,
+<head>
+  <!-- Required meta tags -->
+  <!-- Asstistance from CI - Boutique Ado walkthrough -->
+  <!-- Main meta tags -->
+  {% block meta %}
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Whiskey tasting distillery tours around the UK">
+  <meta name="keywords" content="whiskey distillery,
              whiskey tours,
              whiskey tour near me,
              whiskey adventure,
@@ -31,271 +27,281 @@
              wales, distilleries,
              scotland distilleries,
              uk distilleries">
-    {% endblock %}
+  {% endblock %}
 
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    <!-- Extra Meta tags -->
-    {% block extra_meta %} 
-    {% endblock %}
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  <!-- Extra Meta tags -->
+  {% block extra_meta %}
+  {% endblock %}
 
-    <!-- Core CSS -->
-    {% block corecss %}
-    <!-- Favicon -->
-    <link
-    rel="icon"
-    href="https://whiskeyd-away.s3.eu-west-2.amazonaws.com/media/whiskey+glass+icon.ico"
+  <!-- Core CSS -->
+  {% block corecss %}
+  <!-- Favicon -->
+  <link rel="icon" href="https://whiskeyd-away.s3.eu-west-2.amazonaws.com/media/whiskey+glass+icon.ico"
     type="image/x-icon" />
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-      crossorigin="anonymous"
-    />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous" />
 
-    <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Diplomata+SC&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Diplomata+SC&display=swap"
+    rel="stylesheet" />
+  
+  <!-- Mailchimp CSS -->
+  <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    {% endblock %}
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  {% endblock %}
 
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    <!-- Extra CSS -->
-    {% block extra_css %} 
-    {% endblock %}
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  <!-- Extra CSS -->
+  {% block extra_css %}
+  {% endblock %}
 
-    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    {% block corejs %}
-    <!-- Font Awesome -->
-    <script
-      src="https://kit.fontawesome.com/c1b12b8cf9.js"
-      crossorigin="anonymous"></script>
-    
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  {% block corejs %}
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/c1b12b8cf9.js" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap bundle -->
-    <!-- <script
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap bundle -->
+  <!-- <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"></script> -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-      crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
 
-    <!-- Flatpickr -->
-    <!-- <script src="{% static 'node_modules/flatpickr/dist/flatpickr.min.js' %}"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Flatpickr -->
+  <!-- <script src="{% static 'node_modules/flatpickr/dist/flatpickr.min.js' %}"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <!-- Assistance from CI - Boutique Ado walkthrough -->
-    <!-- Stripe -->
-    <script src="https://js.stripe.com/v3/"></script>
+  <!-- Assistance from CI - Boutique Ado walkthrough -->
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3/"></script>
 
-    <!-- Custom JavaScript -->
-    <script src="{% static 'js/script.js' %}"></script>
-    {% endblock %}
+  <!-- Custom JavaScript -->
+  <script src="{% static 'js/script.js' %}"></script>
+  {% endblock %}
 
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    <!-- Extra JavaScript -->
-    {% block extra_js %} 
-    {% endblock %}
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  <!-- Extra JavaScript -->
+  {% block extra_js %}
+  {% endblock %}
 
-    <title>Whiskey'd Away {% block extra_title %}{% endblock %}</title>
-  </head>
+  <title>Whiskey'd Away {% block extra_title %}{% endblock %}</title>
+</head>
 
-  <body>
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    <header class="container-fluid fixed-top">
-      <!-- Main nav header -->
-      <div id="topnav" class="row bg-black pt-lg-2 d-none d-lg-flex">
-        <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-          <a href="{% url 'home' %}" class="nav-link main-logo-link">
-            <h2 class="my-0 text-yellow">Whiskey'd Away</h2>
-            <small class="my-0 text-yellow">Where Every Sip Tells a Story</small>
-          </a>
-        </div>
-        <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
-          <form action="{% url 'tours' %}" method="get">
-            <div class="input-group w-100">
-              <input
-                class="form-control border-black rounded-2"
-                type="text"
-                name="q"
-                placeholder="Search for your Whiskey Experience"
-              />
-              <div class="input-group-append">
-                <button class="form-control border-black btn btn-yellow rounded-2"type="submit">
-                  <span class="icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                  </span>
-                </button>
-              </div>
+<body>
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  <header class="container-fluid fixed-top">
+    <!-- Main nav header -->
+    <div id="topnav" class="row bg-black pt-lg-2 d-none d-lg-flex">
+      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+        <a href="{% url 'home' %}" class="nav-link main-logo-link">
+          <h2 class="my-0 text-yellow">Whiskey'd Away</h2>
+          <small class="my-0 text-yellow">Where Every Sip Tells a Story</small>
+        </a>
+      </div>
+      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+        <form action="{% url 'tours' %}" method="get">
+          <div class="input-group w-100">
+            <input class="form-control border-black rounded-2" type="text" name="q"
+              placeholder="Search for your Whiskey Experience" />
+            <div class="input-group-append">
+              <button class="form-control border-black btn btn-yellow rounded-2" type="submit">
+                <span class="icon">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+              </button>
             </div>
-          </form>
-        </div>
-        <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
-          <ul class="list-inline list-unstyled text-center text-lg-right my-0">
-            <li class="list-inline-item dropdown">
-              <a
-                href="#"
-                class="nav-link"
-                id="user-options"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <div class="text-center">
-                  <div>
-                    <i class="fa-solid fa-circle-user fa-lg text-yellow"></i>
-                  </div>
-                  <p class="my-0 text-yellow">Account</p>
+          </div>
+        </form>
+      </div>
+      <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+        <ul class="list-inline list-unstyled text-center text-lg-right my-0">
+          <li class="list-inline-item dropdown">
+            <a href="#" class="nav-link" id="user-options" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <div class="text-center">
+                <div>
+                  <i class="fa-solid fa-circle-user fa-lg text-yellow"></i>
                 </div>
-              </a>
-              <div
-                class="dropdown-menu border-0 bg-yellow" aria-labelledby="user-options">
-                {% if request.user.is_authenticated %} 
-                    {% if request.user.is_superuser %}
-                        <a href="{% url 'add_tour' %}" class="dropdown-item">Manage Experiences</a>
-                    {% endif %}
-                    <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
-                    <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
-                {% else %}
-                    <a href="{% url 'account_signup' %}" class="dropdown-item">Signup</a>
-                    <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
-                {% endif %}
+                <p class="my-0 text-yellow">Account</p>
               </div>
-            </li>
-            <li class="list-inline-item">
-              <a href="{% url 'view_basket' %}" class="nav-link">
-                <div class="text-center">
-                  <div>
-                    <i class="fa-solid fa-basket-shopping fa-lg text-yellow"></i>
-                  </div>
-                  <p class="my-0 text-yellow">
-                    {% if grand_total %} 
-                    £{{ grand_total|floatformat:2 }} 
-                    {% else %} 
-                    £0.00 
-                    {% endif %}
-                  </p>
+            </a>
+            <div class="dropdown-menu border-0 bg-yellow" aria-labelledby="user-options">
+              {% if request.user.is_authenticated %}
+              {% if request.user.is_superuser %}
+              <a href="{% url 'add_tour' %}" class="dropdown-item">Manage Experiences</a>
+              {% endif %}
+              <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+              <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+              {% else %}
+              <a href="{% url 'account_signup' %}" class="dropdown-item">Signup</a>
+              <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+              {% endif %}
+            </div>
+          </li>
+          <li class="list-inline-item">
+            <a href="{% url 'view_basket' %}" class="nav-link">
+              <div class="text-center">
+                <div>
+                  <i class="fa-solid fa-basket-shopping fa-lg text-yellow"></i>
                 </div>
-              </a>
-            </li>
-          </ul>
-        </div>
+                <p class="my-0 text-yellow">
+                  {% if grand_total %}
+                  £{{ grand_total|floatformat:2 }}
+                  {% else %}
+                  £0.00
+                  {% endif %}
+                </p>
+              </div>
+            </a>
+          </li>
+        </ul>
       </div>
-
-      <!-- Sub nav-bar -->
-      <div class="row bg-yellow">
-        <nav class="navbar navbar-expand-lg navbar-light w-100">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#main-nav"
-            aria-controls="main-nav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          {% include 'includes/mobile-top-header.html' %} 
-          {% include 'includes/main-nav.html' %}
-        </nav>
-      </div>
-    </header>
-
-    <!-- Assistance from CI - Boutique Ado Walkthrough -->
-    {% if messages %}
-    <div class="message-container">
-        {% for message in messages %}
-            {% with message.level as level %}
-                {% if level == 40 %}
-                    {% include 'includes/toasts/toast_error.html' %}
-                {% elif level == 30 %}
-                    {% include 'includes/toasts/toast_warning.html' %}
-                {% elif level == 25 %}
-                    {% include 'includes/toasts/toast_success.html' %}
-                {% else %}
-                    {% include 'includes/toasts/toast_info.html' %}
-                {% endif %}
-            {% endwith %}
-        {% endfor %}
     </div>
-    {% endif %} 
-    
-    {% block page_header %} 
-    {% endblock %} 
-    
-    {% block content %} 
-    {% endblock %}
 
-    <!-- Back to top button -->
-    <button id="backToTop" class="btn-back-to-top btn-clear-default">
-      <i class="fa-solid fa-circle-up fa-xl text-yellow"></i>
-    </button>
+    <!-- Sub nav-bar -->
+    <div class="row bg-yellow">
+      <nav class="navbar navbar-expand-lg navbar-light w-100">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+          aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% include 'includes/mobile-top-header.html' %}
+        {% include 'includes/main-nav.html' %}
+      </nav>
+    </div>
+  </header>
 
-    <footer class="container-fluid">
-      <div class="row bg-black pt-lg-2 d-flex">
-        <!-- Facebook link -->
-        <div class="col-6 col-md-3 text-center mt-2">
-          <a
-          href="https://www.facebook.com/"
-          target="_blank"
-          class="text-decoration-none"
-          rel="noopener">
-            <i class="fa-brands fa-facebook fa-lg text-yellow"></i>
-            <p class="text-yellow">Facebook</p>
-          </a>
-        </div>
+  <!-- Assistance from CI - Boutique Ado Walkthrough -->
+  {% if messages %}
+  <div class="message-container">
+    {% for message in messages %}
+    {% with message.level as level %}
+    {% if level == 40 %}
+    {% include 'includes/toasts/toast_error.html' %}
+    {% elif level == 30 %}
+    {% include 'includes/toasts/toast_warning.html' %}
+    {% elif level == 25 %}
+    {% include 'includes/toasts/toast_success.html' %}
+    {% else %}
+    {% include 'includes/toasts/toast_info.html' %}
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+  </div>
+  {% endif %}
 
-        <!-- Instagram link -->
-        <div class="col-6 col-md-3 text-yellow text-center mt-2">
-          <a
-          href="https://www.instagram.com/"
-          target="_blank"
-          class="text-decoration-none"
-          rel="noopener">
-            <i class="fa-brands fa-instagram fa-lg text-yellow"></i>
-            <p class="text-yellow">Instagram</p>
-          </a>
-        </div>
+  {% block page_header %}
+  {% endblock %}
 
-        <!-- Twitter link -->
-        <div class="col-12 col-sm-6 col-md-3 text-yellow text-center mt-2">
-          <a
-          href="https://twitter.com/"
-          target="_blank"
-          class="text-decoration-none"
-          rel="noopener">
-            <i class="fa-brands fa-twitter fa-lg text-yellow"></i>
-            <p class="text-yellow">Twitter</p>
-          </a>
-        </div>
+  {% block content %}
+  {% endblock %}
 
-        <!-- Mailchimp newsletter signup -->
-        <div class="col-12 col-sm-6 col-md-3 text-yellow text-center mt-2">
-          <!-- Mailchimp newsletter signup here -->
+  <!-- Back to top button -->
+  <button id="backToTop" class="btn-back-to-top btn-clear-default">
+    <i class="fa-solid fa-circle-up fa-xl text-yellow"></i>
+  </button>
+
+  <footer class="container-fluid">
+    <div class="row bg-black pt-lg-2 d-flex">
+      <!-- Facebook link -->
+      <div class="col-6 col-md-3 text-center mt-2 mx-auto">
+        <a href="https://www.facebook.com/" target="_blank" class="text-decoration-none" rel="noopener">
+          <i class="fa-brands fa-facebook fa-lg text-yellow"></i>
+          <p class="text-yellow">Facebook</p>
+        </a>
+      </div>
+
+      <!-- Instagram link -->
+      <div class="col-6 col-md-3 text-yellow text-center mt-2 mx-auto">
+        <a href="https://www.instagram.com/" target="_blank" class="text-decoration-none" rel="noopener">
+          <i class="fa-brands fa-instagram fa-lg text-yellow"></i>
+          <p class="text-yellow">Instagram</p>
+        </a>
+      </div>
+
+      <!-- Twitter link -->
+      <div class="col-12 col-sm-6 col-md-3 text-yellow text-center mt-2 mx-auto">
+        <a href="https://twitter.com/" target="_blank" class="text-decoration-none" rel="noopener">
+          <i class="fa-brands fa-twitter fa-lg text-yellow"></i>
+          <p class="text-yellow">Twitter</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mailchimp newsletter signup -->
+    <div class="row bg-black pt-lg-2 d-flex">
+      <div class="col-12 col-md-6 text-yellow text-center mt-2 mx-auto">
+        <div id="mc_embed_shell">
+          <div id="mc_embed_signup">
+            <form
+            action="https://github.us21.list-manage.com/subscribe/post?u=a3d0931d203405546e5cb9a95&amp;id=32aa137ba9&amp;f_id=003ee0e6f0"
+            method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+            target="_blank">
+            <div id="mc_embed_signup_scroll">
+              <h6 class="text-yellow about-us-headings">Subscribe</h6>
+              <p class="text-yellow">Signup to our newsletter for newly added experiences, offers & discount codes</p>
+                <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span
+                      class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email"
+                    id="mce-EMAIL" required="" value=""></div>
+                <div id="mce-responses" class="clear foot">
+                  <div class="response" id="mce-error-response" style="display: none;"></div>
+                  <div class="response" id="mce-success-response" style="display: none;"></div>
+                </div>
+                <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                  /* real people should not fill this in and expect good things - do not remove this or risk form bot
+                  signups */
+                  <input type="text" name="b_a3d0931d203405546e5cb9a95_32aa137ba9" tabindex="-1" value="">
+                </div>
+                <div class="optionalParent">
+                  <div class="clear foot">
+                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
+                    <p style="margin: 0px auto;"><a href="http://eepurl.com/iy5vsA"
+                        title="Mailchimp - email marketing made easy and fun"><span
+                          style="display: inline-block; background-color: transparent; border-radius: 4px;"><img
+                            class="refferal_badge"
+                            src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg"
+                            alt="Intuit Mailchimp"
+                            style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <!-- Assistance from CI - Boutique Ado walkthrough -->
-    {% block postloadjs %} 
-        <script type="text/javascript">
-            $('.toast').toast('show');
-        </script>
-    {% endblock %}
-  </body>
+  <!-- Assistance from CI - Boutique Ado walkthrough -->
+  {% block postloadjs %}
+  <script type="text/javascript">
+    $('.toast').toast('show');
+  </script>
+
+  <!-- Mailchimp scripts -->
+  <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+  <script
+    type="text/javascript">(function ($) { window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; fnames[3] = 'ADDRESS'; ftypes[3] = 'address'; fnames[4] = 'PHONE'; ftypes[4] = 'phone'; fnames[5] = 'BIRTHDAY'; ftypes[5] = 'birthday'; }(jQuery)); var $mcj = jQuery.noConflict(true);</script>
+  {% endblock %}
+</body>
+
 </html>

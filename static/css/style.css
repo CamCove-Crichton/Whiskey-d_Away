@@ -65,6 +65,15 @@ h6 {
     background-color: gold;
 }
 
+.button {
+    color: black !important;
+    background-color: yellow !important;
+}
+
+.button:hover {
+    background-color: gold !important;
+}
+
 .text-black {
     color: black;
 }
@@ -284,6 +293,17 @@ a .text-yellow:hover {
 .visually-hidden label {
     display: none;
 }
+
+/* ----------------------------- Mailchimp */
+/* Taken directly from mailchimps site */
+
+#mc_embed_signup {
+    background: black;
+    /* false; */
+    clear: left;
+    font: 14px Helvetica, Arial, sans-serif;
+    width: 100%;
+  }
 
 /* ----------------------------- Media Queries */
 

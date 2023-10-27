@@ -154,6 +154,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I added in the template for the about us page, and within the content of the page I was thinking about my SEO and having meaningful content to assist with improving my sites ranking with SEO standards
 - I then began adding in template names to extend from the title tag, and then worked on adding in the meta tags for the site description and the keywords for search results from search engines
 - I then created a sitemap for my site, and added it to my project, and then added in a robots.txt file with the assistance from Code Institutes, Boutique Ado walkthrough project
+- I created a facebook business page, but I did not include it in my footer link for the social links as I am aware it could be removed by facebook and did not want to have a page link leading to nowhere. I have included screen grabs of the business page created and just in case it is not removed, I have put a link to the page at the bottom with my credits
+- Moving on, I implemented a newsletter signup using Mailchimp, and added it into the footer of my site, so users can signup to the newsletter when from every page
 
 ### Future Developments
 
@@ -232,6 +234,7 @@ I then went through and made added some touch ups to the styling for an improvem
 | Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | |
 | Sending Emails | Sending emails from django works as expected | |
 | 404 Page | The 404 page displays as expected and is responsive | |
+| About Us template | The about us template displays as expected, and is responsive | |
 
 ### Resolved Bugs
 
@@ -250,6 +253,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend. I then searched the contexts.py file and found that it was because the discount delta variable was only being calulated if there was already a discount. So I moved the calculation outside of the if block and then it fixed the issue
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - After seeking advise from ChatGPT, I was able to implement the javascript change to keep the icon next to the nav item selected, apart from when it is on the whiskey experiences, then it pops back to the end of the nav, which I quite like, so I left it in there intentionally
 - Issue with getting the cards to display in the manner in which I require. After taking some time to adjust some css, I did get it to display in the manner in which I was looking for. The tour detail template is a bit bland on the image side but it is because I want to have more images showing, but due to time constraints, I have not had the chance to add this feature in, so it is listed in the future developments
+- I found there was an issue with the discount banner getting in the way when scrolling on the home page, so I used some javascript to fade the banner out when the user scrolls down and then when they scroll back up to fade the banner back in, this was assisted by ChaGPT due to time constraints
 
 ### Validator Testing
 
@@ -263,7 +267,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
-- I found there is an issue that the cursor displays and the colour changes when you hover over the discount banner, but I cannto seem to figure out why. I have searched my css file and do not know what class is causing this, as the classes assigned to it, do not have this attribute to it
+- I found there is an issue that the cursor displays and the colour changes when you hover over the discount banner, but I cannot seem to figure out why. I have searched my css file and do not know what class is causing this, as the classes assigned to it, do not have this attribute to it
 
 ## Credits
 
@@ -4158,6 +4162,99 @@ def generate_unique_booking_number():
 }
 ```
 
+- Assistance with fading out discount banner upon scrolling on the index page
+
+```javascript
+{
+    function scrollFade(elementId) {
+        var element = $('#' + elementId);
+        var lastScrollTop = 0;
+        var delta = 5;
+        var elementHeight = element.outerHeight();
+
+        $(window).scroll(function(event) {
+            var st = $(this).scrollTop();
+
+            // Check if the user is scrolling up or down
+            if (Math.abs(lastScrollTop - st) <= delta)
+                return;
+
+            if (st > lastScrollTop && st > elementHeight) {
+                // Scroll down, hide the element
+                element.fadeOut();
+            } else {
+                // Scroll up, show the element
+                element.fadeIn();
+            }
+
+            lastScrollTop = st;
+        });
+    }
+}
+```
+
+- Mailchimp sign up newsletter
+
+```html
+{
+    <div class="row bg-black pt-lg-2 d-flex">
+      <div class="col-12 col-md-6 text-yellow text-center mt-2 mx-auto">
+        <div id="mc_embed_shell">
+          <div id="mc_embed_signup">
+            <form
+            action="https://github.us21.list-manage.com/subscribe/post?u=a3d0931d203405546e5cb9a95&amp;id=32aa137ba9&amp;f_id=003ee0e6f0"
+            method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+            target="_blank">
+            <div id="mc_embed_signup_scroll">
+              <h6 class="text-yellow about-us-headings">Subscribe</h6>
+              <p class="text-yellow">Signup to our newsletter for newly added experiences, offers & discount codes</p>
+                <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span
+                      class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email"
+                    id="mce-EMAIL" required="" value=""></div>
+                <div id="mce-responses" class="clear foot">
+                  <div class="response" id="mce-error-response" style="display: none;"></div>
+                  <div class="response" id="mce-success-response" style="display: none;"></div>
+                </div>
+                <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                  /* real people should not fill this in and expect good things - do not remove this or risk form bot
+                  signups */
+                  <input type="text" name="b_a3d0931d203405546e5cb9a95_32aa137ba9" tabindex="-1" value="">
+                </div>
+                <div class="optionalParent">
+                  <div class="clear foot">
+                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
+                    <p style="margin: 0px auto;"><a href="http://eepurl.com/iy5vsA"
+                        title="Mailchimp - email marketing made easy and fun"><span
+                          style="display: inline-block; background-color: transparent; border-radius: 4px;"><img
+                            class="refferal_badge"
+                            src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg"
+                            alt="Intuit Mailchimp"
+                            style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+}
+```
+
+```css
+{
+    #mc_embed_signup {
+        background: black;
+        /* false; */
+        clear: left;
+        font: 14px Helvetica, Arial, sans-serif;
+        width: 100%;
+    }
+}
+```
+
 ### Other Credits
 
 [Favicon.io](https://favicon.io/favicon-converter/) - Favicon converter for my favicon image
@@ -4217,3 +4314,5 @@ def generate_unique_booking_number():
 [ChatGPT](https://chat.openai.com/) - Site & database creative content
 
 [XML-Sitemaps.com](https://www.xml-sitemaps.com/) - To create my sitemap for my project
+
+[Whiskey'd Away FB page](https://www.facebook.com/profile.php?id=61552834559896)
