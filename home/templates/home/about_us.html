@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="container header-container">
+</div>
+{% endblock %} 
+<!-- Assistance from CI - Boutique Ado walkthrough -->
+{% block content %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12 my-auto">
+                <h1 class="heading-background-black text-yellow p-2 about-us-headings">
+                    Welcome to Whiskey'd Away - Your Passport to Whiskey Adventures in the UK
+                </h1>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 my-auto">
+                <p class="rounded-background-yellow text-bold p-2">
+                    At Whiskey'd Away, we invite you to embark on an extraordinary journey through the captivating world of
+                    whiskey, right here in the heart of the United Kingdom. As passionate aficionados of the 'water of
+                    life,' we have curated a series of unforgettable whiskey tours that will take you on a captivating
+                    exploration of Scotland's and the UK's rich whiskey heritage.
+                </p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 my-auto">
+                <h4 class="heading-background-black text-yellow p-2 about-us-headings">
+                    Discover the Essence of Whiskey
+                </h4>
+                <p class="rounded-background-yellow p-2">
+                    Our mission is simple but profound: to offer you an authentic, immersive, and educational whiskey
+                    experience. Whether you're a seasoned connoisseur or a curious newcomer to the whiskey scene, our tours
+                    are designed to suit every palate.
+                </p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 my-auto">
+                <h4 class="heading-background-black text-yellow p-2 about-us-headings">
+                    Why Choose Whiskey'd Away?
+                </h4>
+                <ol class="rounded-background-yellow p-2 list-display-none">
+                    <li>
+                        <strong>Expert Guides: </strong>
+                        Our knowledgeable guides are not just experts in whiskey but also
+                        storytellers who will breathe life into the history and culture surrounding
+                        each distillery you visit.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>Handpicked Distilleries: </strong>
+                        We've scoured the UK to bring you the finest distilleries, each with its own unique charm and
+                        character. From the picturesque landscapes of Scotland's Highlands to the historic distilleries in
+                        the heart of London, we offer a diverse range of experiences.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>Tasting Experiences: </strong>
+                        Savor a wide array of whiskey styles and flavours, from smoky Islay malts to the smooth, honeyed
+                        notes of a Speyside dram. Our tastings will tantalize your senses and deepen your appreciation for
+                        this noble spirit.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>Exclusive Access:</strong>
+                        Enjoy behind-the-scenes access to distilleries, meet master distillers, and witness the
+                        craftsmanship that goes into every drop of whiskey.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 my-auto">
+                <h4 class="heading-background-black text-yellow p-2 about-us-headings">
+                    Book Your Whiskey Adventure Today
+                </h4>
+                <div class="rounded-background-yellow p-2">
+                    <p>
+                        Indulge your senses, enrich your knowledge, and create lasting memories with Whiskey'd Away. Our whiskey
+                        tours are not just about enjoying a drink; they're about immersing yourself in the fascinating history,
+                        culture, and craftsmanship that make whiskey a true art form.
+                    </p>
+                    <p>
+                        Join us on a voyage of discovery, where each glass holds a story waiting to be shared. Start your
+                        whiskey adventure with us today, and let us help you get <strong>"Whiskey'd Away" in the UK.</strong>
+                    </p>
+                    <p>
+                        <Strong>Unlock the secrets of whiskey with Whiskey'd Away - Where Every Sip Tells a Story.</Strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12 my-auto">
+                <h4 class="heading-background-black text-yellow p-2 about-us-headings">
+                    Contact Us:
+                </h4>
+                <p class="rounded-background-yellow mb-3 p-2">
+                    <strong>Email:</strong> whiskeydaway@example.com
+                </p>
+                <a href="{% url 'tours' %}" class="text-decoration-none">
+                    <span class="btn btn-yellow">Browse Experiences Now</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

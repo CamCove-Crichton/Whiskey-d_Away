@@ -31,6 +31,10 @@ h6 {
     font-size: large;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 /* ----------------------------- Colours */
 .bg-black,
 .btn-black {
@@ -240,6 +244,10 @@ a .text-yellow:hover {
     text-decoration: none;
 }
 
+.list-display-none {
+    list-style-type: none;
+}
+
 .bold-text {
     font-weight: bold;
 }
@@ -385,13 +393,13 @@ a .text-yellow:hover {
 
     #home,
     #experiences,
-    #contact {
+    #about {
         color: yellow;
     }
 
     #home:hover,
     #experiences:hover,
-    #contact:hover {
+    #about:hover {
         color: black;
         border: 1px solid black;
     }
@@ -411,7 +419,8 @@ a .text-yellow:hover {
     .row .text-center h3,
     .card .row .text-center h3,
     a .card-title,
-    .allauth-form-inner-content h1 {
+    .allauth-form-inner-content h1,
+    .about-us-headings {
         font-size: 1rem;
     }
 

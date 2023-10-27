@@ -163,6 +163,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I would like to be able to have the user add multiple of the same tour for different days and different time slots, in case they would like to attend the same tour multiple times but would like to do so in one booking
 - I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee, and also have them have the validation of ensuring they are all over 18 years of age, but due to time constraints, I have not had a chance to implement it, but I would like to return to it and implement this, as I feel it would be a great feature
 - It would be great to be able to add in a feature for the user to be able to edit their booking once made by either changing the date, adding more attendees if possible or removing attendees or adding other experiences and paying the balance or receiving a refund if the new balance is less than what they paid, or to be able to cancel the entire booking and get a full refund if cancellation is not within a 48hr period of the booking taking place
+- I would have liked to put a validation in place to let the user know if they booking slot is at maximum capacity or if the date is at maximum capacity but due to time contraints, I was not able to get round to it but it will be a feature down the line
+- Started looking into my SEO, and planned to have a lot of info in the contact us page, which seemed more appropriate to now be called about us, so I changed the name of the nav item to about us, and created an about us template, view and url for it. I then styled it with my existing styling and added a couple more items to my css file to include in the about us template.
 
 ### Wireframes & Database Designs
 
@@ -242,6 +244,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - When testing if an image is deleted from an experience, if the image is set to the default, and found a bug, and so I went and added a function in the validators file in the tours app to check if the image field instance is none, then to set the image field back to the default image
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, used a media query in my css to resolve
 - Footer is not displaying on smaller displays, I found it was to do with the stying using a bootstrap style of d-none for small screens, so I removed it and it resolved the issue
+- I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend. I then searched the contexts.py file and found that it was because the discount delta variable was only being calulated if there was already a discount. So I moved the calculation outside of the if block and then it fixed the issue
 
 ### Validator Testing
 
@@ -256,7 +259,6 @@ I then went through and made added some touch ups to the styling for an improvem
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
-- I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
 
 ## Credits
