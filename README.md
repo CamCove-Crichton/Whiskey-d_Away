@@ -153,6 +153,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - Then added in the 404 page in case there are any urls that do not exist in the site that the user tries to access
 - I added in the template for the about us page, and within the content of the page I was thinking about my SEO and having meaningful content to assist with improving my sites ranking with SEO standards
 - I then began adding in template names to extend from the title tag, and then worked on adding in the meta tags for the site description and the keywords for search results from search engines
+- I then created a sitemap for my site, and added it to my project, and then added in a robots.txt file with the assistance from Code Institutes, Boutique Ado walkthrough project
 
 ### Future Developments
 
@@ -4214,3 +4215,5 @@ def generate_unique_booking_number():
 [Jakub Janik](https://www.pexels.com/@jakub-janik-2919955/) - Lake district whiskey tour image
 
 [ChatGPT](https://chat.openai.com/) - Site & database creative content
+
+[XML-Sitemaps.com](https://www.xml-sitemaps.com/) - To create my sitemap for my project

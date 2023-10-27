@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /accounts/
+Disallow: /basket/
+Sitemap: https://whiskeyd-away-b104788bd50a.herokuapp.com/sitemap.xml
