@@ -36,14 +36,23 @@ function scrollToTop() {
      * It starts off a defaulting to the home page and then use click
      * event handlers to remove and add the icon to the active page
      */
+// Function for handling the active icon in the navigation
 function handleActiveIcon() {
-    // Append & show the icon to the home page by default
-    $("#activeIcon").prependTo($("#home"));
+    // Retrieve the active link from local storage
+    let activeLinkId = localStorage.getItem('activeLinkId');
+
+    // If there's an active link, move the icon to it
+    if (activeLinkId) {
+        moveIconToActiveLink(activeLinkId);
+    }
 
     // Event delegation to handle click events on <a> elements in nav
     $("nav ul").on("click", "li a", function (e) {
         // Prevent default link behaviour immediately
         e.preventDefault();
+
+        // Get the ID of the clicked link
+        let clickedLinkId = $(this).attr('id');
 
         // Remove any icon from any previously active link
         $(".active-link").removeClass("active-link");
@@ -52,7 +61,10 @@ function handleActiveIcon() {
         $(this).addClass("active-link");
 
         // Move the icon to the clicked link
-        $("#activeIcon").prependTo($(this));
+        moveIconToActiveLink(clickedLinkId);
+
+        // Save the active link ID in local storage
+        localStorage.setItem('activeLinkId', clickedLinkId);
 
         // Allow a delay on the default behaviour
         setTimeout(function () {
@@ -63,25 +75,16 @@ function handleActiveIcon() {
 
 };
 
+
+// Function to move the icon to the active link
+function moveIconToActiveLink(linkId) {
+    $("#activeIcon").prependTo($("#" + linkId));
+}
+
+
 /**
  * A function for to fade in an item after a period of time
  */
 function delayFadeIn(elementId, delayTime) {
     $('#' + elementId).delay(delayTime).fadeIn();
 }
-
-/**
-     * A function to handle the change of colour to the font
-     * When the Whiskey Experiences nav is clicked the css font colour will
-     * change from yellow to black
-     */
-    // function fontColourChange() {
-    //     $("nav ul").on("click", "#experiences-link", function() {
-    //         let link = $(this);
-    //         if (link.hasClass("show")) {
-    //             link.css("color", "black");
-    //         } else {
-    //             link.css("color", "yellow");
-    //         }
-    //     });
-    // };

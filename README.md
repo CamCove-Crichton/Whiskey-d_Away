@@ -245,6 +245,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - Heading on Whiskey Experiences (tours template) has issue of overflowing out of border on small devices, used a media query in my css to resolve
 - Footer is not displaying on smaller displays, I found it was to do with the stying using a bootstrap style of d-none for small screens, so I removed it and it resolved the issue
 - I have found there to be an error on the basket page when it comes to the note to display to the user how much is needed to be spent to qualify for the discount, as at the moment it display 0 instead of the the amount required to spend. I then searched the contexts.py file and found that it was because the discount delta variable was only being calulated if there was already a discount. So I moved the calculation outside of the if block and then it fixed the issue
+- Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - After seeking advise from ChatGPT, I was able to implement the javascript change to keep the icon next to the nav item selected, apart from when it is on the whiskey experiences, then it pops back to the end of the nav, which I quite like, so I left it in there intentionally
+- Issue with getting the cards to display in the manner in which I require. After taking some time to adjust some css, I did get it to display in the manner in which I was looking for. The tour detail template is a bit bland on the image side but it is because I want to have more images showing, but due to time constraints, I have not had the chance to add this feature in, so it is listed in the future developments
 
 ### Validator Testing
 
@@ -255,8 +257,6 @@ I then went through and made added some touch ups to the styling for an improvem
 ### Unresolved Bugs
 
 - Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
-- Issue with getting the cards to display in the manner in which I require, so have put a hold on it and will return to it at a later stage
-- Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - will need to relook at how to display the active page
 - Spacing issues with the cards as you go between small to larger displays, needs to be looked at
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
@@ -4093,6 +4093,64 @@ def generate_unique_booking_number():
         set_default_image(self)
 
         super().save(*args, **kwargs)
+}
+```
+
+- Assistance with fixing the bug for the active icon and attirbute setting
+
+```html
+{
+    {% if request.path == '/' %}active{% endif %}
+
+    {% if request.path == '/about_us/' %}active{% endif %}
+}
+```
+
+```javascript
+{
+    function handleActiveIcon() {
+        // Retrieve the active link from local storage
+        var activeLinkId = localStorage.getItem('activeLinkId');
+
+        // If there's an active link, move the icon to it
+        if (activeLinkId) {
+            moveIconToActiveLink(activeLinkId);
+        }
+
+        // Event delegation to handle click events on <a> elements in nav
+        $("nav ul").on("click", "li a", function (e) {
+            // Prevent default link behaviour immediately
+            e.preventDefault();
+
+            // Get the ID of the clicked link
+            var clickedLinkId = $(this).attr('id');
+
+            // Remove any icon from any previously active link
+            $(".active-link").removeClass("active-link");
+
+            // Add the active class to the clicked link
+            $(this).addClass("active-link");
+
+            // Move the icon to the clicked link
+            moveIconToActiveLink(clickedLinkId);
+
+            // Save the active link ID in local storage
+            localStorage.setItem('activeLinkId', clickedLinkId);
+
+            // Allow a delay on the default behaviour
+            setTimeout(function () {
+                // Navigate to the link after 100ms delay
+                window.location.href = e.target.href;
+            }, 100);
+        });
+
+    };
+
+
+    // Function to move the icon to the active link
+    function moveIconToActiveLink(linkId) {
+        $("#activeIcon").prependTo($("#" + linkId));
+    }
 }
 ```
 
