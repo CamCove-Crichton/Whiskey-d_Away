@@ -60,14 +60,11 @@
     <div class="row mt-3">
         {% for tour in tours %}
         <div class="col-12 col-md-6 col-lg-4 text-center">
-            <a class="text-decoration-none text-black" href="{% url 'tour_detail' id=tour.id %}">
+            <div class="card-wrapper" onclick="redirectToTourDetail('{{ tour.id }}');">
                 <div class="card mb-3 bg-yellow container-card">
                     <!-- Card Image -->
-                    <img
-                    src="{{ tour.tour_image.url }}"
-                    class="card-img-top container-card-image"
-                    alt="{{ tour.tour_name }}">
-
+                    <img src="{{ tour.tour_image.url }}" class="card-img-top container-card-image" alt="{{ tour.tour_name }}">
+    
                     <!-- Card Body -->
                     <div class="card-body">
                         <h5 class="card-title">{{ tour.tour_name }}</h5>
@@ -85,16 +82,12 @@
                         {% if request.user.is_superuser %}
                         <div class="container mt-3">
                             <span class="card-text">
-                                <a 
-                                href="{% url 'edit_tour' tour.id %}"
-                                class="text-decoration-none btn btn-black">Edit</a>
+                                <a href="{% url 'edit_tour' tour.id %}" class="text-decoration-none btn btn-black">
+                                    Edit
+                                </a>
                             </span>
                             <span class="card-text">
-                                <button 
-                                type="button"
-                                class="btn btn-danger"
-                                data-toggle="modal"
-                                data-target="#confirmDeleteModal_{{ tour.id }}">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal_{{ tour.id }}">
                                     Delete
                                 </button>
                             </span>
@@ -102,17 +95,11 @@
                         {% endif %}
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Modal from Boostrap -->
-        <div 
-        class="modal fade"
-        id="confirmDeleteModal_{{ tour.id }}"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="confirmDeleteModalLabel"
-        aria-hidden="true">
+        <div class="modal fade" id="confirmDeleteModal_{{ tour.id }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -122,11 +109,7 @@
                             Confirm Deletion
                         </h5>
 
-                        <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -135,13 +118,9 @@
                         <p>Are you sure you want to delete this Experience?</p>
                     </div>
                     <div class="modal-footer">
-                        <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             Cancel
                         </button>
-
                         <a href="{% url 'delete_tour' tour.id %}" class="btn btn-danger">
                             Delete
                         </a>
@@ -180,6 +159,10 @@
                 window.location.replace(currentUrl);
             }
         });
+    
+    function redirectToTourDetail(tourId) {
+        window.location.href = "{% url 'tour_detail' id=0 %}".replace('0', tourId);
+    }
 </script>
 
 {% endblock %}

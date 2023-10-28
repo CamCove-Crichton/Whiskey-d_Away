@@ -147,6 +147,7 @@ a .text-yellow:hover {
     width: 330px;
     height: 600px;
     overflow: scroll;
+    cursor: pointer;
 }
 
 .container-card-image {
@@ -299,7 +300,6 @@ a .text-yellow:hover {
 
 #mc_embed_signup {
     background: black;
-    /* false; */
     clear: left;
     font: 14px Helvetica, Arial, sans-serif;
     width: 100%;

@@ -76,8 +76,6 @@ def tour_detail(request, id):
     """
     A view to display the full details of an individual tour experience
     """
-    print('BASKET: ', request.session.get('basket'))
-    # request.session['basket'] = {}
     try:
         tour = get_object_or_404(Tours, id=id)
     except Tours.DoesNotExist:
