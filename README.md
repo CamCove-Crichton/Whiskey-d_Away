@@ -284,7 +284,15 @@ I then went through and made added some touch ups to the styling for an improvem
 - tours>add_tour.html (After removing any django template tags, no errors or warnings to show)
 - tours>includes>quantity_input_script.html (No errors or warnings to show)
 - tours>custom_widget_templates>custom_clearable_file_input.html (After removing any django template tags, no errors or warnings to show)
-- 
+- templates>base.html (Error found at ln181 for aria-controls must point to an element in the same document. Unsure how to correct due to using an includes files)
+- templates>includes>mobile-top-header.html (Errors found on ln9, ln42, ln67 for element not allowed as element of body, but unsure how to correct with it being a separate file and working with the base template)
+- templates>includes>main-nav.html (After removing any django template tags, no errors or warnings to show)
+- templates>includes>toasts>toast_warning.html (No errors or warnings to show)
+- templates>includes>toasts>toast_success.html (No errors or warnings to show)
+- templates>includes>toasts>toast_info.html (No errors or warnings to show)
+- templates>includes>toasts>toast_error.html (No errors or warnings to show)
+- templates>errors>404.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>base.html (After removing any django template tags, no errors or warnings to show)
 
 *lightouse results goes here*
 

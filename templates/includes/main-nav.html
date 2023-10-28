@@ -10,22 +10,45 @@
 
         <!-- Whiskey Experiences nav-item -->
         <li class="nav-item dropdown main-nav-bg-black">
-            <a id="experiences" class="nav-link dropdown-toggle experiences-link" href="#" role="button" data-toggle="dropdown"
-                aria-expanded="false">
+            <a
+            id="experiences"
+            class="nav-link dropdown-toggle experiences-link"
+            href="#"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false">
                 Whiskey Experiences
             </a>
             <!-- Assistance from CI - Boutique Ado walkthrough fo category filters -->
             <div class="dropdown-menu bg-yellow border-black">
-                <a class="dropdown-item" href="{% url 'tours' %}">All Experiences</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=scotland">Scotland Experiences</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=ireland">Ireland Experiences</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=wales">Wales Experiences</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=england">England Experiences</a>
+                <a class="dropdown-item" href="{% url 'tours' %}">
+                    All Experiences
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=scotland">
+                    Scotland Experiences
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=ireland">
+                    Ireland Experiences
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=wales">
+                    Wales Experiences
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=england">
+                    England Experiences
+                </a>
                 <div class="dropdown-divider border-black"></div>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=recently_added">Recently Added Experiences</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?category=on_offer">Experiences on Offer</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_price&direction=asc">Experiences by Price</a>
-                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_rating&direction=desc">Experiences by Rating</a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=recently_added">
+                    Recently Added Experiences
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?category=on_offer">
+                    Experiences on Offer
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_price&direction=asc">
+                    Experiences by Price
+                </a>
+                <a class="dropdown-item" href="{% url 'tours' %}?sort=tour_rating&direction=desc">
+                    Experiences by Rating
+                </a>
             </div>
         </li>
 
@@ -36,6 +59,7 @@
             class="nav-link {% if request.path == '/about_us/' %}active{% endif %}"
             href="{% url 'about_us' %}">About Us</a>
         </li>
+    </ul>
 </div>
 <!-- Active nav page icon -->
 <i id="activeIcon" class="fa-solid fa-whiskey-glass fa-sm pr-1"></i>
