@@ -156,6 +156,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - I then created a sitemap for my site, and added it to my project, and then added in a robots.txt file with the assistance from Code Institutes, Boutique Ado walkthrough project
 - I created a facebook business page, but I did not include it in my footer link for the social links as I am aware it could be removed by facebook and did not want to have a page link leading to nowhere. I have included screen grabs of the business page created and just in case it is not removed, I have put a link to the page at the bottom with my credits
 - Moving on, I implemented a newsletter signup using Mailchimp, and added it into the footer of my site, so users can signup to the newsletter when from every page
+- I then began going through all the files I had either created or added to, and started running them through the respective validators to check my code, and in the process, neatening up some of the structure of the code and looking for any commented out code to remove
 
 ### Future Developments
 
@@ -254,10 +255,36 @@ I then went through and made added some touch ups to the styling for an improvem
 - Found a bug when trying to navigate to other templates from the home template, that the icon reloads back to the home page navigation link when the new template is loaded - After seeking advise from ChatGPT, I was able to implement the javascript change to keep the icon next to the nav item selected, apart from when it is on the whiskey experiences, then it pops back to the end of the nav, which I quite like, so I left it in there intentionally
 - Issue with getting the cards to display in the manner in which I require. After taking some time to adjust some css, I did get it to display in the manner in which I was looking for. The tour detail template is a bit bland on the image side but it is because I want to have more images showing, but due to time constraints, I have not had the chance to add this feature in, so it is listed in the future developments
 - I found there was an issue with the discount banner getting in the way when scrolling on the home page, so I used some javascript to fade the banner out when the user scrolls down and then when they scroll back up to fade the banner back in, this was assisted by ChaGPT due to time constraints
+- Upon checking my HTML validation, I found an issue with having an anchor tag within an anchor tag, so to correct this validation error, I used a div instead of an anchor tag to hold the card div in, and used some javascript instead to handle the link, so when the card is clicked it opens the select tour
+- Upon looking closer at my template when the tour detail is rendered, I found the footer was forming part of the container within the block content, which was not right, so looking closer in my template, I found there was a closing div tag missing, so adding that in, fixed the issue
 
 ### Validator Testing
 
 *html, css, js & python validation results goes here*
+
+**Python Linter Results**
+
+- custom_storages.py (All clear no errors found)
+- whiskeyd_away>views.py (All clear no errors found)
+- whiskeyd_away>urls.py (All clear no errors found)
+- whiskey_away>settings.py (Line too long errors on Django AUTH_PASSWORD_VALIDATORS)
+- tours>widgets.py (All clear no errors found)
+- tours>views.py (All clear no errors found)
+- tours>validators.py (All clear no errors found)
+- tours>urls.py (All clear no errors found)
+- tours>models.py (All clear no errors found)
+- tours>forms.py (All clear no errors found)
+- tours>admin.py (All clear no errors found)
+
+**W3C Nu HTML Checker Results**
+
+- tours>tours.html (After removing any django template tags, no errors or warnings to show)
+- tours>tour_detail.html (After removing any django template tags, no errors or warnings to show)
+- tours>edit_tour.html (After removing any django template tags, no errors or warnings to show)
+- tours>add_tour.html (After removing any django template tags, no errors or warnings to show)
+- tours>includes>quantity_input_script.html (No errors or warnings to show)
+- tours>custom_widget_templates>custom_clearable_file_input.html (After removing any django template tags, no errors or warnings to show)
+- 
 
 *lightouse results goes here*
 

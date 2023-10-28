@@ -15,7 +15,7 @@
             type="checkbox"
             class="custom-control-input"
             name="{{ widget.checkbox_name }}"
-            id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
+            id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}disabled{% endif %}>
 
             <label
             class="custom-control-label text-danger"
@@ -32,6 +32,6 @@
     <input
     id="new-image"
     type="{{ widget.type }}"
-    name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    name="{{ widget.name }}" {% include 'django/forms/widgets/attrs.html' %}>
 </span>
 <strong><p class="text-danger" id="filename"></p></strong>

@@ -38,7 +38,8 @@
             </p>
             {% if tour.tour_rating %}
             <p class="card-text">
-              <strong>Rating:</strong> {{ tour.tour_rating|floatformat:0 }}<i class="fa-sharp fa-solid fa-star"></i>
+              <strong>Rating:</strong> {{ tour.tour_rating|floatformat:0 }}
+              <i class="fa-sharp fa-solid fa-star"></i>
             </p>
             {% endif %}
 
@@ -48,7 +49,11 @@
                 <!-- Assistance from ChatGPT -->
                 {% for category in tour.tour_category.all %}
                     <!-- Idea from CI - Boutique Ado walkthrough -->
-                    <a class="text-decoration-none text-black" href="{% url 'tours' %}?category={{ category.name }}">{{ category.friendly_name }}</a>
+                    <a
+                    class="text-decoration-none text-black"
+                    href="{% url 'tours' %}?category={{ category.name }}">
+                      {{ category.friendly_name }}
+                    </a>
                     {% if not forloop.last%}, {% endif %}
                 {% endfor %}
             </p>
@@ -78,7 +83,9 @@
                       <!-- Booking Date input group -->
                       <div class="input-group">
                           <div class="form-group w-50">
-                              <label for="{{ booking_form.booking_date.id_for_label }}">Booking Date:</label>
+                              <label for="{{ booking_form.booking_date.id_for_label }}">
+                                Booking Date:
+                              </label>
                               {{ booking_form.booking_date }}
                           </div>
                       </div>
@@ -86,14 +93,18 @@
                       <!-- Booking time slot input -->
                       <div class="input-group">
                           <div class="form-group w-50">
-                              <label for="{{ booking_form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
+                              <label for="{{ booking_form.booking_time_slot.id_for_label }}">
+                                Booking Time Slot:
+                              </label>
                               {{ booking_form.booking_time_slot }}
                           </div>
                       </div>
 
                       <!-- Number of Attendees input group -->
                       <div class="form-group w-50">
-                          <label for="{{ booking_form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
+                          <label for="{{ booking_form.number_of_attendees.id_for_label }}">
+                            Number of Attendees:
+                          </label>
                           <div class="input-group">
                               <select id="number_of_attendees" name="number_of_attendees">
                                 {% for i in number_of_attendees %}
@@ -101,18 +112,37 @@
                                 {% endfor %}
                               </select>
                           </div>
-                          <p><small>Max number per group: {{ tour.max_attendees }}</small></p>
+                          <p>
+                            <small>
+                              Max number per group: {{ tour.max_attendees }}
+                            </small>
+                          </p>
                       </div>
                   </div>
 
                   <!-- Continue shopping, Book Now and Add to Basket buttons -->
                   <div class="col-12">
-                      <a href="{% url 'tours' %}" class="btn btn-black mb-2">Continue Browsing Experiences</a>
-                      <!-- <input type="submit" class="btn btn-black mb-2" value="Book Now"> -->
-                      <a href="{% url 'booking' %}" id="btn-book-now" class="display-decoration-none btn btn-black mb-2">
-                        Book Now
-                      </a>
-                      <input id="btn-add-to-basket" type="submit" class="btn btn-black mb-2" value="Add to basket">
+                    <!-- Continue Browsing -->
+                    <a
+                    href="{% url 'tours' %}"
+                    class="btn btn-black mb-2">
+                      Continue Browsing Experiences
+                    </a>
+
+                    <!-- Book Now -->
+                    <a
+                    href="{% url 'booking' %}"
+                    id="btn-book-now"
+                    class="display-decoration-none btn btn-black mb-2">
+                      Book Now
+                    </a>
+
+                    <!-- Add to Basket -->
+                    <input
+                    id="btn-add-to-basket"
+                    type="submit"
+                    class="btn btn-black mb-2"
+                    value="Add to basket">
                   </div>
                   {% if request.user.is_superuser %}
                     <div class="container mt-3 ml-0 p-1">
@@ -132,8 +162,15 @@
                       </span>
                     </div>
                   {% endif %}
-                  <input type="hidden" name="max_attendees" value="{{ tour.max_attendees }}" />
-                  <input type="hidden" name="redirect_url" value="{{ request.path }}" />
+                  <input
+                  type="hidden"
+                  name="max_attendees"
+                  value="{{ tour.max_attendees }}" />
+
+                  <input
+                  type="hidden"
+                  name="redirect_url"
+                  value="{{ request.path }}" />
               </div>
             </form>
           </div>
@@ -195,7 +232,7 @@ aria-hidden="true">
   {% include 'tours/includes/quantity_input_script.html' %}
 
     <!-- Flatpickr -->
-    <script type="text/javascript">
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.booking_date.id_for_label }}", {
                 enableTime: false,
@@ -203,6 +240,5 @@ aria-hidden="true">
                 minDate: "today",
             })
         })
-
     </script>
 {% endblock %}

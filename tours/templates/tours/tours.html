@@ -20,12 +20,19 @@
     <!-- Page Heading & filter display -->
     <div class="row">
         <div class="col-12 text-center">
-            <a class="text-decoration-none" href="{% url 'tours' %}" title="All Whiskey Experiences">
-                <h3 class="text-yellow heading-background-black">Whiskey Experiences</h3>
+            <a
+            class="text-decoration-none"
+            href="{% url 'tours' %}"
+            title="All Whiskey Experiences">
+                <h3 class="text-yellow heading-background-black">
+                    Whiskey Experiences
+                </h3>
             </a>
             {% for c in current_categories %}
                 <!-- Bootstrap badge to display selected category -->
-                <span class="badge badge-pill text-black bg-yellow">{{ c.friendly_name }}</span>
+                <span class="badge badge-pill text-black bg-yellow">
+                    {{ c.friendly_name }}
+                </span>
             {% endfor %}
         </div>
     </div>
@@ -33,25 +40,68 @@
     <!-- Sorting options -->
     <!-- Assistance from CI - Boutique Ado walkthrough -->
     <div class="row mt-3">
-        <div class="col-12 col-md-6 my-auto order-md-last d-flex justify-content-center justify-content-md-end">
+        <div
+        class="col-12 col-md-6 my-auto order-md-last d-flex justify-content-center
+        justify-content-md-end">
             <div class="sort-select-wrapper w-50">
-                <select id="sort-selector" class="custom-select custom-select-sm rounded-2 border border-{% if current_sorting != 'None_None' %}warning{% else %}black{% endif %}">
-                    <option value="reset" {% if current_sorting == 'None_None' %}selected{% endif %}>Sort by...</option>
-                    <option value="tour_price_asc" {% if current_sorting == 'tour_price_asc' %}selected{% endif %}>Price (low to high)</option>
-                    <option value="tour_price_desc" {% if current_sorting == 'tour_price_desc' %}selected{% endif %}>Price (high to low)</option>
-                    <option value="tour_rating_asc" {% if current_sorting == 'tour_rating_asc' %}selected{% endif %}>Rating (low to high)</option>
-                    <option value="tour_rating_desc" {% if current_sorting == 'tour_rating_desc' %}selected{% endif %}>Rating (high to low)</option>
-                    <option value="tour_name_asc" {% if current_sorting == 'tour_name_asc' %}selected{% endif %}>Name (A-Z)</option>
-                    <option value="tour_name_desc" {% if current_sorting == 'tour_name_desc' %}selected{% endif %}>Name (Z-A)</option>
+                <select
+                id="sort-selector"
+                class="custom-select custom-select-sm rounded-2 border
+                border-{% if current_sorting != 'None_None' %}warning{% else %}black{% endif %}">
+                    <option
+                    value="reset"
+                    {% if current_sorting == 'None_None' %}selected{% endif %}>
+                        Sort by...
+                    </option>
+                    <option
+                    value="tour_price_asc"
+                    {% if current_sorting == 'tour_price_asc' %}selected{% endif %}>
+                        Price (low to high)
+                    </option>
+                    <option
+                    value="tour_price_desc"
+                    {% if current_sorting == 'tour_price_desc' %}selected{% endif %}>
+                        Price (high to low)
+                    </option>
+                    <option
+                    value="tour_rating_asc"
+                    {% if current_sorting == 'tour_rating_asc' %}selected{% endif %}>
+                        Rating (low to high)
+                    </option>
+                    <option
+                    value="tour_rating_desc"
+                    {% if current_sorting == 'tour_rating_desc' %}selected{% endif %}>
+                        Rating (high to low)
+                    </option>
+                    <option
+                    value="tour_name_asc"
+                    {% if current_sorting == 'tour_name_asc' %}selected{% endif %}>
+                        Name (A-Z)
+                    </option>
+                    <option
+                    value="tour_name_desc"
+                    {% if current_sorting == 'tour_name_desc' %}selected{% endif %}>
+                        Name (Z-A)
+                    </option>
                 </select>
             </div>
         </div>
         <div class="col-12 col-md-6 order-md-first">
             <p class="mt-3 text-center text-md-left text-yellow">
                 {% if search_term or current_categories or current_sorting != 'None_None' %}
-                    <span class="small"><a class="text-yellow" href="{% url 'tours' %}">All Experiences</a> | </span>
+                    <span class="small">
+                        <a class="text-yellow" href="{% url 'tours' %}">
+                            All Experiences
+                        </a> | 
+                    </span>
                 {% endif %}
-                {{ tours|length }} {% if tours|length > 1 %}Experiences{% else %}Experience{% endif %}{% if search_term %} found for <strong>"{{ search_term }}"</strong>{% endif %}
+                {{ tours|length }} 
+                {% if tours|length > 1 %}
+                    Experiences
+                {% else %}
+                    Experience
+                {% endif %}
+                {% if search_term %} found for <strong>"{{ search_term }}"</strong>{% endif %}
             </p>
         </div>
     </div>
@@ -63,7 +113,10 @@
             <div class="card-wrapper" onclick="redirectToTourDetail('{{ tour.id }}');">
                 <div class="card mb-3 bg-yellow container-card">
                     <!-- Card Image -->
-                    <img src="{{ tour.tour_image.url }}" class="card-img-top container-card-image" alt="{{ tour.tour_name }}">
+                    <img
+                    src="{{ tour.tour_image.url }}"
+                    class="card-img-top container-card-image"
+                    alt="{{ tour.tour_name }}">
     
                     <!-- Card Body -->
                     <div class="card-body">
@@ -75,19 +128,26 @@
                             </span>
                             <span class="card-text">
                                 <small>
-                                    {{ tour.tour_rating|floatformat:0 }}<i class="fa-sharp fa-solid fa-star"></i>
+                                    {{ tour.tour_rating|floatformat:0 }}
+                                    <i class="fa-sharp fa-solid fa-star"></i>
                                 </small>
                             </span>
                         </div>
                         {% if request.user.is_superuser %}
                         <div class="container mt-3">
                             <span class="card-text">
-                                <a href="{% url 'edit_tour' tour.id %}" class="text-decoration-none btn btn-black">
+                                <a
+                                href="{% url 'edit_tour' tour.id %}"
+                                class="text-decoration-none btn btn-black">
                                     Edit
                                 </a>
                             </span>
                             <span class="card-text">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal_{{ tour.id }}">
+                                <button
+                                type="button"
+                                class="btn btn-danger"
+                                data-toggle="modal"
+                                data-target="#confirmDeleteModal_{{ tour.id }}">
                                     Delete
                                 </button>
                             </span>
@@ -99,7 +159,12 @@
         </div>
 
         <!-- Modal from Boostrap -->
-        <div class="modal fade" id="confirmDeleteModal_{{ tour.id }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div
+        class="modal fade"
+        id="confirmDeleteModal_{{ tour.id }}"
+        tabindex="-1" role="dialog"
+        aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -109,7 +174,11 @@
                             Confirm Deletion
                         </h5>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -118,7 +187,10 @@
                         <p>Are you sure you want to delete this Experience?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">
                             Cancel
                         </button>
                         <a href="{% url 'delete_tour' tour.id %}" class="btn btn-danger">
@@ -136,7 +208,7 @@
 <!-- Assistance from CI - Boutique Ado walkthrough -->
 {% block postloadjs %}
 {{ block.super }}
-<script type="text/javascript">
+<script>
     $("#sort-selector").change(function () {
             let selector = $(this);
             let currentUrl = new URL(window.location);
