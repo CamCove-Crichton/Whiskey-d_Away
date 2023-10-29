@@ -92,6 +92,7 @@
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}
 
 <!-- Assistance from CI - Boutique Ado walkthrough -->
@@ -99,7 +100,7 @@
     {{ block.super }}
 
     <!-- Flatpickr script -->
-    <script type="text/javascript">
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ form.default_date_of_birth.id_for_label }}", {
                 enableTime: false,

@@ -275,15 +275,20 @@ I then went through and made added some touch ups to the styling for an improvem
 - tours>models.py (All clear no errors found)
 - tours>forms.py (All clear no errors found)
 - tours>admin.py (All clear no errors found)
+- profiles>views.py (All clear no errors found)
+- profiles>urls.py (All clear no errors found)
+- profiles>models.py (All clear no errors found)
+- profiles>forms.py (E501 on line 88 of line too long, but unsure how to break it down further without messing up the calculation logic)
+
 
 **W3C Nu HTML Checker Results**
 
-- tours>tours.html (After removing any django template tags, no errors or warnings to show)
-- tours>tour_detail.html (After removing any django template tags, no errors or warnings to show)
-- tours>edit_tour.html (After removing any django template tags, no errors or warnings to show)
-- tours>add_tour.html (After removing any django template tags, no errors or warnings to show)
-- tours>includes>quantity_input_script.html (No errors or warnings to show)
-- tours>custom_widget_templates>custom_clearable_file_input.html (After removing any django template tags, no errors or warnings to show)
+- tours>templates>tours>tours.html (After removing any django template tags, no errors or warnings to show)
+- tours>templates>tours>tour_detail.html (After removing any django template tags, no errors or warnings to show)
+- tours>templates>tours>edit_tour.html (After removing any django template tags, no errors or warnings to show)
+- tours>templates>tours>add_tour.html (After removing any django template tags, no errors or warnings to show)
+- tours>templates>tours>includes>quantity_input_script.html (No errors or warnings to show)
+- tours>templates>tours>custom_widget_templates>custom_clearable_file_input.html (After removing any django template tags, no errors or warnings to show)
 - templates>base.html (Error found at ln181 for aria-controls must point to an element in the same document. Unsure how to correct due to using an includes files)
 - templates>includes>mobile-top-header.html (Errors found on ln9, ln42, ln67 for element not allowed as element of body, but unsure how to correct with it being a separate file and working with the base template)
 - templates>includes>main-nav.html (After removing any django template tags, no errors or warnings to show)
@@ -309,6 +314,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - templates>allauth>account>email_confirm.html (After removing any django template tags, no errors or warnings to show)
 - templates>allauth>account>base.html (No errors or warnings to show)
 - templates>allauth>account>account_inactive.html (No errors or warnings to show)
+- profiles>templates>profiles>profile.html (After removing any django template tags, no errors or warnings to show)
 
 **JSHint Javascript Results**
 
@@ -317,6 +323,7 @@ I then went through and made added some touch ups to the styling for an improvem
 **W3C Jigsaw CSS Validator Results**
 
 - static>css>style.css (No errors found)
+- profiles>static>profiles>css>profile.css (No errors found)
 
 *lightouse results goes here*
 
