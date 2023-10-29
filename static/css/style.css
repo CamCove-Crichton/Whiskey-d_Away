@@ -21,6 +21,10 @@ h6 {
     font-family: "Diplomata SC", Verdana, sans-serif;
 }
 
+.spaced-list li {
+    margin-bottom: 10px;
+}
+
 /* ----------------------------- Font sizes */
 
 .text-medium {

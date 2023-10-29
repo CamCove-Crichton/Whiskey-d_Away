@@ -279,6 +279,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - profiles>urls.py (All clear no errors found)
 - profiles>models.py (All clear no errors found)
 - profiles>forms.py (E501 on line 88 of line too long, but unsure how to break it down further without messing up the calculation logic)
+- home>views.py (All clear no errors found)
+- home>urls.py (All clear no errors found)
 
 
 **W3C Nu HTML Checker Results**
@@ -315,6 +317,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - templates>allauth>account>base.html (No errors or warnings to show)
 - templates>allauth>account>account_inactive.html (No errors or warnings to show)
 - profiles>templates>profiles>profile.html (After removing any django template tags, no errors or warnings to show)
+- home>templates>home>index.html (After removing any django template tags, no errors or warnings to show)
+- home>templates>home>about_us.html (After removing any django template tags, no errors or warnings to show)
 
 **JSHint Javascript Results**
 
