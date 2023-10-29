@@ -32,7 +32,9 @@
         <!-- Booking summary -->
         <div class="row">
             <div class="col-12 col-lg-6 order-lg-last mb-5 rounded-background-yellow">
-                <p class="text-black"><strong>Booking Summary:</strong> ({{ experience_count }})</p>
+                <p class="text-black">
+                    <strong>Booking Summary:</strong> ({{ experience_count }})
+                </p>
                 <div class="row">
                     <div class="col-7">
                         <p class="mb-1 mt-0 small text-black">
@@ -50,13 +52,19 @@
                 {% for item in basket_items %}
                     <div class="row transparent-background-black">
                         <div class="col-7 mb-1">
-                            <a class="my-0 text-decoration-none text-black" href="{% url 'tour_detail' item.experience.id %}">
+                            <a
+                            class="my-0 text-decoration-none text-black"
+                            href="{% url 'tour_detail' item.experience.id %}">
                                 {{ item.experience.tour_name }}
                             </a>
-                            <p class="my-0 text-black">Number of Attendees: {{ item.number_of_attendees }}</p>
+                            <p class="my-0 text-black">
+                                Number of Attendees: {{ item.number_of_attendees }}
+                            </p>
                         </div>
                         <div class="col-3 offset-2 text-right">
-                            <p class="my-0 small text-black">£{{ item.experience.tour_price | calc_subtotal:item.number_of_attendees }}</p>
+                            <p class="my-0 small text-black">
+                                £{{ item.experience.tour_price | calc_subtotal:item.number_of_attendees }}
+                            </p>
                         </div>
                     </div>
                     <hr>
@@ -98,15 +106,34 @@
                         <!-- Save info to profile otherwise signin.signup to do so -->
                         <div class="form-check form-check-inline float-right mr-0">
                             {% if user.is_authenticated %}
-                                <label for="id-save-info" class="form-check-label text-yellow mr-1">Save info to my profile</label>
-                                <input type="checkbox" class="form-check-input" id="id-save-info" name="save-info" checked>
+                                <label
+                                for="id-save-info"
+                                class="form-check-label text-yellow mr-1">
+                                    Save info to my profile
+                                </label>
+                                <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="id-save-info"
+                                name="save-info"
+                                checked>
                             {% else %}
-                                <label for="id-save-info" class="form-check-label text-yellow">
-                                    <a href="{% url 'account_signup' %}" class="text-decoration-none">
-                                        <span class="text-yellow"><strong>Create Account</strong></span>
+                                <label
+                                for="id-save-info"
+                                class="form-check-label text-yellow">
+                                    <a
+                                    href="{% url 'account_signup' %}"
+                                    class="text-decoration-none">
+                                        <span class="text-yellow">
+                                            <strong>Create Account</strong>
+                                        </span>
                                     </a> or 
-                                    <a href="{% url 'account_login' %}" class="text-decoration-none">
-                                        <span class="text-yellow"><strong>login</strong></span>
+                                    <a
+                                    href="{% url 'account_login' %}"
+                                    class="text-decoration-none">
+                                        <span class="text-yellow">
+                                            <strong>login</strong>
+                                        </span>
                                     </a> to save this info
                                 </label>
                             {% endif %}
@@ -145,7 +172,10 @@
                                 <span class="icon">
                                     <i class="fa-solid fa-circle-exclamation"></i>
                                 </span>
-                                <span>The amount your card will be charged will be: <strong>£{{ grand_total|floatformat:2 }}</strong></span>
+                                <span>
+                                    The amount your card will be charged will be: 
+                                    <strong>£{{ grand_total|floatformat:2 }}</strong>
+                                </span>
                             </p>
                         </div>
                     </fieldset>
@@ -171,7 +201,7 @@
     <script src="{% static 'booking/js/stripe_elements.js' %}"></script>
 
     <!-- Flatpickr script -->
-    <script type="text/javascript">
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#{{ booking_form.date_of_birth.id_for_label }}", {
                 enableTime: false,
