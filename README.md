@@ -310,6 +310,14 @@ I then went through and made added some touch ups to the styling for an improvem
 - templates>allauth>account>base.html (No errors or warnings to show)
 - templates>allauth>account>account_inactive.html (No errors or warnings to show)
 
+**JSHint Javascript Results**
+
+- static>js>script.js (No errors found)
+
+**W3C Jigsaw CSS Validator Results**
+
+- static>css>style.css (No errors found)
+
 *lightouse results goes here*
 
 ### Unresolved Bugs

@@ -31,12 +31,12 @@ function scrollToTop() {
 }
 
 /**
-     * Assigns the fontawesome icon to the current active page
-     * #activeIcon is the id for the fontawesome icon
-     * #home, #experiences and #contact are the id's of the pages
-     * It starts off a defaulting to the home page and then use click
-     * event handlers to remove and add the icon to the active page
-     */
+ * Assigns the fontawesome icon to the current active page
+ * #activeIcon is the id for the fontawesome icon
+ * #home, #experiences and #contact are the id's of the pages
+ * It starts off a defaulting to the home page and then use click
+ * event handlers to remove and add the icon to the active page
+ */
 // Function for handling the active icon in the navigation
 function handleActiveIcon() {
     // Retrieve the active link from local storage
@@ -74,7 +74,7 @@ function handleActiveIcon() {
         }, 100);
     });
 
-};
+}
 
 
 // Function to move the icon to the active link
@@ -92,11 +92,11 @@ function delayFadeIn(elementId, delayTime) {
 
 
 /**
-     * Detects scrolling on the page, and fades
-     * out the targeted element when scrolling down
-     * and when scroll is back to the top the element fades
-     * back in
-     */
+ * Detects scrolling on the page, and fades
+ * out the targeted element when scrolling down
+ * and when scroll is back to the top the element fades
+ * back in
+ */
 function scrollFade(elementId) {
     let element = $('#' + elementId);
     let lastScrollTop = 0;
