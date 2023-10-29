@@ -169,6 +169,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - Moving on, I implemented a newsletter signup using Mailchimp, and added it into the footer of my site, so users can signup to the newsletter when from every page
 - I then began going through all the files I had either created or added to, and started running them through the respective validators to check my code, and in the process, neatening up some of the structure of the code and looking for any commented out code to remove
 - Moved onto adding images to my README file to start wrapping things up before starting my testing on the deployed site
+- I then went through all my manual testings running them on Google Chrome, Mozilla Firefox & Microsoft Edge
 
 ### Future Developments
 
@@ -185,8 +186,6 @@ I then went through and made added some touch ups to the styling for an improvem
 - Started looking into my SEO, and planned to have a lot of info in the contact us page, which seemed more appropriate to now be called about us, so I changed the name of the nav item to about us, and created an about us template, view and url for it. I then styled it with my existing styling and added a couple more items to my css file to include in the about us template.
 
 ### Wireframes & Database Designs
-
-*wireframes & database design images goes here*
 
 - Home page wireframe
 
@@ -256,42 +255,45 @@ I then went through and made added some touch ups to the styling for an improvem
 
 | Test | Expected Result | Pass/Fail |
 | ----------- | ----------- | ----------- |
-| Favicon | Appears in tab along with title name | |
-| Base Template Content | The content within the base template renders correctly on every template that extends from base.html | |
-| Home Page | The index.html template renders & displays correctly and is responsive | |
-| Main Page Header | The main page header displays correctly on every page and is responsive | |
-| Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | |
-| Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | |
-| Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | |
-| Tour detail template | The tour_detail template works and looks as expected with all the correct content displaying and is responsive | |
-| Category links | The category url links work correctly as expected within the tour_detail template view | |
-| Search functionality | The search input box returns searches as expected | |
-| Category & Sort Filters | The category filter buttons all return tour experiences as expected | |
-| Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | |
-| Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | |
-| Basket tempate | The basket template renders and displays as expected with correct values and is responsive | |
+| Favicon | Appears in tab along with title name | Pass |
+| Base Template Content | The content within the base template renders correctly on every template that extends from base.html | Pass |
+| Home Page | The index.html template renders & displays correctly and is responsive | Pass |
+| Main Page Header | The main page header displays correctly on every page and is responsive | Pass |
+| Sub Navigation | Site navigation works as expected with icon displaying active page and is responsive | Fail |
+| Mobile Site Nav Colours | When using the navbar on a small display and items are clicked or hovered over, the colours change accordingly and all menu items are legible | Pass |
+| Tours view/template | All the tour experience offerings display as expected and the layout displays as expected and is responsive | Fail |
+| Tour detail template | The tour_detail template works and looks as expected with all the correct content displaying and is responsive | Pass |
+| Category links | The category url links work correctly as expected within the tour_detail template view | Pass |
+| Search functionality | The search input box returns searches as expected | Pass |
+| Category & Sort Filters | The category filter buttons all return tour experiences as expected | Pass |
+| Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | Pass |
+| Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | Pass |
+| Basket tempate | The basket template renders and displays as expected with correct values and is responsive | Pass with one item in basket, Fail with multiple items in basket |
 | Edit basket items | Items in the basket allow data to be edited with expected functionality | |
-| Update & Remove items | The update and remove buttons work as expected | |
-| Basket line item total | The line item total calculates correctly when an item has multiple attendees, and updates if the number of attendees is updated in the basket when the update is clicked | |
-| Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | |
-| Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | |
-| Number of attendees | The number of attendees per group input works as expected with the max input only allowing it to go to the max number per group as stated below the input | |
-| Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | |
-| Toast Messages | Toast messages display and respond as expected | |
-| Booking template | Booking template renders as expected and is responsive | |
-| Booking payment | Stripe payments work as expected | |
-| Booking success template | Booking success template renders and displays as expected and is responsive | |
-| Stripe Payments | Stripe payment successfull in the Stripe event log as expected | |
+| Update & Remove items | The update and remove buttons work as expected | Pass |
+| Basket line item total | The line item total calculates correctly when an item has multiple attendees, and updates if the number of attendees is updated in the basket when the update is clicked | Pass |
+| Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | Pass |
+| Discount Banner | The discount banner fade's in as expected after 1.5 seconds & is responsive | Pass |
+| Number of attendees | The number of attendees per group input works as expected in the tour_detail view, with the max input only allowing it to go to the max number per group as stated below the input | Pass |
+| Disabled form inputs | The form inputs in the tour detail template remain disabled until the input for the previous field has been filled in with a value | Pass |
+| Toast Messages | Toast messages display and respond as expected | Pass |
+| Booking template | Booking template renders as expected and is responsive | Pass |
+| Booking payment | Stripe payments work as expected | Pass |
+| Booking success template | Booking success template renders and displays as expected and is responsive | Pass |
+| Stripe Payments | Stripe payment successfull in the Stripe event log as expected | Pass |
 | Profile template | Profile template renders and displays as expected and is responsive | |
-| Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | |
-| Confirmation Email | Confirmation email sent when booking is placed | |
-| Add Tour template | The add tour template renders and displays as expected and is responsive | |
-| Edit Tour template | The edit tour template renders and displays as expected and is responsive | |
-| Confirmation Modal | The confirmation modal appears as expected when trying to delete an experience as an admin | |
-| Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | |
-| Sending Emails | Sending emails from django works as expected | |
-| 404 Page | The 404 page displays as expected and is responsive | |
-| About Us template | The about us template displays as expected, and is responsive | |
+| Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | Pass |
+| Previous Order Detail | Viewing a previous order from profile, in detail and is responsive | Pass |
+| Confirmation Email | Confirmation email sent when booking is placed | Fail |
+| Add Tour template | The add tour template renders and displays as expected and is responsive | Pass |
+| Edit Tour template | The edit tour template renders and displays as expected and is responsive | Pass |
+| Confirmation Modal | The confirmation modal appears as expected when trying to delete an experience as an admin | Pass when in the tour detail template |
+| Deleting Experiences | Deleting experiences from the site when logged in as an Admin works as expected | Pass |
+| Sending Emails | Sending emails from django works as expected | Pass |
+| 404 Page | The 404 page displays as expected and is responsive | Pass |
+| About Us template | The about us template displays as expected, and is responsive | Pass |
+| Buttons & Links | All buttons and links work as expected | Pass |
+| Newsletter signup | Mailchimp signup works as expected | Pass |
 
 ### Resolved Bugs
 
@@ -409,6 +411,10 @@ I then went through and made added some touch ups to the styling for an improvem
 - After readjusting the way the lists are iterated through for the max attendees, it seems there is a bug when the items are in the basket, it seems to have the same number of attendees on every line item, which is not correct, and the more items you add to the baset the numbers list begins to duplicate, but I have not found a solution to this yet unfortunately.
 - I have noticed there is a slight difference in the background colour of the date of birth fields when it comes to the booking form and the urser profile, which will need to be looked at, at a later stage
 - I found there is an issue that the cursor displays and the colour changes when you hover over the discount banner, but I cannot seem to figure out why. I have searched my css file and do not know what class is causing this, as the classes assigned to it, do not have this attribute to it
+- After deployment, I found my webhook endpoint is not succeeding, and so my confirmation emails are not being sent out, and due to time constraints I am unable to figure it out at this point, but will return to it later on.
+- There is a bug with the active icon the if you select the logo to go home the active icon does not move to the home page, and on small displays can seem like its in the wrong place. I will come back to it
+- When viewing the tours template in Microsoft Edge, the spacing of the cards is not right on medium displays. Due to time constraints I am unable to go adjust spacing and css attributes at the stage, but I will come back to it
+- Found a bug when testing the modal confirmations in the tours template, after introducing the javascript function to open the tour, to correct the html validation issue of having an anchor element in an anchor element, so now when in the tours template as a superuser, when trying to delete the Tour Experience to bring up the modal, it opens up the detail view of the tour. So need to look into this
 
 ## Credits
 
