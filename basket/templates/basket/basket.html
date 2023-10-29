@@ -45,38 +45,56 @@
                                 <!-- Booking Date, time and attendees -->
                                 <td>
                                     {% if item.form %}
-                                    <form class="form update-form" method="post" action="{% url 'adjust_basket' item.experience.id %}">
+                                    <form
+                                    class="form update-form"
+                                    method="post"
+                                    action="{% url 'adjust_basket' item.experience.id %}">
                                         {% csrf_token %}
                                         <!-- Booking Date -->
                                         <div class="form-group inline-item">
-                                            <label for="{{ item.form.booking_date.id_for_label }}">Booking Date:</label>
+                                            <label for="{{ item.form.booking_date.id_for_label }}">
+                                                Booking Date:
+                                            </label>
                                             {{ item.form.booking_date }}
                                         </div>
 
                                         <!-- Booking time slot -->
                                         <div class="form-group inline-item">
-                                            <label for="{{ item.form.booking_time_slot.id_for_label }}">Booking Time Slot:</label>
+                                            <label for="{{ item.form.booking_time_slot.id_for_label }}">
+                                                Booking Time Slot:
+                                            </label>
                                             {{ item.form.booking_time_slot }}
                                         </div>
 
                                         <!-- Number of attendees -->
                                         <div class="form-group inline-item">
-                                            <label for="{{ item.form.number_of_attendees.id_for_label }}">Number of Attendees:</label>
+                                            <label for="{{ item.form.number_of_attendees.id_for_label }}">
+                                                Number of Attendees:
+                                            </label>
                                             <!-- Assistance from CI Tutor and ChatGPT -->
                                             <div class="input-group">
                                                 <select name="number_of_attendees">
                                                 {% for i in number_of_attendees_values %}
-                                                    <option value="{{ i }}" {% if i == submitted_number_of_attendees %}selected{% endif %}>{{ i }}</option>
+                                                    <option
+                                                    value="{{ i }}"
+                                                    {% if i == submitted_number_of_attendees %}selected{% endif %}>
+                                                        {{ i }}
+                                                    </option>
                                                 {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
 
                                         <!-- Hidden input for item_id -->
-                                        <input type="hidden" name="item_id" value="{{ item.experience.id }}">
+                                        <input
+                                        type="hidden"
+                                        name="item_id"
+                                        value="{{ item.experience.id }}">
 
                                         <!-- Experience price per person -->
-                                        <p class="inline-item"><strong>Price pp:</strong> £{{ item.experience.tour_price }}</p>
+                                        <p class="inline-item">
+                                            <strong>Price pp:</strong> £{{ item.experience.tour_price }}
+                                        </p>
 
                                         <!-- Experience line item total -->
                                         <p class="inline-item">
@@ -92,16 +110,21 @@
                                             title="Update"
                                             href="#">
                                                 Update
-                                                <span class="icon text-yellow"><i class="fa-solid fa-rotate-right fa-xs"></i></span>
+                                                <span class="icon text-yellow">
+                                                    <i class="fa-solid fa-rotate-right fa-xs"></i>
+                                                </span>
                                         </a>
 
                                         <!-- Remove button -->
-                                        <a class="remove-item text-danger float-right"
-                                            id="remove_{{ item.experience.id }}"
-                                            title="Remove"
-                                            href="#">
-                                                Delete
-                                                <span class="icon text-yellow"><i class="fa-solid fa-trash-can fa-xs"></i></span>
+                                        <a
+                                        class="remove-item text-danger float-right"
+                                        id="remove_{{ item.experience.id }}"
+                                        title="Remove"
+                                        href="#">
+                                            Delete
+                                            <span class="icon text-yellow">
+                                                <i class="fa-solid fa-trash-can fa-xs"></i>
+                                            </span>
                                         </a>
                                     </form>
                                     {% endif %}
@@ -123,17 +146,29 @@
                                     <strong>Basket Total:</strong> £{{ grand_total|floatformat:2 }}
                                 </td>
                             </tr>
-                            <p class="text-right text-yellow"><strong>Spend £{{ discount_delta }} to get your 10% discount!</strong></p>
+                            <p class="text-right text-yellow">
+                                <strong>Spend £{{ discount_delta }} to get your 10% discount!</strong>
+                            </p>
                             {% endif %}
                         </tbody>
                     </table>
-                    <a href="{% url 'tours' %}" class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">
+                    <a
+                    href="{% url 'tours' %}"
+                    class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">
                         Continue Browsing Whiskey Experiences
                     </a>
-                    <a href="{% url 'booking' %}" class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">Book Now</a>
+                    <a
+                    href="{% url 'booking' %}"
+                    class="display-decoration-none btn btn-yellow text-black mt-3 mb-3">
+                        Book Now
+                    </a>
                 {% else %}
-                    <p class="text-center text-yellow">Your basket is currently empty</p>
-                    <a class="display-decoration-none btn btn-yellow text-black mt-3 mb-3" href="{% url 'tours' %}">
+                    <p class="text-center text-yellow">
+                        Your basket is currently empty
+                    </p>
+                    <a
+                    class="display-decoration-none btn btn-yellow text-black mt-3 mb-3"
+                    href="{% url 'tours' %}">
                         Back to Whiskey Experiences
                     </a>
                 {% endif %}
@@ -144,7 +179,7 @@
 
 {% block postloadjs %}
     {{ block.super }}
-        <script type="text/javascript">
+        <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Add the flatpickr-date-input as a class to the booking date input
                 $(".flatpickr-date-input").flatpickr({

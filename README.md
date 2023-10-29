@@ -291,6 +291,9 @@ I then went through and made added some touch ups to the styling for an improvem
 - booking>models.py (E501 on line 50 of line too long, but unsure how to break it down further without messing up the calculation logic)
 - booking>forms.py (E501 on line 182 of line too long, but unsure how to break it down further without messing up the calculation logic)
 - booking>admin.py (All clear no errors found)
+- basket>views.py (All clear no errors found)
+- basket>urls.py (All clear no errors found)
+- basket>contexts.py (All clear no errors found)
 
 **W3C Nu HTML Checker Results**
 
@@ -330,6 +333,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - home>templates>home>about_us.html (After removing any django template tags, no errors or warnings to show)
 - booking>templates>booking>booking.html (Warning on ln188 for Empty Heading, but unsure how to correct as I want the spinner from font awesome to be a large element with no text)
 - booking>templates>booking>booking_success.html (After removing any django template tags, no errors or warnings to show)
+- basket>templates>basket>basket.html (After removing any django template tags, no errors or warnings to show)
 
 **JSHint Javascript Results**
 
