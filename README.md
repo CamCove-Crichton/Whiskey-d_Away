@@ -402,7 +402,59 @@ I then went through and made added some touch ups to the styling for an improvem
 - profiles>static>profiles>css>profile.css (No errors found)
 - booking>static>booking>css>booking.css (No errors found)
 
-*lightouse results goes here*
+**Lighthouse Results**
+
+- index.html
+
+![homepage lighthouse results](/media/readme_images/lighthouse/Index.png)
+
+- tours.html
+
+![tours page lighthouse results](/media/readme_images/lighthouse/tours.png)
+
+- tour_detail.html
+
+![tour detail page lighthouse results](/media/readme_images/lighthouse/tour_detail.png)
+
+- about_us.html
+
+![about us page lighthouse results](/media/readme_images/lighthouse/about_us.png)
+
+- basket.html
+
+![basket page lighthouse results](/media/readme_images/lighthouse/basket.png)
+
+- booking.html
+
+![booking page lighthouse results](/media/readme_images/lighthouse/booking.png)
+
+- booking_success.html
+
+![booking success page lighthouse results](/media/readme_images/lighthouse/booking_success.png)
+
+- profile.html
+
+![profile page lighthouse results](/media/readme_images/lighthouse/profile.png)
+
+- add_tour.html
+
+![add tour page lighthouse results](/media/readme_images/lighthouse/add_tour.png)
+
+- edit_tour.html
+
+![edit tour page lighthouse results](/media/readme_images/lighthouse/edit_tour.png)
+
+- signup.html
+
+![signup page lighthouse results](/media/readme_images/lighthouse/signup.png)
+
+- login.html
+
+![login page lighthouse results](/media/readme_images/lighthouse/login.png)
+
+- signout.html
+
+![signout page lighthouse results](/media/readme_images/lighthouse/signout.png)
 
 ### Unresolved Bugs
 
