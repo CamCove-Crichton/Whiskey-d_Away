@@ -43,11 +43,22 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 ### Forking & Cloning
 
-*forking & cloning goes here*
+**Forking**
+
+1. Go to the GitHub page of the repository you want to fork.
+2. Click the "Fork" button in the top-right corner of the page.
+3. GitHub will prompt you to select where you want to fork the repository. Choose your GitHub account.
+
+**Cloning**
+
+1. Open your terminal or Git Bash on your local machine.
+2. Navigate to the directory where you want to clone the repository.
+3. Copy the URL of your forked repository. It should look like: "https://github.com/your-username/repository-name.git"
+4. Run the following command to clone the repository to your local machine: "git clone https://github.com/your-username/repository-name.git"
 
 ### Am I Responsive
 
-*amiresponsive image goes here*
+![am i responsive display](/media/readme_images/amiresponsive.png)
 
 ## Developments
 
@@ -157,6 +168,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - I created a facebook business page, but I did not include it in my footer link for the social links as I am aware it could be removed by facebook and did not want to have a page link leading to nowhere. I have included screen grabs of the business page created and just in case it is not removed, I have put a link to the page at the bottom with my credits
 - Moving on, I implemented a newsletter signup using Mailchimp, and added it into the footer of my site, so users can signup to the newsletter when from every page
 - I then began going through all the files I had either created or added to, and started running them through the respective validators to check my code, and in the process, neatening up some of the structure of the code and looking for any commented out code to remove
+- Moved onto adding images to my README file to start wrapping things up before starting my testing on the deployed site
 
 ### Future Developments
 
@@ -176,6 +188,42 @@ I then went through and made added some touch ups to the styling for an improvem
 
 *wireframes & database design images goes here*
 
+- Home page wireframe
+
+![homepage wireframe](/media/readme_images/homepage%20wireframe.png)
+
+- Tour experiences wireframe
+
+![tour experience wireframe](/media/readme_images/experiences%20page%20wireframe.png)
+
+- Tour detail wireframe
+
+![tour detail view wireframe](/media/readme_images/experience%20detail%20page%20wireframe.png)
+
+- Basket wireframe
+
+![basket view wireframe](/media/readme_images/basket%20page%20wireframe.png)
+
+- Booking wireframe
+
+![booking page wireframe](/media/readme_images/booking%20page%20wireframe.png)
+
+- Profile wireframe
+
+![profile view wireframe](/media/readme_images/profile%20page%20wireframe.png)
+
+- 404 wireframe
+
+![404 error page wireframe](/media/readme_images/404%20page%20wireframe.png)
+
+- Database design structure
+
+![database sructure design](/media/readme_images/database%20design.png)
+
+- SEO Brainstorm
+
+![seo brainstorm ideas](/media/readme_images/Keyword%20brainstorm.png)
+
 ### Technologies
 
 - Django 3.2
@@ -193,6 +241,14 @@ I then went through and made added some touch ups to the styling for an improvem
 ### Finished Site Screen Grabs
 
 *finished site screen grab images goes here*
+
+**Facebook business page images**
+
+![facebook business page 1 of 3](/media/readme_images/fb_business_page_1.png)
+
+![facebook business page 2 of 3](/media/readme_images/fb_business_page-2.png)
+
+![facebook business page 3 of 3](/media/readme_images/fb_business_page_3.png)
 
 ## Testing
 
@@ -259,8 +315,6 @@ I then went through and made added some touch ups to the styling for an improvem
 - Upon looking closer at my template when the tour detail is rendered, I found the footer was forming part of the container within the block content, which was not right, so looking closer in my template, I found there was a closing div tag missing, so adding that in, fixed the issue
 
 ### Validator Testing
-
-*html, css, js & python validation results goes here*
 
 **Python Linter Results**
 
