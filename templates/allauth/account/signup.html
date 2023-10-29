@@ -20,7 +20,11 @@
   {% endblocktrans %}
 </p>
 
-<form class="signup text-yellow bold-text" id="signup_form" method="post" action="{% url 'account_signup' %}">
+<form
+class="signup text-yellow bold-text"
+id="signup_form"
+method="post"
+action="{% url 'account_signup' %}">
   {% csrf_token %}
   {{ form|crispy }}
   {% if redirect_field_value %}

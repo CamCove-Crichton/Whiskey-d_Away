@@ -293,6 +293,22 @@ I then went through and made added some touch ups to the styling for an improvem
 - templates>includes>toasts>toast_error.html (No errors or warnings to show)
 - templates>errors>404.html (After removing any django template tags, no errors or warnings to show)
 - templates>allauth>base.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>verified_email_required.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>verification_sent.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>signup.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>signup_closed.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_set.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_reset.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_reset_from_key.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_reset_from_key_done.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_reset_done.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>password_change.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>logout.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>login.html (Error found on ln23 for text not allowed as element in this context, but due to it being a django allauth template, I left it as it is)
+- templates>allauth>account>email.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>email_confirm.html (After removing any django template tags, no errors or warnings to show)
+- templates>allauth>account>base.html (No errors or warnings to show)
+- templates>allauth>account>account_inactive.html (No errors or warnings to show)
 
 *lightouse results goes here*
 
