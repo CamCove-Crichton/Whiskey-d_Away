@@ -10,13 +10,15 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - View a list of Tour Experiences available
 - Add Tour Experiences to your bag
 - Make online payments to confirm Tour Experiences
-- Edit or Cancel existing bookings
 - View order history
 - Receive Signup and Order confirmation emails
 - Subscribe to a newsletter
 - Admin login to add, edit or remove Tour Experiences
 
 ## Deployment
+
+- Deployed site:
+[Whiskey'd Away](https://whiskeyd-away-b104788bd50a.herokuapp.com/)
 
 - I started by setting up a PostgreSQL database instance on ElephantSQL
 - Then updated my settings to switch to using the new database instance
@@ -269,7 +271,7 @@ I then went through and made added some touch ups to the styling for an improvem
 | Sort box functionality | The sort by box works as expected with all different options sorting correctly and displaying the sorting value correctly | Pass |
 | Back to top button | The back to top button works as expected by appearing and disappearing when required to and the functionality works to return the user to the top | Pass |
 | Basket tempate | The basket template renders and displays as expected with correct values and is responsive | Pass with one item in basket, Fail with multiple items in basket |
-| Edit basket items | Items in the basket allow data to be edited with expected functionality | |
+| Edit basket items | Items in the basket allow data to be edited with expected functionality | Pass |
 | Update & Remove items | The update and remove buttons work as expected | Pass |
 | Basket line item total | The line item total calculates correctly when an item has multiple attendees, and updates if the number of attendees is updated in the basket when the update is clicked | Pass |
 | Basket total | The basket total is calculating correctly, if there is a discount, the discount displays and is subtracted from the total | Pass |
@@ -281,7 +283,7 @@ I then went through and made added some touch ups to the styling for an improvem
 | Booking payment | Stripe payments work as expected | Pass |
 | Booking success template | Booking success template renders and displays as expected and is responsive | Pass |
 | Stripe Payments | Stripe payment successfull in the Stripe event log as expected | Pass |
-| Profile template | Profile template renders and displays as expected and is responsive | |
+| Profile template | Profile template renders and displays as expected and is responsive | Pass |
 | Order History | The order history displays in the profile view and you can select an old order to view the template, and it renders as expected and is responsive | Pass |
 | Previous Order Detail | Viewing a previous order from profile, in detail and is responsive | Pass |
 | Confirmation Email | Confirmation email sent when booking is placed | Fail |
