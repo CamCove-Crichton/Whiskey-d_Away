@@ -16,6 +16,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Receive Signup emails
 - Subscribe to a newsletter
 - Admin login to add, edit or remove Tour Experiences
+- eCommerce site with a B2C sturcture, with a one time single payment system
 
 ---
 

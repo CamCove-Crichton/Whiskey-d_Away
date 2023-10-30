@@ -29,7 +29,6 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '8000-camcove-crichton-whiskey-5s4lohy9f0.us2.codeanyapp.com',
     'whiskeyd-away-b104788bd50a.herokuapp.com',
-    '*'
 ]
 
 
