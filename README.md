@@ -4,6 +4,8 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 
 - **You must be over the age of 18 in order to make a booking**
 
+---
+
 ## Features
 
 - Signup & Login/Logout
@@ -11,9 +13,11 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Add Tour Experiences to your bag
 - Make online payments to confirm Tour Experiences
 - View order history
-- Receive Signup and Order confirmation emails
+- Receive Signup emails
 - Subscribe to a newsletter
 - Admin login to add, edit or remove Tour Experiences
+
+---
 
 ## Deployment
 
@@ -42,6 +46,7 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 - Then moved back to the S3 bucket and uploaded the images for my site
 - Went to open the app from heroku to see it was all deployed and that the css, javascript and images are present
 
+---
 
 ### Forking & Cloning
 
@@ -58,9 +63,13 @@ Whiskey'd Away is your passport to whiskey adventures in the UK. A passionate co
 3. Copy the URL of your forked repository. It should look like: "https://github.com/your-username/repository-name.git"
 4. Run the following command to clone the repository to your local machine: "git clone https://github.com/your-username/repository-name.git"
 
+---
+
 ### Am I Responsive
 
 ![am i responsive display](/media/readme_images/amiresponsive.png)
+
+---
 
 ## Developments
 
@@ -164,6 +173,7 @@ I then went through and made added some touch ups to the styling for an improvem
 - I then added in the anchor tags and links for the social media links in the footer after resolving the issue of the footer not appearing on mobile devices
 - Started tidying up my project by going through all the linting errors I could find and fix
 - Then added in the 404 page in case there are any urls that do not exist in the site that the user tries to access
+- Started looking into my SEO, and planned to have a lot of info in the contact us page, which seemed more appropriate to now be called about us, so I changed the name of the nav item to about us, and created an about us template, view and url for it. I then styled it with my existing styling and added a couple more items to my css file to include in the about us template.
 - I added in the template for the about us page, and within the content of the page I was thinking about my SEO and having meaningful content to assist with improving my sites ranking with SEO standards
 - I then began adding in template names to extend from the title tag, and then worked on adding in the meta tags for the site description and the keywords for search results from search engines
 - I then created a sitemap for my site, and added it to my project, and then added in a robots.txt file with the assistance from Code Institutes, Boutique Ado walkthrough project
@@ -172,6 +182,9 @@ I then went through and made added some touch ups to the styling for an improvem
 - I then began going through all the files I had either created or added to, and started running them through the respective validators to check my code, and in the process, neatening up some of the structure of the code and looking for any commented out code to remove
 - Moved onto adding images to my README file to start wrapping things up before starting my testing on the deployed site
 - I then went through all my manual testings running them on Google Chrome, Mozilla Firefox & Microsoft Edge
+- I then finished up the README by adding all the site images and user message screen grabs
+
+---
 
 ### Future Developments
 
@@ -185,7 +198,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I would like to be able to have the attendees details filled in during the booking process if there is more than one attendee, and also have them have the validation of ensuring they are all over 18 years of age, but due to time constraints, I have not had a chance to implement it, but I would like to return to it and implement this, as I feel it would be a great feature
 - It would be great to be able to add in a feature for the user to be able to edit their booking once made by either changing the date, adding more attendees if possible or removing attendees or adding other experiences and paying the balance or receiving a refund if the new balance is less than what they paid, or to be able to cancel the entire booking and get a full refund if cancellation is not within a 48hr period of the booking taking place
 - I would have liked to put a validation in place to let the user know if they booking slot is at maximum capacity or if the date is at maximum capacity but due to time contraints, I was not able to get round to it but it will be a feature down the line
-- Started looking into my SEO, and planned to have a lot of info in the contact us page, which seemed more appropriate to now be called about us, so I changed the name of the nav item to about us, and created an about us template, view and url for it. I then styled it with my existing styling and added a couple more items to my css file to include in the about us template.
+
+---
 
 ### Wireframes & Database Designs
 
@@ -225,6 +239,8 @@ I then went through and made added some touch ups to the styling for an improvem
 
 ![seo brainstorm ideas](/media/readme_images/Keyword%20brainstorm.png)
 
+---
+
 ### Technologies
 
 - Django 3.2
@@ -239,9 +255,157 @@ I then went through and made added some touch ups to the styling for an improvem
 - Boto 3
 - Django-Storages
 
+---
+
 ### Finished Site Screen Grabs
 
-*finished site screen grab images goes here*
+**Site Images**
+
+- Whiskey'd Away logo
+
+![whiskey'd away logo](/media/readme_images/site_screen_grabs/site%20logo.png)
+
+- Home page
+
+![whiskey'd away home page](/media/readme_images/site_screen_grabs/home%20page.png)
+
+- Header
+
+![whiskey'd away site header](/media/readme_images/site_screen_grabs/site%20header.png)
+
+- Footer
+
+![whiskey'd away footer](/media/readme_images/site_screen_grabs/site%20footer.png)
+
+- Whiskey Experiences
+
+![whiskey'd away experiences](/media/readme_images/site_screen_grabs/tours%20page.png)
+
+![experiences logged in as admin](/media/readme_images/site_screen_grabs/tours%20signed%20in%20as%20admin.png)
+
+- Experience detail view
+
+![whiskey'd away experience detail view](/media/readme_images/site_screen_grabs/tour%20detail%20page.png)
+
+![experience detail view logged in as admin](/media/readme_images/site_screen_grabs/tour%20detail%20as%20admin.png)
+
+- Basket
+
+![whiskey'd away basket page](/media/readme_images/site_screen_grabs/basket%20page.png)
+
+- Booking
+
+![whiskey'd away booking page](/media/readme_images/site_screen_grabs/booking%20page.png)
+
+- Booking Confirmation
+
+![whiskey'd away boking confirmation page](/media/readme_images/site_screen_grabs/booking%20confirmation%20page.png)
+
+- Profile
+
+![whiskey'd away user profile page](/media/readme_images/site_screen_grabs/profile%20page.png)
+
+- Previous Order
+
+![whiskey'd away previous order page](/media/readme_images/site_screen_grabs/previous%20order%20page.png)
+
+- Newsletter Signup
+
+![whiskey'd away newsletter signup](/media/readme_images/site_screen_grabs/newsletter%20signup.png)
+
+- Wiskey'd Away Signup
+
+![whiskey'd away website signup](/media/readme_images/site_screen_grabs/signup%20page.png)
+
+- Whiskey'd Away Login
+
+![whiskey'd away login website page](/media/readme_images/site_screen_grabs/login%20page.png)
+
+- Whiskey'd Away Signout
+
+![whiskey'd away signout website page](/media/readme_images/site_screen_grabs/signout%20page.png)
+
+- Add Tour Experience
+
+![whiskey'd away add tour experience page](/media/readme_images/site_screen_grabs/add%20tour%20page.png)
+
+- Edit Tour Experience
+
+![whiskey'd away edit tour experience page](/media/readme_images/site_screen_grabs/edit%20tour%20page.png)
+
+- Confirmation Delete Modal
+
+![whiskey'd away confirm deleting experience popup](/media/readme_images/site_screen_grabs/delete%20confirmation%20modal.png)
+
+**Site Messages**
+
+- Invalid search criteria
+
+![invalid search criteria message](/media/readme_images/site_user_messages/No%20search%20criteria%20entered.png)
+
+- Signed in successfully
+
+![signed in successfully message](/media/readme_images/site_user_messages/successfully%20signed%20in%20message%201.png)
+
+- Signed out successfully
+
+![signed out successfully message](/media/readme_images/site_user_messages/successfully%20signed%20out%20message.png)
+
+- Profile updated successfully
+
+![profile update successfully message](/media/readme_images/site_user_messages/Profile%20successfully%20updated.png)
+
+- Experience successfully added to basket
+
+![tour experience successfully added to basket message](/media/readme_images/site_user_messages/successfully%20added%20to%20basket.png)
+
+- Invalid form submission for adding to basket
+
+![invalid form submission message](/media/readme_images/site_user_messages/Invalid%20form%20message%20when%20adding%20to%20basket.png)
+
+- Experience already exists in basket
+
+![tour experience already in basket message](/media/readme_images/site_user_messages/experience%20already%20exists.png)
+
+- Basket updated successfully
+
+![basket updated succesffully message](/media/readme_images/site_user_messages/Basket%20updated%20successfully.png)
+
+- Experience successfully removed from basket
+
+![tour experience successfully removed from basket message](/media/readme_images/site_user_messages/Experience%20successfully%20removed%20from%20basket.png)
+
+- No experiences in basket
+
+![no experiences in the basket message](/media/readme_images/site_user_messages/No%20eperiences%20in%20basket%20message.png)
+
+- Booking confirmation message
+
+![booking confirmed message](/media/readme_images/site_user_messages/updated%20confirmation%20booking%20message.png)
+
+- Previous order message
+
+![viewing previous order message](/media/readme_images/site_user_messages/Previous%20order%20alert%20message.png)
+
+- Payment order invalid form message
+
+![invalid form submission on booking message](/media/readme_images/site_user_messages/Payment%20error%20message.png)
+
+- Experience added successfully
+
+![tour experience added to offerings message](/media/readme_images/site_user_messages/Added%20tour%20successfully.png)
+
+- Editing experience alert message
+
+![editing tour experience alert message](/media/readme_images/site_user_messages/Editing%20experience%20message.png)
+
+- Experience successfully edited
+
+![tour experience successfully edited message](/media/readme_images/site_user_messages/Experience%20eddited.png)
+
+- Experience successfully deleted
+
+![tour experience successfully deleted message](/media/readme_images/site_user_messages/Experience%20successfully%20deleted.png)
 
 **Facebook business page images**
 
@@ -250,6 +414,8 @@ I then went through and made added some touch ups to the styling for an improvem
 ![facebook business page 2 of 3](/media/readme_images/fb_business_page-2.png)
 
 ![facebook business page 3 of 3](/media/readme_images/fb_business_page_3.png)
+
+---
 
 ## Testing
 
@@ -297,6 +463,8 @@ I then went through and made added some touch ups to the styling for an improvem
 | Buttons & Links | All buttons and links work as expected | Pass |
 | Newsletter signup | Mailchimp signup works as expected | Pass |
 
+---
+
 ### Resolved Bugs
 
 - After updating my tours model, I found the category was not displaying in my tour_detail template, and realsised it was because it now was a many to many field, which meant it has the potential for more than one value, and so had to loop through the tour.tour_category field to display each category the tour has been assigned to
@@ -317,6 +485,8 @@ I then went through and made added some touch ups to the styling for an improvem
 - I found there was an issue with the discount banner getting in the way when scrolling on the home page, so I used some javascript to fade the banner out when the user scrolls down and then when they scroll back up to fade the banner back in, this was assisted by ChaGPT due to time constraints
 - Upon checking my HTML validation, I found an issue with having an anchor tag within an anchor tag, so to correct this validation error, I used a div instead of an anchor tag to hold the card div in, and used some javascript instead to handle the link, so when the card is clicked it opens the select tour
 - Upon looking closer at my template when the tour detail is rendered, I found the footer was forming part of the container within the block content, which was not right, so looking closer in my template, I found there was a closing div tag missing, so adding that in, fixed the issue
+
+---
 
 ### Validator Testing
 
@@ -458,6 +628,8 @@ I then went through and made added some touch ups to the styling for an improvem
 
 ![signout page lighthouse results](/media/readme_images/lighthouse/signout.png)
 
+---
+
 ### Unresolved Bugs
 
 - Using the bootstrap dropdown navbar, and my custom css with a media query for mobile devices, I have an issue with the font colour of the heading once the menu drops down, the main nav item for this drop down cannot be seen as the colour is the same as the background, so it needs some work with either a different approach with CSS or using JavaScript to manipulate the styling when clicked
@@ -469,6 +641,9 @@ I then went through and made added some touch ups to the styling for an improvem
 - There is a bug with the active icon the if you select the logo to go home the active icon does not move to the home page, and on small displays can seem like its in the wrong place. I will come back to it
 - When viewing the tours template in Microsoft Edge, the spacing of the cards is not right on medium displays. Due to time constraints I am unable to go adjust spacing and css attributes at the stage, but I will come back to it
 - Found a bug when testing the modal confirmations in the tours template, after introducing the javascript function to open the tour, to correct the html validation issue of having an anchor element in an anchor element, so now when in the tours template as a superuser, when trying to delete the Tour Experience to bring up the modal, it opens up the detail view of the tour. So need to look into this
+- I have found when testing the deployed site, if you enter in an invalid card number, the error displays, but when you remove the invalid card number, the error message does not clear, but it does allow you to enter a valid number and proceed with payment
+
+---
 
 ## Credits
 
@@ -4453,6 +4628,25 @@ def generate_unique_booking_number():
         font: 14px Helvetica, Arial, sans-serif;
         width: 100%;
     }
+}
+```
+
+- Cloning and Forking writeup
+
+```txt
+{
+    **Forking**
+
+    1. Go to the GitHub page of the repository you want to fork.
+    2. Click the "Fork" button in the top-right corner of the page.
+    3. GitHub will prompt you to select where you want to fork the repository. Choose your GitHub account.
+
+    **Cloning**
+
+    1. Open your terminal or Git Bash on your local machine.
+    2. Navigate to the directory where you want to clone the repository.
+    3. Copy the URL of your forked repository. It should look like: "https://github.com/your-username/repository-name.git"
+    4. Run the following command to clone the repository to your local machine: "git clone https://github.com/your-username/repository-name.git"
 }
 ```
 
